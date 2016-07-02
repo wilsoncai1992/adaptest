@@ -1,0 +1,10 @@
+Package: data.adapt.multi.test
+Title: Data adaptive test statistics for high dimensional multiple testing
+Version: 0.1
+Authors@R: person("Wilson", "Cai", email = "wcai@berkeley.edu", role=c("aut", "cre"))
+Description: (TO DO)
+Depends:
+    R (>= 3.3.0)
+Encoding: UTF-8
+LazyData: truez
+RoxygenNote: 5.0.1
