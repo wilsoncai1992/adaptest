@@ -1,3 +1,4 @@
+#' @export print.adaptive
 print.adaptive <- function(adapt.fit, shinyprint = FALSE) {
 	if (!shinyprint) {
 		print('The top covariates are')
@@ -33,7 +34,7 @@ print.adaptive <- function(adapt.fit, shinyprint = FALSE) {
 	# 	))
 	# }
 
-	
+
 	if (shinyprint) {
 		HTML(paste('<b> The covariates still significant are </b>',
 							 paste(adapt.fit[[5]], collapse = ' '),

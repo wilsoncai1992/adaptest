@@ -1,3 +1,4 @@
+#' @export table.adaptive
 table.adaptive <- function(adapt.fit) {
 	out.table <- cbind(adapt.fit[[1]], adapt.fit[[2]], adapt.fit[[3]], adapt.fit[[4]], adapt.fit[[6]], adapt.fit[[7]]*100)
 	out.table <- as.data.frame(out.table)

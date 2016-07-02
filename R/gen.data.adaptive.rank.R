@@ -1,3 +1,4 @@
+#' @export gen.data.adaptive.rank
 gen.data.adaptive.rank <- function(Y.param, A.param, W.param, abs = FALSE, negative = FALSE) {
 	n.here <- nrow(Y.param)
 	p.all <- ncol(Y.param)

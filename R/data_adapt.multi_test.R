@@ -1,3 +1,4 @@
+#' @export data_adapt.multi_test
 data_adapt.multi_test <- function(Y, A, W = NULL, n.top.want, n.fold, abs = FALSE, negative = FALSE, parallel = FALSE) {
 	# ==============================================================================================================
 	# preparation
@@ -28,7 +29,7 @@ data_adapt.multi_test <- function(Y, A, W = NULL, n.top.want, n.fold, abs = FALS
 		print(paste('Fold:', it0))
 		chunk.as.est <- it0
 		# chunk.as.train <- setdiff(1:n.fold, it0)
-		
+
 		# create parameter generating data
 		# airline.train <- plyr::ldply(airline.chunk[1:9])
 		Y.param <- Y[n.index.param.gen != chunk.as.est,]
@@ -39,7 +40,7 @@ data_adapt.multi_test <- function(Y, A, W = NULL, n.top.want, n.fold, abs = FALS
 		Y.est <- Y[n.index.param.gen == chunk.as.est,]
 		A.est <- A[n.index.param.gen == chunk.as.est]
 		W.est <- W[n.index.param.gen == chunk.as.est,,drop = FALSE]
-		
+
 		# ==============================================================================================================
 		# data adaptive target parameter
 		# ==============================================================================================================
@@ -47,7 +48,7 @@ data_adapt.multi_test <- function(Y, A, W = NULL, n.top.want, n.fold, abs = FALS
 		data.adaptive.index <- gen.data.adaptive.rank(Y.param, A.param, W.param, abs, negative)
 		return(data.adaptive.index)
 	}
-	
+
 	# ==============================================================================================================
 	# CV
 	# ==============================================================================================================
@@ -66,7 +67,7 @@ data_adapt.multi_test <- function(Y, A, W = NULL, n.top.want, n.fold, abs = FALS
 		}
 	}
 
-	
+
 	# ==============================================================================================================
 	# compute average rank across all folds
 	# ==============================================================================================================
