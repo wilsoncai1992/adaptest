@@ -20,7 +20,8 @@ devtools::install_github('wilsoncai1992/data.adapt.multi.test', build_vignettes 
 
 ### Citation
 To cite `data.adapt.multi.test` in publications, please use:
-> Cai W, Hubbard A (2016). *data.adapt.multi.test: Data adaptive test statistics for high dimensional multiple testing.* R package version 0.1.
+
+> Cai W, Hubbard A (2016). *data.adapt.multi.test: Data Adaptive test statistics for high dimensional multiple testing.* R package version 0.1.
 
 ### Copyright
 This software is distributed under the GPL-2 license.
