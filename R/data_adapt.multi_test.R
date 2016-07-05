@@ -1,4 +1,20 @@
-#' @export data_adapt.multi_test
+#' Data adaptive test statistic for high dimensional multiple testing
+#' 
+#' Carries out targeted maximum likelihood estimation of marginal additive
+#' treatment effect of a binary point treatment on an outcome. Data-adaptive algorithm is
+#' carried out to perform variable reduction to avoid some of the pitfalls of many multiple comparisons.
+#' @param Y continuous or binary outcome variable
+#' @param A binary treatment indicator, \code{1} - treatment, \code{0} - control
+#' @param W vector, matrix, or dataframe containing baseline covariates
+#' @param n.top.want integer value for the number of candidate covariates to generate from data-adaptive algorithm
+#' @param n.fold integer number of folds for cross-validation
+#' @param negative boolean. \code{TRUE} - test for negative effect size; \code{FALSE} - test for positive effect size.
+#' @param abs boolean. \code{TRUE} - test for absolute effect size. Overrides argument \code{negative}; \code{FALSE} - test for positive/negative effect size. See argument \code{negative}.
+#' @param parallel boolean. \code{TRUE} - use multi-core processing; \code{FALSE} - single core process.
+#' @author Wilson Cai \email{wcai@@berkeley.edu}, in collaboration with Alan E. Hubbard.
+#' @examples 
+#' 
+#' @export 
 data_adapt.multi_test <- function(Y, A, W = NULL, n.top.want, n.fold, abs = FALSE, negative = FALSE, parallel = FALSE) {
 	# ==============================================================================================================
 	# preparation
