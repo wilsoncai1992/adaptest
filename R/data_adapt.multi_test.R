@@ -19,7 +19,7 @@ data_adapt.multi_test <- function(Y, A, W = NULL, n.top.want, n.fold, abs = FALS
 	# ==============================================================================================================
 	# preparation
 	# ==============================================================================================================
-	source('./gen.data.adaptive.rank.R')
+	# source('./gen.data.adaptive.rank.R')
 	n.sim <- nrow(Y)
 	p.all <- ncol(Y)
 
