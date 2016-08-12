@@ -142,6 +142,7 @@ data_adapt.multi_test <- function(Y, A, W = NULL, n.top.want, n.fold, abs = FALS
 	# export covariate name for easier interpretation
 	# ==============================================================================================================
 	top.col.name <- colnames(Y)[top.index]
+	# still.sig.p.col.name <- colnames(Y)[still.sig.p]
 	
 	# to.return <- list(top.index, ATE.subset, p.init, p.final, still.sig.p, top.mean.rank, p.in.top.rank)
 	to.return <- list(top.col.name, ATE.subset, p.init, p.final, still.sig.p, top.mean.rank, p.in.top.rank)
