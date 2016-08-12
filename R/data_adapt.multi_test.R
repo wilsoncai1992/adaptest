@@ -137,6 +137,13 @@ data_adapt.multi_test <- function(Y, A, W = NULL, n.top.want, n.fold, abs = FALS
 	# boxplot.matrix(top.rank.all.fold)
 	# points(1:n.top.want, y = top.mean.rank, col ='blue')
 	# ==============================================================================================================
-	to.return <- list(top.index, ATE.subset, p.init, p.final, still.sig.p, top.mean.rank, p.in.top.rank)
+	
+	# ==============================================================================================================
+	# export covariate name for easier interpretation
+	# ==============================================================================================================
+	top.col.name <- colnames(Y)[top.index]
+	
+	# to.return <- list(top.index, ATE.subset, p.init, p.final, still.sig.p, top.mean.rank, p.in.top.rank)
+	to.return <- list(top.col.name, ATE.subset, p.init, p.final, still.sig.p, top.mean.rank, p.in.top.rank)
 	return(to.return)
 }
