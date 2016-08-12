@@ -16,7 +16,8 @@ gen.data.adaptive.rank <- function(Y.param, A.param, W.param, abs = FALSE, negat
 		W.fit <- as.matrix(W.param)
 		# ------------------------------------------------------------------------------------
 		# TMLE for effect size
-		if ( !all.equal(W.param, as.matrix(rep(1, n.here))) ) {
+		# if ( !all.equal(W.param, as.matrix(rep(1, n.here))) ) {
+		if ( is.character(W.param, as.matrix(rep(1, n.here))) ) {
 			# tmle.result <- tmle(Y = Y.fit, A = A.fit, W = as.matrix(rep(1, n.here)), Q.SL.library = SL.lib, g.SL.library = SL.lib)
 			tmle.result <- tmle(Y = Y.fit, A = A.fit, W = W.param, Q.SL.library = SL.lib, g.SL.library = SL.lib)
 			B1.result <- tmle.result$estimates$ATE$psi
