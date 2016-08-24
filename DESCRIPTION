@@ -1,10 +1,14 @@
 Package: data.adapt.multi.test
 Title: Data adaptive test statistics for high dimensional multiple testing
 Version: 0.1
-Authors@R: person("Wilson", "Cai", email = "wcai@berkeley.edu", role=c("aut", "cre"))
-Description: (TO DO)
+Authors@R: as.person(c(
+  "Wilson Cai <wcai@berkeley.edu> [aut, cre]",
+  "Alan Hubbard <hubbard@berkeley.edu> [aut]",
+  "Nima Hejazi <nhejazi@berkeley.edu> [ctb]"))
+Description: forthcoming)
 Depends:
     R (>= 3.0.0)
+License: GPL-2
 Encoding: UTF-8
 LazyData: truez
 RoxygenNote: 5.0.1
@@ -14,3 +18,4 @@ Imports:
     parallel,
     doParallel,
     SuperLearner
+Suggests: testthat
