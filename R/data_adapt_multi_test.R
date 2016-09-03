@@ -1,5 +1,5 @@
 #' Data-adaptive test statistics for high-dimensional multiple testing
-#' 
+#'
 #' Performs targeted minimum loss-based estimation (TMLE )of a marginal additive
 #' treatment effect of a binary point treatment on an outcome. The data-adaptive
 #' algorithm is used to perform variable reduction to avoid the disadvantages
@@ -46,6 +46,7 @@ data_adapt_multi_test <- function(Y, A, W = NULL, n.top, n.fold,
   if(is.null(W)){
     W <- as.matrix(rep(1, n.sim))
   }
+
   # ============================================================================
   # create parameter generating sample
   # ============================================================================
@@ -57,10 +58,11 @@ data_adapt_multi_test <- function(Y, A, W = NULL, n.top, n.fold,
                                    n = n.sim))
 
   # number of observations in each fold
-  table(n.index.param.gen)
+  folds.table <- table(n.index.param.gen)
 
   # Psi.hat.all.fold <- rep(0, n.fold)
   rank.all.fold <- matrix(0, nrow = n.fold, ncol = p.all)
+
   # ============================================================================
   compute.a.fold <- function(it0) {
     print(paste('Fold:', it0))
@@ -72,17 +74,17 @@ data_adapt_multi_test <- function(Y, A, W = NULL, n.top, n.fold,
     Y.param <- Y[n.index.param.gen != chunk.as.est,]
     A.param <- A[n.index.param.gen != chunk.as.est]
     W.param <- W[n.index.param.gen != chunk.as.est,,drop = FALSE]
-    # create esimation data
-    # airline.test <- plyr::ldply(airline.chunk[10])
+
+    # create estimation data
     Y.est <- Y[n.index.param.gen == chunk.as.est,]
     A.est <- A[n.index.param.gen == chunk.as.est]
     W.est <- W[n.index.param.gen == chunk.as.est,,drop = FALSE]
 
     # ==========================================================================
-    # data adaptive target parameter
+    # data-adaptive target parameter
     # ==========================================================================
-    # data.adaptive.index <- gen.data.adaptive.rank(Y.param, A.param, abs, negative)
-    data.adaptive.index <- gen.data.adaptive.rank(Y.param, A.param, W.param, abs, negative)
+    data.adaptive.index <- gen.data.adaptive.rank(Y.param, A.param, W.param,
+                                                  absolute, negative)
     return(data.adaptive.index)
   }
 

@@ -1,5 +1,5 @@
 #' @export plot.adaptive
-plot.adaptive <- function(adapt.fit, plot_id = c(1, 2, 3)) {
+plot.data_adapt <- function(adapt.fit, plot_id = c(1, 2, 3)) {
 	top.index <- adapt.fit[[1]]
 	ATE.subset <- adapt.fit[[2]]
 	p.init <- adapt.fit[[3]]
@@ -23,5 +23,4 @@ plot.adaptive <- function(adapt.fit, plot_id = c(1, 2, 3)) {
 		textxy((1:n.top.want)-0.3, sort(p.final), temp.top.index, offset = 1)
 		abline(h = 0.05, lty = 2)
 	}
-
 }
