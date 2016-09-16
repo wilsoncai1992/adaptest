@@ -2,7 +2,7 @@
 
 [![Travis-CI Build Status](https://travis-ci.org/wilsoncai1992/data.adapt.multi.test.svg?branch=develop)
 ](https://travis-ci.org/wilsoncai1992/data.adapt.multi.test)
-![License](http://img.shields.io/:license-gpl2-blue.svg?style=flat-square)](http://www.gnu.org/licenses/gpl-2.0.html)
+[![License](http://img.shields.io/:license-gpl2-blue.svg?style=flat-square)](http://www.gnu.org/licenses/gpl-2.0.html)
 
 The `data.adapt.multi.test` R package is a tool for performing multiple testing
 on effects sizes under high-dimensional settings.
