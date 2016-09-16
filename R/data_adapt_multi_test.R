@@ -21,7 +21,7 @@
 #'                          \code{FALSE} = single-core processing.
 #'
 #' @importFrom tmle tmle
-#' @importFrom foreach foreach
+#' @importFrom foreach foreach '%dopar%'
 #' @importFrom parallel detectCores
 #' @importFrom doParallel registerDoParallel
 #' @importFrom stats lm p.adjust
@@ -117,7 +117,7 @@ data_adapt_multi_test <- function(Y, A, W = NULL, n.top, n.fold,
   # compute average rank across all folds
   # ============================================================================
   mean.rank <- colMeans(rank.all.fold)
-  top.index <- which(rank(mean.rank) <= n.top.want)
+  top.index <- which(rank(mean.rank) <= data_adapt$n.top)
 
   top.mean.rank <- mean.rank[top.index]
 
@@ -129,14 +129,14 @@ data_adapt_multi_test <- function(Y, A, W = NULL, n.top, n.fold,
   # ============================================================================
   # compute proportion of existence in all folds
   # ============================================================================
-  is.in.top.rank <- (rank.all.fold <= n.top.want) + 0
+  is.in.top.rank <- (rank.all.fold <= data_adapt$n.top) + 0
   p.in.top.rank <- colMeans(is.in.top.rank)
 
   p.in.top.rank <- p.in.top.rank[top.index]
   # ============================================================================
   # calculate p value for top indices
   # ============================================================================
-  length.keep <- n.top.want
+  length.keep <- data_adapt$n.top
   ATE.subset <- rep(0, length.keep)
   p.val.subset <- rep(NA, length.keep)
 

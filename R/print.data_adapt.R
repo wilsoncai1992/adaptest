@@ -6,8 +6,6 @@
 #' 									as returned by \code{data_adapt_multi_test}
 #' @param shinyprint boolean indicating whether to print using HTML
 #'
-#' @importFrom R2HTML HTML
-#'
 #' @export print.data_adapt
 #'
 print.data_adapt <- function(adapt.fit, shinyprint = FALSE) {
