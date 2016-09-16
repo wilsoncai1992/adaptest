@@ -2,6 +2,12 @@
 #'
 #' Customized informative print method for examining data-adaptive statistics
 #'
+#' @param adapt.fit data-adaptive statistical object of class \code{data_adapt}
+#' 									as returned by \code{data_adapt_multi_test}
+#' @param shinyprint boolean indicating whether to print using HTML
+#'
+#' @importFrom R2HTML HTML
+#'
 #' @export print.data_adapt
 #'
 print.data_adapt <- function(adapt.fit, shinyprint = FALSE) {

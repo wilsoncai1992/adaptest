@@ -2,6 +2,9 @@
 #'
 #' Customized informative tables for examining data-adaptive statistics
 #'
+#' @param adapt.fit data-adaptive statistical object of class \code{data_adapt}
+#' 									as returned by \code{data_adapt_multi_test}
+#'
 #' @export table.data_adapt
 #'
 table.data_adapt <- function(adapt.fit) {

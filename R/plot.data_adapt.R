@@ -2,6 +2,10 @@
 #'
 #' Customized plotting method for easily examining data-adaptive statistics
 #'
+#' @param adapt.fit data-adaptive statistical object of class \code{data_adapt}
+#' 									as returned by \code{data_adapt_multi_test}
+#' @param plot_id number of plots to generate...unclear...
+#'
 #' @importFrom graphics abline plot
 #'
 #' @export plot.data_adapt
