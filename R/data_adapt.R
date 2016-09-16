@@ -24,6 +24,9 @@ data_adapt <- function(Y, A, W = NULL, n.top, n.fold, absolute, negative,
 		Y <- as.data.frame(Y)
 	}
 	if (!is.vector(A)) stop("argument A must be numeric")
+	if (!is.null(W)) {
+		if(!is.matrix(W)) stop("argument W must be matrix")
+	}
   if (!is.numeric(n.top)) stop("argument n.top must be numeric")
   if (!is.numeric(n.fold)) stop("argument n.fold must be numeric")
   if (!is.logical(absolute)) stop("argument absolute must be boolean/logical")

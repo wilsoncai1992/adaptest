@@ -7,8 +7,8 @@
 #'
 #' @param Y continuous or binary outcome variable
 #' @param A binary treatment indicator: \code{1} = treatment,
-#' 																			\code{0} = control
-#' @param W vector, matrix, or data.frame containing baseline covariates
+#'                                      \code{0} = control
+#' @param W matrix containing baseline covariates
 #' @param n.top integer value for the number of candidate covariates to generate
 #'              using the data-adaptive estimation algorithm
 #' @param n.fold integer number of folds to be used for cross-validation
@@ -21,7 +21,7 @@
 #'                          \code{FALSE} = single-core processing.
 #'
 #' @importFrom tmle tmle
-#' @importFrom foreach foreach '%dopar%'
+#' @importFrom foreach foreach "%dopar%"
 #' @importFrom parallel detectCores
 #' @importFrom doParallel registerDoParallel
 #' @importFrom stats lm p.adjust
@@ -37,7 +37,7 @@ data_adapt_multi_test <- function(Y, A, W = NULL, n.top, n.fold,
                                   parallel = FALSE) {
   # check whether multiple cores are available if using parallel
   if (parallel) {
-    if (detectCores() == 1) {
+    if (parallel::detectCores() == 1) {
       stop("argument parallel == TRUE, but multiple cores not detected...")
     }
   }
@@ -74,7 +74,7 @@ data_adapt_multi_test <- function(Y, A, W = NULL, n.top, n.fold,
   rank.all.fold <- matrix(0, nrow = n.fold, ncol = p.all)
 
   # ============================================================================
-  compute.a.fold <- function(it0) {
+  compute.a.fold <- function(data_adapt, it0) {
     print(paste('Fold:', it0))
     chunk.as.est <- it0
 
@@ -82,19 +82,19 @@ data_adapt_multi_test <- function(Y, A, W = NULL, n.top, n.fold,
     Y.param <- data_adapt$Y[n.index.param.gen != chunk.as.est, ]
     A.param <- data_adapt$A[n.index.param.gen != chunk.as.est]
     W.param <- data_adapt$W[n.index.param.gen != chunk.as.est,
-    											  drop = FALSE]
+                            drop = FALSE]
 
     # create estimation data
     Y.est <- data_adapt$Y[n.index.param.gen == chunk.as.est, ]
     A.est <- data_adapt$A[n.index.param.gen == chunk.as.est]
     W.est <- data_adapt$W[n.index.param.gen == chunk.as.est,
-    											drop = FALSE]
+                          drop = FALSE]
 
     # ==========================================================================
     # data-adaptive target parameter
     # ==========================================================================
-    data.adaptive.index <- data_adapt_rank(Y.param, A.param, W.param,
-    																			 absolute, negative)
+    data.adaptive.index <- data_adapt_rank(Y.param, A.param, W.param, absolute,
+    																			 negative)
     return(data.adaptive.index)
   }
 
@@ -102,17 +102,19 @@ data_adapt_multi_test <- function(Y, A, W = NULL, n.top, n.fold,
   # CV
   # ============================================================================
   if (parallel) {
-    registerDoParallel(detectCores())
-    rank.all.fold <- foreach(it2 = 1:n.fold, .combine = rbind) %dopar% {
-      compute.a.fold(it2)
+    doParallel::registerDoParallel(parallel::detectCores())
+    rank.all.fold <- foreach(it2 = 1:n.fold, .combine = cbind) %dopar% {
+      compute.a.fold(data_adapt, it2)
     }
   } else {
     for (it0 in 1:n.fold) {
-      data.adaptive.index <- compute.a.fold(it0)
+      data.adaptive.index <- compute.a.fold(data_adapt, it0)
       rank.all.fold[it0,] <- data.adaptive.index
     }
   }
-
+	if (parallel::detectCores() > 1) { ##checking colnames error
+		data.adaptive.index <- t(data.adaptive.index)
+	}
   # ============================================================================
   # compute average rank across all folds
   # ============================================================================
@@ -144,8 +146,8 @@ data_adapt_multi_test <- function(Y, A, W = NULL, n.top, n.fold,
   for (it2 in 1:length.keep) {
     index.here <- top.index[it2]
     print(paste('estimating:', index.here))
-    tmle.estimation <- tmle(Y[,index.here], A = A, W = W, Q.SL.library = SL.lib,
-    												g.SL.library = SL.lib)
+    tmle.estimation <- tmle(Y[, index.here], A = A, W = W,
+    												Q.SL.library = SL.lib, g.SL.library = SL.lib)
     tmle.result.here <- tmle.estimation$estimates$ATE$psi
     tmle.p.val.here <- tmle.estimation$estimates$ATE$pvalue
 
@@ -164,7 +166,7 @@ data_adapt_multi_test <- function(Y, A, W = NULL, n.top, n.fold,
   # ============================================================================
   # export covariate name for easier interpretation
   # ============================================================================
-  top.col.name <- colnames(Y)[top.index]
+  top.col.name <- names(data_adapt$Y)[top.index]
 
   # ============================================================================
   # add all newly computed statistical objects to the original data_adapt object

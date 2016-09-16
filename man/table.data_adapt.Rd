@@ -6,6 +6,10 @@
 \usage{
 table.data_adapt(adapt.fit)
 }
+\arguments{
+\item{adapt.fit}{data-adaptive statistical object of class \code{data_adapt}
+as returned by \code{data_adapt_multi_test}}
+}
 \description{
 Customized informative tables for examining data-adaptive statistics
 }

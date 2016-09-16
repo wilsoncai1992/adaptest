@@ -62,7 +62,7 @@ source('./R/print.data_adapt.R')
 source('./R/plot.data_adapt.R')
 source('./R/data_adapt_rank.R')
 out_result <- data_adapt_multi_test(Y = Y, A = A.sample.vec, n.top = p.all,
-																		n.fold = 10, parallel = TRUE) # BH on all Y
+																		n.fold = 10, parallel = FALSE) # BH on all Y
 
 print.adaptive(out_result)
 plot.adaptive(out_result)

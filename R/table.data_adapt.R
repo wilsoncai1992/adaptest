@@ -7,7 +7,7 @@
 #'
 #' @export table.data_adapt
 #'
-table.data_adapt <- function(adapt.fit) {
+table.data_adapt <- function(adapt.fit, ...) {
 	out.table <- cbind(adapt.fit[[2]], adapt.fit[[3]], adapt.fit[[4]],
 										 adapt.fit[[6]], adapt.fit[[7]] * 100)
 	out.table <- as.data.frame(out.table)

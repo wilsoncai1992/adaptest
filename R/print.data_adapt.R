@@ -4,12 +4,10 @@
 #'
 #' @param adapt.fit data-adaptive statistical object of class \code{data_adapt}
 #' 									as returned by \code{data_adapt_multi_test}
-#' @param shinyprint boolean indicating whether to print using HTML
 #'
 #' @export print.data_adapt
 #'
-print.data_adapt <- function(adapt.fit, shinyprint = FALSE) {
-	if (!shinyprint) {
+print.data_adapt <- function(adapt.fit, ...) {
 		print('The top covariates are')
 		print(adapt.fit[[1]])
 		print('The ATE estiamtes are')
@@ -25,11 +23,4 @@ print.data_adapt <- function(adapt.fit, shinyprint = FALSE) {
 		print(adapt.fit[[7]]*100)
 		print('The covariates still significant are')
 		print(adapt.fit[[5]])
-	}
-	if (shinyprint) {
-		HTML(paste('<b> The covariates still significant are </b>',
-							 paste(adapt.fit[[5]], collapse = ' '),
-							 sep = '<br/>'
-		))
-	}
 }

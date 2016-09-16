@@ -6,6 +6,12 @@
 \usage{
 \method{plot}{data_adapt}(adapt.fit, plot_id = c(1, 2, 3))
 }
+\arguments{
+\item{adapt.fit}{data-adaptive statistical object of class \code{data_adapt}
+as returned by \code{data_adapt_multi_test}}
+
+\item{plot_id}{number of plots to generate...unclear...}
+}
 \description{
 Customized plotting method for easily examining data-adaptive statistics
 }
