@@ -24,6 +24,8 @@
 #' @importFrom foreach foreach
 #' @importFrom parallel detectCores
 #' @importFrom doParallel registerDoParallel
+#' @importFrom stats lm p.adjust
+#' @importFrom utils head
 #'
 #' @author Wilson Cai \email{wcai@@berkeley.edu}, in collaboration with Alan E.
 #'         Hubbard, with contributions from Nima S. Hejazi.

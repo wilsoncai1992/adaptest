@@ -2,6 +2,8 @@
 #'
 #' Customized plotting method for easily examining data-adaptive statistics
 #'
+#' @importFrom graphics abline plot
+#'
 #' @export plot.data_adapt
 #'
 plot.data_adapt <- function(adapt.fit, plot_id = c(1, 2, 3)) {

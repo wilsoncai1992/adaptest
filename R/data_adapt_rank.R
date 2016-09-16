@@ -15,6 +15,7 @@
 #'                          \code{FALSE} = test for positive effect size
 #'
 #' @importFrom tmle tmle
+#' @importFrom stats lm p.adjust
 #'
 #' @export data_adapt_rank
 #'
