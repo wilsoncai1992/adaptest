@@ -1,6 +1,6 @@
 Package: data.adapt.multi.test
 Title: Data-adaptive test statistics for multiple testing in high dimensions
-Version: 0.0.1
+Version: 0.1.0
 Authors@R: as.person(c(
     "Wilson Cai <wcai@berkeley.edu> [aut, cre]",
     "Alan Hubbard <hubbard@berkeley.edu> [aut]",
@@ -14,7 +14,9 @@ Imports:
     foreach,
     parallel,
     doParallel,
-    SuperLearner
+    SuperLearner,
+    magrittr,
+    R2HTML
 Suggests:
     testthat
 License:

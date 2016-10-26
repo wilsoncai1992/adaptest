@@ -9,18 +9,18 @@
 #'
 print.data_adapt <- function(adapt.fit, ...) {
 		print('The top covariates are')
-		print(adapt.fit[[1]])
+		print(adapt.fit$top.col.name)
 		print('The ATE estiamtes are')
-		print(adapt.fit[[2]])
+		print(adapt.fit$ATE.subset)
 		print('The raw p-values are')
-		print(adapt.fit[[3]])
+		print(adapt.fit$p.init)
 		print('The adjusted p-values are')
-		print(adapt.fit[[4]])
+		print(adapt.fit$p.final)
 		print('The top mean CV-rank are (the smaller the better)')
-		print(adapt.fit[[6]])
-		print(paste('The percentage of appearing in top', length(adapt.fit[[1]]),
+		print(adapt.fit$top.mean.rank)
+		print(paste('The percentage of appearing in top', length(adapt.fit$top.col.name),
 								'are (the larger the better)'))
-		print(adapt.fit[[7]]*100)
+		print(adapt.fit$p.in.top.rank*100)
 		print('The covariates still significant are')
-		print(adapt.fit[[5]])
+		print(adapt.fit$sig.p.FDR)
 }

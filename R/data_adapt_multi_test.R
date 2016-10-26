@@ -26,6 +26,7 @@
 #' @importFrom doParallel registerDoParallel
 #' @importFrom stats lm p.adjust
 #' @importFrom utils head
+#' @importFrom magrittr "%>%"
 #'
 #' @author Wilson Cai \email{wcai@@berkeley.edu}, in collaboration with Alan E.
 #'         Hubbard, with contributions from Nima S. Hejazi.
@@ -172,6 +173,7 @@ data_adapt_multi_test <- function(Y, A, W = NULL, n.top, n.fold,
   # add all newly computed statistical objects to the original data_adapt object
   # ============================================================================
 
+  data_adapt$top.index <- top.index
   data_adapt$top.col.name <- top.col.name
   data_adapt$ATE.subset <- ATE.subset
   data_adapt$p.init <- p.init
