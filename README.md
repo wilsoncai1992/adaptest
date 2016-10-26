@@ -1,27 +1,44 @@
-data.adapt.multi.test
-==========
+# R/data.adapt.multi.test
 
-The `data.adapt.multi.test` R package is a tool for performing multiple testing on effects sizes under high dimensional scenario.
+[![Travis-CI Build Status](https://travis-ci.org/wilsoncai1992/data.adapt.multi.test.svg?branch=develop)
+](https://travis-ci.org/wilsoncai1992/data.adapt.multi.test)
+[![License](http://img.shields.io/:license-gpl2-blue.svg?style=flat-square)](http://www.gnu.org/licenses/gpl-2.0.html)
 
-### Installation
+The `data.adapt.multi.test` R package is a tool for performing multiple testing
+on effects sizes under high-dimensional settings.
 
-<!-- To install the CRAN release version of `data.adapt.multi.test`:
+## Installation
+
+* To install the latest CRAN release version of `data.adapt.multi.test`:
 
 ```R
 install.packages('data.adapt.multi.test')
 ```
- -->
-To install the development version (requires the `devtools` package):
+
+* To install the most recent stable release (note that CRAN releases of this
+    package are less frequent), use the `devtools` package:
 
 ```R
-devtools::install_github("wilsoncai1992/data.adapt.multi.test", 
-                    auth_token = 'e2d834a61a0ce4b15f09348e773cf6199d03c842', build_vignettes = FALSE)
+devtools::install_github("wilsoncai1992/data.adapt.multi.test")
 ```
 
+* If you enjoy life at the bleeding edge (or would like to contribute), install
+    the development version of this package with `devtools`:
 
-### Citation
+```R
+devtools::install_github("wilsoncai1992/data.adapt.multi.test", ref = "develop")
+```
+
+---
+
+## Citation
 To cite `data.adapt.multi.test` in publications, please use:
-> Cai W, Hubbard A (2016). *data.adapt.multi.test: Data adaptive test statistics for high dimensional multiple testing.* R package version 0.1.
+> Cai W., Hejazi N., Hubbard A. (2016). *data_adapt_multi_test: Data-adaptive
+> test statistics for high-dimensional multiple testing.* R package version
+> 0.0.1.
 
-### Copyright
+---
+
+## License
+
 This software is distributed under the GPL-2 license.
