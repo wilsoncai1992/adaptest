@@ -4,7 +4,7 @@
 \alias{table.data_adapt}
 \title{Generic method of \code{table} for objects of class \code{data_adapt}}
 \usage{
-table.data_adapt(adapt.fit)
+table.data_adapt(adapt.fit, ...)
 }
 \arguments{
 \item{adapt.fit}{data-adaptive statistical object of class \code{data_adapt}

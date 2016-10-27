@@ -1,3 +1,4 @@
+set.seed(4321)
 n.sim <- 1e2 # sample size
 # n.sim <- 1 # sample size
 p.all <- 1e3 # No. of dimensions of Y (signal + non-signal)
@@ -61,10 +62,10 @@ source('./R/data_adapt_multi_test.R')
 source('./R/print.data_adapt.R')
 source('./R/plot.data_adapt.R')
 source('./R/data_adapt_rank.R')
-out_result <- data_adapt_multi_test(Y = Y, A = A.sample.vec, n.top = p.all,
-																		n.fold = 10, parallel = FALSE) # BH on all Y
+out_result <- data_adapt_multi_test(Y = Y, A = A.sample.vec, n.top = p.true,
+                                    n.fold = 10, parallel = FALSE) # BH on all Y
 
-print.adaptive(out_result)
-plot.adaptive(out_result)
+print.data_adapt(out_result)
+plot.data_adapt(out_result)
 
 save(out_result, file = 'out_result_1e3_sig_1.Rdata')

@@ -13,7 +13,7 @@ data_adapt_multi_test(Y, A, W = NULL, n.top, n.fold, absolute = FALSE,
 \item{A}{binary treatment indicator: \code{1} = treatment,
 \code{0} = control}
 
-\item{W}{vector, matrix, or data.frame containing baseline covariates}
+\item{W}{matrix containing baseline covariates}
 
 \item{n.top}{integer value for the number of candidate covariates to generate
 using the data-adaptive estimation algorithm}

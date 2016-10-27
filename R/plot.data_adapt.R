@@ -11,13 +11,15 @@
 #' @export plot.data_adapt
 #'
 plot.data_adapt <- function(adapt.fit, plot_id = c(1, 2, 3)) {
-	top.index <- adapt.fit[[1]]
-	ATE.subset <- adapt.fit[[2]]
-	p.init <- adapt.fit[[3]]
-	p.final <- adapt.fit[[4]]
-	still.sig.p <- adapt.fit[[5]]
-	top.mean.rank <- adapt.fit[[6]]
-	p.in.top.rank <- adapt.fit[[7]]
+
+	top.index <- adapt.fit$top.index
+	ATE.subset <- adapt.fit$ATE.subset
+	p.init <- adapt.fit$p.init
+	p.final <- adapt.fit$p.final
+	still.sig.p <- adapt.fit$sig.p.FDR
+
+	top.mean.rank <- adapt.fit$top.mean.rank
+	p.in.top.rank <- adapt.fit$p.in.top.rank
 	n.top.want <- length(top.index)
 
 	if (1 %in% plot_id) {

@@ -35,7 +35,8 @@ data_adapt_rank <- function(Y.param, A.param, W.param, absolute = FALSE,
 
 		# ------------------------------------------------------------------------------------
 		# TMLE for effect size
-		if ( is.character(all.equal(W.param, as.matrix(rep(1, n.here)))) ) {
+		if ( !is.character(all.equal(W.param, as.matrix(rep(1, n.here)), check.attributes = FALSE)) ) {
+			# if there are W
 			tmle.result <- tmle(Y = Y.fit, A = A.fit, W = W.param,
 													Q.SL.library = SL.lib, g.SL.library = SL.lib)
 			B1.result <- tmle.result$estimates$ATE$psi
