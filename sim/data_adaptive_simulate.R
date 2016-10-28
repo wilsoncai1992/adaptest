@@ -55,14 +55,8 @@ gc()
 # ==============================================================================
 # fit model
 # ==============================================================================
-
-# setwd('/Users/wilsoncai/Desktop/Data adaptive CVTMLE/code/dev/')
-source('./R/data_adapt.R')
-source('./R/data_adapt_multi_test.R')
-source('./R/print.data_adapt.R')
-source('./R/plot.data_adapt.R')
-source('./R/data_adapt_rank.R')
-out_result <- data_adapt_multi_test(Y = Y, A = A.sample.vec, n.top = p.true,
+library(data.adapt.multi.test)
+out_result <- data_adapt_multi_test(Y = Y, A = A.sample.vec, n.top = p.true + 5,
                                     n.fold = 10, parallel = FALSE) # BH on all Y
 
 print.data_adapt(out_result)
