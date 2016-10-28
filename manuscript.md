@@ -7,7 +7,7 @@ tags:
   - multiple testing
 authors:
  - name: Wilson Cai
-   orcid:
+   orcid: 0000-0003-2680-3066
    affiliation: 1
  - name: Nima Hejazi
    orcid: 0000-0002-7127-2789
