@@ -46,10 +46,10 @@ on effects sizes under high-dimensional settings.
 
 ## Citation
 
-To cite `data.adapt.multi.test` in publications, please use:
-> Cai W., Hejazi N., Hubbard A. (2016). *data.adapt.multi.test: Data-adaptive
-> test statistics for high-dimensional multiple testing.* R package version
-> 0.2.0.
+To cite the `data.adapt.multi.test` software in publications, please use:
+> Cai W., Hejazi N., Hubbard A. (2016). *data.adapt.multi.test*: Data-Adaptive
+> Statistics for High-Dimensional Multiple Testing. *The Journal of Open Source
+> Software*.
 
 ---
 
