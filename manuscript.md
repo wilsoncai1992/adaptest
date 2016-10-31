@@ -12,6 +12,9 @@ authors:
  - name: Nima Hejazi
    orcid: 0000-0002-7127-2789
    affiliation: 1
+ - name: Alan Hubbard
+   orcid:
+   affiliation: 1
 affiliations:
  - name: Division of Biostatistics, University of California, Berkeley
    index: 1
