@@ -1,0 +1,21 @@
+citHeader("To cite 'data.adapt.multi.test' in publications, please use:")
+
+citEntry(
+    entry        = "Article",
+    doi          = "NA",
+    url          = "NA",
+    year         = "2016",
+    month        = "Nov",
+    publisher    = "The Open Journal",
+    volume       = "1",
+    number       = "X",
+    author       = "Weixin Cai, Alan Hubbard, Nima Hejazi",
+    title        = "data.adapt.multi.test: Data-adaptive test statistics for
+                    high-dimensional multiple testing",
+    journal      = "The Journal of Open Source Software",
+    textVersion  = paste("Cai, W, Hubbard, A, and Hejazi, N (2016).",
+            "data.adapt.multi.test: Data-adaptive test statistics for
+            high-dimensional multiple testing.",
+            "Journal of Open Source Software, 1(X).",
+            "X")
+)

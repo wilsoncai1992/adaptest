@@ -4,7 +4,7 @@ Version: 0.2.0
 Authors@R: as.person(c(
     "Wilson Cai <wcai@berkeley.edu> [aut, cre]",
     "Alan Hubbard <hubbard@berkeley.edu> [aut]",
-    "Nima Hejazi <nhejazi@berkeley.edu> [ctb]"))
+    "Nima Hejazi <nhejazi@berkeley.edu> [aut]"))
 Description: Data-adaptive test statistics represent a general methodology for
     ascertaining...[quote from paper goes here].
 Depends:
