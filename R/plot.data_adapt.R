@@ -29,6 +29,7 @@ plot.data_adapt <- function(adapt.fit, plot_id = c(1, 2, 3)) {
 
 		calibrate::textxy((1:n.top.want) - 0.3, top.mean.rank + 0.5, top.index,
 											offset = .6)
+		abline(a = 0, b = 1, lty = 3)
 	}
 
 	if (2 %in% plot_id) {
