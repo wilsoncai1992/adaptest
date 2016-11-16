@@ -15,7 +15,8 @@ License](http://img.shields.io/:license-gpl2-blue.svg)](http://www.gnu.org/licen
 ## Description
 
 The `data.adapt.multi.test` R package is a tool for performing multiple testing
-on effects sizes under high-dimensional settings.
+on effects sizes under high-dimensional settings, using the approach of
+data-adaptive statistical target parameters and inference.
 
 ---
 
@@ -30,18 +31,18 @@ on effects sizes under high-dimensional settings.
     ```
 
 * If you enjoy life at the bleeding edge (or would like to contribute), install
-    the development version of this package with `devtools`:
+    the development version of this package:
 
     ```R
     devtools::install_github("wilsoncai1992/data.adapt.multi.test",
-                             ref = "develop")
+                             ref = "develop", subdir = "pkg")
     ```
 
 ---
 
 ## Citation
 
-To cite the `data.adapt.multi.test` software in publications, please use:
+To cite the `data.adapt.multi.test` R package in publications, please use:
 > Cai W., Hejazi N., Hubbard A. (2016). *data.adapt.multi.test*: Data-Adaptive
 > Statistics for High-Dimensional Multiple Testing. *The Journal of Open Source
 > Software*.
