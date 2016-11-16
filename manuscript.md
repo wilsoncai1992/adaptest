@@ -62,7 +62,7 @@ a ranking of the most important covariates -- that is, those dimensions most
 closely associated with the "true" signal. A ranking of features across folds of
 cross-validation is displayed below:
 
--![Illustration of data-adaptive statistics.](figs/mean_rank.pdf)
+![average rank of top covariates; We observe that the top ten covariates has CV-rank align along the 45 degree line, indicating a stable pattern of the top covariates.](figs/mean_rank.pdf)
 
 From the plot displayed above, it is clear to see that there is a rather sharp
 divide in the ranking of covariates associated with the "true" signal -- that
@@ -71,7 +71,7 @@ measure employed across the many rounds of cross-validation performed. The plot
 of p-values displayed below shows these same features with low p-values, with a
 clearly strong divide consistent with that displayed in the previous plot:
 
--![Illustration of data-adaptive statistics.](figs/adj_p_val.pdf)
+![Plot of adjusted p-values for the reduced set of hypotheses](figs/adj_p_val.pdf)
 
 \newpage
 
