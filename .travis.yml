@@ -1,15 +1,29 @@
 # R for travis: see documentation at https://docs.travis-ci.com/user/languages/r
 
 language: R
-
 sudo: required
-
 cache: packages
 
 warnings_are_errors: true
+
+r_packages:
+  - testthat
+  - rmarkdown
+  - R2HTML
+  - doParallel
+  - parallel
+  - foreach
+  - magrittr
+  - SuperLearner
+  - tmle
 
 r_github_packages:
   - jimhester/covr
 
 after_success:
   - Rscript -e 'covr::coveralls()'
+
+notifications:
+  email:
+    on_success: change
+    on_failure: change
