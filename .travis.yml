@@ -1,16 +1,19 @@
 # R for travis: see documentation at https://docs.travis-ci.com/user/languages/r
 
 language: r
+r:
+  - oldrel
+  - release
+  - devel
+
 sudo: required
-cache: packages
-# before_script: cd pkg
+
+before_install:
+  - cd pkg
 
 warnings_are_errors: true
 
-install:
-  - Rscript -e 'install.packages("devtools");devtools::install_deps("pkg")'
-script:
-  - Rscript -e 'devtools::check("pkg")'
+cache: packages
 
 r_packages:
   - testthat
