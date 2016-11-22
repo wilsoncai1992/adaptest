@@ -1,0 +1,30 @@
+{
+  "@context": "https://raw.githubusercontent.com/mbjones/codemeta/master/codemeta.jsonld",
+  "@type": "Code",
+  "author": [
+    {
+      "@id": "0000-0003-2680-3066",
+      "@type": "Person",
+      "email": "wcai@berkeley.edu",
+      "name": "Wilson Cai",
+      "affiliation": "UC Berkeley"
+    },
+    {
+      "@id": "0000-0002-7127-2789",
+      "@type": "Person",
+      "email": "nhejazi@berkeley.edu ",
+      "name": "Nima Hejazi",
+      "affiliation": "University of California, Berkeley"
+    }
+  ],
+  "identifier": "",
+  "codeRepository": "https://github.com/wilsoncai1992/data.adapt.multi.test",
+  "datePublished": "2016-11-21",
+  "dateModified": "2016-11-21",
+  "dateCreated": "2016-11-21",
+  "description": "The `data.adapt.multi.test` R package is a tool for performing multiple testing on effects sizes under high-dimensional settings, using the approach of data-adaptive statistical target parameters and inference.",
+  "keywords": "multiple testing, Data-adaptive target parameter, targeted maximum likelihood estimator, cross-validation",
+  "license": "GPL-2",
+  "title": "data.adapt.multi.test",
+  "version": "v0.2.0"
+}
