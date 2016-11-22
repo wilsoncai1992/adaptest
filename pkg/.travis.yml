@@ -3,9 +3,14 @@
 language: r
 sudo: required
 cache: packages
-before_script: cd pkg
+# before_script: cd pkg
 
 warnings_are_errors: true
+
+install:
+  - Rscript -e 'install.packages("devtools");devtools::install_deps("pkg")'
+script:
+  - Rscript -e 'devtools::check("pkg")'
 
 r_packages:
   - testthat
