@@ -1,7 +1,7 @@
 # R/data.adapt.multi.test
 
 [![Travis-CI Build
-Status](https://travis-ci.com/wilsoncai1992/data.adapt.multi.test.svg?token=d6WXq5P14qaXXRGRFW8H&branch=master)](https://travis-ci.com/wilsoncai1992/data.adapt.multi.test)
+Status](https://travis-ci.com/wilsoncai1992/data.adapt.multi.test.svg?branch=master)](https://travis-ci.com/wilsoncai1992/data.adapt.multi.test?branch=master)
 [![Coverage
 Status](https://coveralls.io/repos/github/wilsoncai1992/data.adapt.multi.test/badge.svg?branch=master)](https://coveralls.io/github/wilsoncai1992/data.adapt.multi.test?branch=master)
 [![GPL-2
