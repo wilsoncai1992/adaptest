@@ -6,7 +6,7 @@ Authors@R: as.person(c(
     "Alan Hubbard <hubbard@berkeley.edu> [aut]",
     "Nima Hejazi <nhejazi@berkeley.edu> [aut]"))
 Description: Data-adaptive test statistics represent a general methodology for
-    ascertaining...[quote from paper goes here].
+    performing multiple testing on effects sizes under high-dimensional settings, using the approach of data-adaptive statistical target parameters and inference.
 Depends:
     R (>= 3.0.0)
 Imports:
