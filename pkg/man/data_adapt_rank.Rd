@@ -16,8 +16,8 @@ data_adapt_rank(Y.param, A.param, W.param, absolute = FALSE,
 \item{W.param}{vector, matrix, or data.frame containing baseline covariates}
 
 \item{absolute}{boolean: \code{TRUE} = test for absolute effect size. This
-\code{FALSE} = test for directional effect. This
-overrides argument \code{negative}.}
+\code{FALSE} = test for directional effect. This overrides argument
+\code{negative}.}
 
 \item{negative}{boolean: \code{TRUE} = test for negative effect size,
 \code{FALSE} = test for positive effect size}

@@ -4,13 +4,15 @@
 \alias{plot.data_adapt}
 \title{#' Generic method of \code{plot} for objects of class \code{data_adapt}}
 \usage{
-\method{plot}{data_adapt}(adapt.fit, plot_id = c(1, 2, 3))
+\method{plot}{data_adapt}(adapt.fit, plot_type = c("cvrank", "pvals"))
 }
 \arguments{
 \item{adapt.fit}{data-adaptive statistical object of class \code{data_adapt}
 as returned by \code{data_adapt_multi_test}}
 
-\item{plot_id}{number of plots to generate...unclear...}
+\item{plot_type}{character vector specifying which of the two types of plots
+to generate: "cvrank" for a plot sorted average CV-rank, or "pvals"
+for a plot sorted by p-values with labels corresponding to indices}
 }
 \description{
 Customized plotting method for easily examining data-adaptive statistics

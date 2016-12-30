@@ -10,8 +10,7 @@ data_adapt_multi_test(Y, A, W = NULL, n.top, n.fold, absolute = FALSE,
 \arguments{
 \item{Y}{continuous or binary outcome variable}
 
-\item{A}{binary treatment indicator: \code{1} = treatment,
-\code{0} = control}
+\item{A}{binary treatment indicator: \code{1} = treatment, \code{0} = control}
 
 \item{W}{matrix containing baseline covariates}
 
@@ -21,8 +20,8 @@ using the data-adaptive estimation algorithm}
 \item{n.fold}{integer number of folds to be used for cross-validation}
 
 \item{absolute}{boolean: \code{TRUE} = test for absolute effect size. This
-\code{FALSE} = test for directional effect. This
-overrides argument \code{negative}.}
+\code{FALSE} = test for directional effect. This overrides argument
+\code{negative}.}
 
 \item{negative}{boolean: \code{TRUE} = test for negative effect size,
 \code{FALSE} = test for positive effect size}

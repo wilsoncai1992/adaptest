@@ -4,11 +4,11 @@
 \alias{print.data_adapt}
 \title{Generic method of \code{print} for objects of class \code{data_adapt}}
 \usage{
-\method{print}{data_adapt}(adapt.fit, ...)
+\method{print}{data_adapt}(adapt.fit)
 }
 \arguments{
 \item{adapt.fit}{data-adaptive statistical object of class \code{data_adapt}
-as returned by \code{data_adapt_multi_test}}
+as returned by \code{data_adapt_multi_test}.}
 }
 \description{
 Customized informative print method for examining data-adaptive statistics

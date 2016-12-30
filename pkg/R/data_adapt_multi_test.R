@@ -6,19 +6,18 @@
 #' associated with multiple testing.
 #'
 #' @param Y continuous or binary outcome variable
-#' @param A binary treatment indicator: \code{1} = treatment,
-#'                                      \code{0} = control
+#' @param A binary treatment indicator: \code{1} = treatment, \code{0} = control
 #' @param W matrix containing baseline covariates
 #' @param n.top integer value for the number of candidate covariates to generate
-#'              using the data-adaptive estimation algorithm
+#'        using the data-adaptive estimation algorithm
 #' @param n.fold integer number of folds to be used for cross-validation
 #' @param negative boolean: \code{TRUE} = test for negative effect size,
-#'                          \code{FALSE} = test for positive effect size
+#'        \code{FALSE} = test for positive effect size
 #' @param absolute boolean: \code{TRUE} = test for absolute effect size. This
-#'                          \code{FALSE} = test for directional effect. This
-#'                          overrides argument \code{negative}.
+#'        \code{FALSE} = test for directional effect. This overrides argument
+#'        \code{negative}.
 #' @param parallel boolean: \code{TRUE} = use multiple cores via \code{foreach},
-#'                          \code{FALSE} = single-core processing.
+#'        \code{FALSE} = single-core processing.
 #'
 #' @importFrom tmle tmle
 #' @importFrom foreach foreach "%dopar%"
@@ -33,8 +32,13 @@
 #'
 #' @export data_adapt_multi_test
 #'
-data_adapt_multi_test <- function(Y, A, W = NULL, n.top, n.fold,
-                                  absolute = FALSE, negative = FALSE,
+data_adapt_multi_test <- function(Y,
+                                  A,
+                                  W = NULL,
+                                  n.top,
+                                  n.fold,
+                                  absolute = FALSE,
+                                  negative = FALSE,
                                   parallel = FALSE) {
   # check whether multiple cores are available if using parallel
   if (parallel) {
@@ -82,14 +86,12 @@ data_adapt_multi_test <- function(Y, A, W = NULL, n.top, n.fold,
     # create parameter generating data
     Y.param <- data_adapt$Y[n.index.param.gen != chunk.as.est, ]
     A.param <- data_adapt$A[n.index.param.gen != chunk.as.est]
-    W.param <- data_adapt$W[n.index.param.gen != chunk.as.est,
-                            drop = FALSE]
+    W.param <- data_adapt$W[n.index.param.gen != chunk.as.est, drop = FALSE]
 
     # create estimation data
     Y.est <- data_adapt$Y[n.index.param.gen == chunk.as.est, ]
     A.est <- data_adapt$A[n.index.param.gen == chunk.as.est]
-    W.est <- data_adapt$W[n.index.param.gen == chunk.as.est,
-                          drop = FALSE]
+    W.est <- data_adapt$W[n.index.param.gen == chunk.as.est, drop = FALSE]
 
     # ==========================================================================
     # data-adaptive target parameter
