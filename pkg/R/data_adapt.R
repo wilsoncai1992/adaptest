@@ -4,18 +4,27 @@
 #' @param A binary treatment indicator: \code{1} = treatment, \code{0} = control
 #' @param W vector, matrix, or data.frame containing baseline covariates
 #' @param n.top integer value for the number of candidate covariates to generate
-#'              using the data-adaptive estimation algorithm
+#'        using the data-adaptive estimation algorithm
 #' @param n.fold integer number of folds to be used for cross-validation
 #' @param negative boolean: \code{TRUE} = test for negative effect size,
-#'                          \code{FALSE} = test for positive effect size
+#'        \code{FALSE} = test for positive effect size
 #' @param absolute boolean: \code{TRUE} = test for absolute effect size. This
-#'                          \code{FALSE} = test for directional effect. This
-#'                          overrides argument \code{negative}.
+#'        \code{FALSE} = test for directional effect. This overrides argument
+#'        \code{negative}.
 #' @param parallel boolean: \code{TRUE} = use multiple cores via \code{foreach},
-#'                          \code{FALSE} = single-core processing.
+#'        \code{FALSE} = single-core processing.
+#'
 #' @return S3 object of class "data_adapt" for data-adaptive multiple testing.
 #'
-data_adapt <- function(Y, A, W = NULL, n.top, n.fold, absolute, negative,
+#' @export data_adapt
+#'
+data_adapt <- function(Y,
+                       A,
+                       W = NULL,
+                       n.top,
+                       n.fold,
+                       absolute,
+                       negative,
                        parallel) {
 	if (!is.data.frame(Y)) {
 		if(!is.matrix(Y)) {

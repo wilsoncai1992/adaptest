@@ -19,8 +19,8 @@ using the data-adaptive estimation algorithm}
 \item{n.fold}{integer number of folds to be used for cross-validation}
 
 \item{absolute}{boolean: \code{TRUE} = test for absolute effect size. This
-\code{FALSE} = test for directional effect. This
-overrides argument \code{negative}.}
+\code{FALSE} = test for directional effect. This overrides argument
+\code{negative}.}
 
 \item{negative}{boolean: \code{TRUE} = test for negative effect size,
 \code{FALSE} = test for positive effect size}

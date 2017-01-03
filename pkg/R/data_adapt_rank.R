@@ -6,20 +6,23 @@
 #'
 #' @param Y.param continuous or binary outcome variable
 #' @param A.param binary treatment indicator: \code{1} = treatment,
-#' 																						\code{0} = control
+#'        \code{0} = control
 #' @param W.param vector, matrix, or data.frame containing baseline covariates
 #' @param absolute boolean: \code{TRUE} = test for absolute effect size. This
-#'                          \code{FALSE} = test for directional effect. This
-#'                          overrides argument \code{negative}.
+#'        \code{FALSE} = test for directional effect. This overrides argument
+#'        \code{negative}.
 #' @param negative boolean: \code{TRUE} = test for negative effect size,
-#'                          \code{FALSE} = test for positive effect size
+#'        \code{FALSE} = test for positive effect size
 #'
 #' @importFrom tmle tmle
 #' @importFrom stats lm p.adjust
 #'
 #' @export data_adapt_rank
 #'
-data_adapt_rank <- function(Y.param, A.param, W.param, absolute = FALSE,
+data_adapt_rank <- function(Y.param,
+                            A.param,
+                            W.param,
+                            absolute = FALSE,
 														negative = FALSE) {
 	n.here <- nrow(Y.param)
 	p.all <- ncol(Y.param)
@@ -33,7 +36,7 @@ data_adapt_rank <- function(Y.param, A.param, W.param, absolute = FALSE,
 		Y.fit <- Y.param[,it]
 		W.fit <- as.matrix(W.param)
 
-		# ------------------------------------------------------------------------------------
+		# --------------------------------------------------------------------------
 		# TMLE for effect size
 		if ( !is.character(all.equal(W.param, as.matrix(rep(1, n.here)), check.attributes = FALSE)) ) {
 			# if there are W
@@ -41,12 +44,12 @@ data_adapt_rank <- function(Y.param, A.param, W.param, absolute = FALSE,
 													Q.SL.library = SL.lib, g.SL.library = SL.lib)
 			B1.result <- tmle.result$estimates$ATE$psi
 		} else {
-			# ------------------------------------------------------------------------------------
+    #---------------------------------------------------------------------------
 			# OLS for faster effect size
 			lm.result <- lm(Y.fit ~ A.fit)
 			B1.result <- lm.result$coefficients[2]
 		}
-		# ------------------------------------------------------------------------------------
+		#---------------------------------------------------------------------------
 		B1.fitted.all[it] <- B1.result
 	}
 

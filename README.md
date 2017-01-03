@@ -1,4 +1,4 @@
-# R/data.adapt.multi.test
+# R/`data.adapt.multi.test`
 
 [![Travis-CI Build
 Status](https://travis-ci.org/wilsoncai1992/data.adapt.multi.test.svg?branch=master)](https://travis-ci.org/wilsoncai1992/data.adapt.multi.test?branch=master)
@@ -21,21 +21,11 @@ data-adaptive statistical target parameters and inference.
 
 ## Installation
 
-* To install the most recent stable release, use of the `devtools` package is
-    highly recommended:
+* Install the most recent _stable release_:
+  `devtools::install_github("wilsoncai1992/data.adapt.multi.test", subdir = "pkg")`
 
-    ```R
-    devtools::install_github("wilsoncai1992/data.adapt.multi.test",
-                             subdir = "pkg")
-    ```
-
-* If you enjoy life at the bleeding edge (or would like to contribute), install
-    the development version of this package:
-
-    ```R
-    devtools::install_github("wilsoncai1992/data.adapt.multi.test",
-                             ref = "develop", subdir = "pkg")
-    ```
+* To contribute, install the _development version_:
+  `devtools::install_github("wilsoncai1992/data.adapt.multi.test", ref = "develop", subdir = "pkg")`
 
 ---
 
@@ -45,6 +35,14 @@ To cite the `data.adapt.multi.test` R package in publications, please use:
 > Cai W., Hejazi N., Hubbard A. (2016). *data.adapt.multi.test*: Data-Adaptive
 > Statistics for High-Dimensional Multiple Testing. *The Journal of Open Source
 > Software*.
+
+---
+
+## Principal Reference
+
+* [A.E. Hubbard, S. Kherad-Pajouh, and M.J. van der Laan. "Statistical inference
+    for data adaptive target parameters." _International Journal of
+    Biostatistics_, 2016.](https://www.ncbi.nlm.nih.gov/pubmed/27227715)
 
 ---
 

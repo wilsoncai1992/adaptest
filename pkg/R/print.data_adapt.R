@@ -3,11 +3,11 @@
 #' Customized informative print method for examining data-adaptive statistics
 #'
 #' @param adapt.fit data-adaptive statistical object of class \code{data_adapt}
-#' 									as returned by \code{data_adapt_multi_test}
+#' 				as returned by \code{data_adapt_multi_test}.
 #'
 #' @export print.data_adapt
 #'
-print.data_adapt <- function(adapt.fit, ...) {
+print.data_adapt <- function(adapt.fit) {
 		print('The top covariates are')
 		print(adapt.fit$top.col.name)
 		print('The ATE estiamtes are')
