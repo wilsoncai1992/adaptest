@@ -1,29 +1,27 @@
 # R for travis: see documentation at https://docs.travis-ci.com/user/languages/r
 
+branches:
+  only:
+    - master
+    - develop
+
 language: r
+sudo: required
+cache: packages
+warnings_are_errors: true
+
 r:
-  - oldrel
   - release
   - devel
 
-sudo: required
+env:
+  - TEST_DIR=pkg/
 
-before_install: cd pkg
-
-warnings_are_errors: true
-
-cache: packages
-
-r_packages:
-  - testthat
-  - rmarkdown
-  - R2HTML
-  - doParallel
-  - parallel
-  - foreach
-  - magrittr
-  - SuperLearner
-  - tmle
+before_install:
+  - cd $TEST_DIR
+  - curl -OL http://raw.github.com/craigcitro/r-travis/master/scripts/travis-tool.sh
+  - chmod 755 ./travis-tool.sh
+  - ./travis-tool.sh bootstrap
 
 r_github_packages:
   - jimhester/covr
