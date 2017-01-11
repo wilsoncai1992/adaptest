@@ -2,13 +2,15 @@
 % Please edit documentation in R/print.data_adapt.R
 \name{print.data_adapt}
 \alias{print.data_adapt}
-\title{Generic method of \code{print} for objects of class \code{data_adapt}}
+\title{Generic print method for data_adapt class}
 \usage{
-\method{print}{data_adapt}(adapt.fit)
+\method{print}{data_adapt}(x, ...)
 }
 \arguments{
-\item{adapt.fit}{data-adaptive statistical object of class \code{data_adapt}
-as returned by \code{data_adapt_multi_test}.}
+\item{x}{data-adaptive statistical object of class \code{data_adapt} as
+returned by \code{data_adapt_multi_test}.}
+
+\item{...}{additional arguments passed to \code{print} as necessary}
 }
 \description{
 Customized informative print method for examining data-adaptive statistics

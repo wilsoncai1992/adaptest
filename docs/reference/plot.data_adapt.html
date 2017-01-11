@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>#&#39; Generic method of  — plot.data_adapt • data.adapt.multi.test</title>
+<title>Generic plot method for data_adapt class — plot.data_adapt • data.adapt.multi.test</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -71,7 +71,7 @@
       <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>#&#39; Generic method of </h1>
+    <h1>Generic plot method for data_adapt class</h1>
     </div>
 
     
@@ -79,13 +79,15 @@
     
 
     <pre><span class='co'># S3 method for data_adapt</span>
-<span class='fu'>plot</span>(<span class='no'>adapt.fit</span>, <span class='kw'>plot_type</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"cvrank"</span>, <span class='st'>"pvals"</span>))</pre>
+<span class='fu'>plot</span>(<span class='no'>x</span>, <span class='no'>...</span>, <span class='kw'>plot_type</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"cvrank"</span>, <span class='st'>"pvals"</span>))</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <dl class="dl-horizontal">
-      <dt>adapt.fit</dt>
-      <dd>data-adaptive statistical object of class <code>data_adapt</code>
-as returned by <code>data_adapt_multi_test</code></dd>
+      <dt>x</dt>
+      <dd>data-adaptive statistical object of class <code>data_adapt</code> as
+returned by <code>data_adapt_multi_test</code></dd>
+      <dt>...</dt>
+      <dd>additional arguments passed to <code>plot</code> as necessary</dd>
       <dt>plot_type</dt>
       <dd>character vector specifying which of the two types of plots
 to generate: &quot;cvrank&quot; for a plot sorted average CV-rank, or &quot;pvals&quot;

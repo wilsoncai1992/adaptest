@@ -2,13 +2,15 @@
 % Please edit documentation in R/plot.data_adapt.R
 \name{plot.data_adapt}
 \alias{plot.data_adapt}
-\title{#' Generic method of \code{plot} for objects of class \code{data_adapt}}
+\title{Generic plot method for data_adapt class}
 \usage{
-\method{plot}{data_adapt}(adapt.fit, plot_type = c("cvrank", "pvals"))
+\method{plot}{data_adapt}(x, ..., plot_type = c("cvrank", "pvals"))
 }
 \arguments{
-\item{adapt.fit}{data-adaptive statistical object of class \code{data_adapt}
-as returned by \code{data_adapt_multi_test}}
+\item{x}{data-adaptive statistical object of class \code{data_adapt} as
+returned by \code{data_adapt_multi_test}}
+
+\item{...}{additional arguments passed to \code{plot} as necessary}
 
 \item{plot_type}{character vector specifying which of the two types of plots
 to generate: "cvrank" for a plot sorted average CV-rank, or "pvals"

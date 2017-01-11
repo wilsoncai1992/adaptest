@@ -1,35 +1,35 @@
-#' #' Generic method of \code{plot} for objects of class \code{data_adapt}
+#' Generic plot method for data_adapt class
 #'
 #' Customized plotting method for easily examining data-adaptive statistics
 #'
-#' @param adapt.fit data-adaptive statistical object of class \code{data_adapt}
-#' 				as returned by \code{data_adapt_multi_test}
+#' @param x data-adaptive statistical object of class \code{data_adapt} as
+#'       returned by \code{data_adapt_multi_test}
 #' @param plot_type character vector specifying which of the two types of plots
 #'        to generate: "cvrank" for a plot sorted average CV-rank, or "pvals"
 #'        for a plot sorted by p-values with labels corresponding to indices
+#' @param ... additional arguments passed to \code{plot} as necessary
 #'
 #' @importFrom graphics abline plot
 #' @importFrom calibrate textxy
 #'
-#' @export plot.data_adapt
+#' @export
 #'
-plot.data_adapt <- function(adapt.fit,
-                            plot_type = c("cvrank", "pvals")) {
+plot.data_adapt <- function(x, ..., plot_type = c("cvrank", "pvals")) {
 
-	top.index <- adapt.fit$top.index
-	ATE.subset <- adapt.fit$ATE.subset
-	p.init <- adapt.fit$p.init
-	p.final <- adapt.fit$p.final
-	still.sig.p <- adapt.fit$sig.p.FDR
+	top.index <- x$top.index
+	ATE.subset <- x$ATE.subset
+	p.init <- x$p.init
+	p.final <- x$p.final
+	still.sig.p <- x$sig.p.FDR
 
-	top.mean.rank <- adapt.fit$top.mean.rank
-	p.in.top.rank <- adapt.fit$p.in.top.rank
+	top.mean.rank <- x$top.mean.rank
+	p.in.top.rank <- x$p.in.top.rank
 	n.top.want <- length(top.index)
 
 	if (plot_type == "cvrank") {
 		# Plot sorted average CV-rank
 		plot(top.mean.rank, ylab = 'Mean CV-rank', pch = 20,
-				 main = 'Mean CV-rank of selected covariates \n (Smaller the better)')
+		     main = 'Mean CV-rank of selected covariates \n (Smaller the better)')
 
 		calibrate::textxy((1:n.top.want) - 0.3, top.mean.rank + 0.5, top.index,
 											offset = .6)
