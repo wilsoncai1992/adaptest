@@ -42,7 +42,7 @@ After using the `data.adapt.multi.test` R package, please cite it:
         publisher = {The Open Journal},
         volume = {},
         number = {},
-        author = {Cai, Weixin and Hejazi, Nima and Hubbard, Alan},
+        author = {Cai, Weixin and Hubbard, Alan and Hejazi, Nima},
         title = {data.adapt.multi.test: Data-Adaptive Statistics for
           High-Dimensional Testing},
         journal = {The Journal of Open Source Software}
@@ -50,7 +50,11 @@ After using the `data.adapt.multi.test` R package, please cite it:
 
 ---
 
-## Principal Reference
+## Principal References
+
+* [W. Cai, N.S. Hejazi, and A.E. Hubbard. "Data-adaptive statistics for multiple
+    hypothesis testing in high-dimensional settings." __in preparation__,
+    2017.]()
 
 * [A.E. Hubbard, S. Kherad-Pajouh, and M.J. van der Laan. "Statistical inference
     for data adaptive target parameters." _International Journal of
@@ -60,5 +64,5 @@ After using the `data.adapt.multi.test` R package, please cite it:
 
 ## License
 
-This software contents of this repository are distributed under the GPL-2
+The software contents of this repository are distributed under the GPL-2
 license. See file `LICENSE` for details.
