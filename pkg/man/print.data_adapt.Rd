@@ -15,4 +15,3 @@ returned by \code{data_adapt_multi_test}.}
 \description{
 Customized informative print method for examining data-adaptive statistics
 }
-

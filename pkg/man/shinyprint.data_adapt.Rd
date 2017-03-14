@@ -13,4 +13,3 @@ as returned by \code{data_adapt_multi_test}}
 \description{
 Provides HTML-based printing utility for examining data-adaptive statistics
 }
-

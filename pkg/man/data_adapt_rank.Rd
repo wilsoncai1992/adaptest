@@ -27,4 +27,3 @@ Performs ranking using Targeted Minimum Loss-Based Estimation. This function
 is designed to be called inside \code{data_adapt_multi_test}; it should not
 be run by itself outside of that contex.
 }
-

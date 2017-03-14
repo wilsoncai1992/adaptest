@@ -39,4 +39,3 @@ associated with multiple testing.
 Wilson Cai \email{wcai@berkeley.edu}, in collaboration with Alan E.
         Hubbard, with contributions from Nima S. Hejazi.
 }
-

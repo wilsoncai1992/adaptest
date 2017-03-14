@@ -19,4 +19,3 @@ for a plot sorted by p-values with labels corresponding to indices}
 \description{
 Customized plotting method for easily examining data-adaptive statistics
 }
-

@@ -13,4 +13,3 @@ as returned by \code{data_adapt_multi_test}}
 \description{
 Customized informative tables for examining data-adaptive statistics
 }
-

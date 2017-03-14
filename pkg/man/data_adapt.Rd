@@ -34,4 +34,3 @@ S3 object of class "data_adapt" for data-adaptive multiple testing.
 \description{
 Constructor function for class \code{data_adapt}
 }
-
