@@ -26,7 +26,7 @@ plot.data_adapt <- function(x, ..., plot_type = c("cvrank", "pvals")) {
 	p.in.top.rank <- x$p.in.top.rank
 	n.top.want <- length(top.index)
 
-	if (plot_type == "cvrank") {
+	if ("cvrank" %in% plot_type) {
 		# Plot sorted average CV-rank
 		plot(top.mean.rank, ylab = 'Mean CV-rank', pch = 20,
 		     main = 'Mean CV-rank of selected covariates \n (Smaller the better)')
@@ -36,7 +36,7 @@ plot.data_adapt <- function(x, ..., plot_type = c("cvrank", "pvals")) {
 		abline(a = 0, b = 1, lty = 3)
 	}
 
-	if (plot_type == "pvals") {
+	if ("pvals" %in% plot_type) {
 		# plot sorted p-values, labeled with index
 		temp.top.index <- top.index[order(p.final)]
 		plot(sort(p.final), ylab = 'Adjusted P-value', pch = 20,
