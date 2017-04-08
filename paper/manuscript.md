@@ -47,7 +47,7 @@ algorithms for data mining.
 
 The approach of data-adaptive test statistics improves on current approaches to
 multiple testing by applying a set of estimation algorithms (specified by the
-user) across splits of a particular sample of data, allowing for paramteres of
+user) across splits of a particular sample of data, allowing for parameters of
 interest to be discovered from the data. Such methods uncover associations that
 are stable across the full sample and restrict multiple testing to a smaller
 subset of covariates by allowing for variable importance to be measured via the
