@@ -4,7 +4,7 @@
 \alias{data_adapt}
 \title{Constructor function for class \code{data_adapt}}
 \usage{
-data_adapt(Y, A, W = NULL, n.top, n.fold, absolute, negative, parallel)
+data_adapt(Y, A, W = NULL, n_top, n_fold, absolute, negative, parallel)
 }
 \arguments{
 \item{Y}{continuous or binary outcome variable}
@@ -13,10 +13,10 @@ data_adapt(Y, A, W = NULL, n.top, n.fold, absolute, negative, parallel)
 
 \item{W}{vector, matrix, or data.frame containing baseline covariates}
 
-\item{n.top}{integer value for the number of candidate covariates to generate
+\item{n_top}{integer value for the number of candidate covariates to generate
 using the data-adaptive estimation algorithm}
 
-\item{n.fold}{integer number of folds to be used for cross-validation}
+\item{n_fold}{integer number of folds to be used for cross-validation}
 
 \item{absolute}{boolean: \code{TRUE} = test for absolute effect size. This
 \code{FALSE} = test for directional effect. This overrides argument

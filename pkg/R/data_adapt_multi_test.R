@@ -8,9 +8,9 @@
 #' @param Y continuous or binary outcome variable
 #' @param A binary treatment indicator: \code{1} = treatment, \code{0} = control
 #' @param W matrix containing baseline covariates
-#' @param n.top integer value for the number of candidate covariates to generate
+#' @param n_top integer value for the number of candidate covariates to generate
 #'        using the data-adaptive estimation algorithm
-#' @param n.fold integer number of folds to be used for cross-validation
+#' @param n_fold integer number of folds to be used for cross-validation
 #' @param negative boolean: \code{TRUE} = test for negative effect size,
 #'        \code{FALSE} = test for positive effect size
 #' @param absolute boolean: \code{TRUE} = test for absolute effect size. This
@@ -35,8 +35,8 @@
 data_adapt_multi_test <- function(Y,
                                   A,
                                   W = NULL,
-                                  n.top,
-                                  n.fold,
+                                  n_top,
+                                  n_fold,
                                   absolute = FALSE,
                                   negative = FALSE,
                                   parallel = FALSE) {
@@ -48,18 +48,18 @@ data_adapt_multi_test <- function(Y,
   }
 
   # use constructor function to instantiate "data_adapt" object
-  data_adapt <- data_adapt(Y, A, W = NULL, n.top, n.fold, absolute = FALSE,
+  data_adapt <- data_adapt(Y, A, W = NULL, n_top, n_fold, absolute = FALSE,
                            negative = FALSE, parallel = FALSE)
 
   # ============================================================================
   # preparation
   # ============================================================================
-  n.sim <- nrow(data_adapt$Y)
-  p.all <- ncol(data_adapt$Y)
+  n_sim <- nrow(data_adapt$Y)
+  p_all <- ncol(data_adapt$Y)
 
   # if there is no W input, use intercept as W
   if (is.null(data_adapt$W)) {
-    W <- as.matrix(rep(1, n.sim))
+    W <- as.matrix(rep(1, n_sim))
     data_adapt$W <- W
   }
 
@@ -67,145 +67,116 @@ data_adapt_multi_test <- function(Y,
   # create parameter generating sample
   # ============================================================================
   # determine number of samples per fold
-  sample.each.fold <- ceiling(n.sim / n.fold)
+  sample_each_fold <- ceiling(n_sim / n_fold)
 
   # random index
-  n.index.param.gen <- sample(head(rep(1:n.fold, each = sample.each.fold),
-                                   n = n.sim))
+  index_for_folds <- sample(head(rep(1:n_fold, each = sample_each_fold),
+                                   n = n_sim))
 
   # number of observations in each fold
-  folds.table <- table(n.index.param.gen)
+  table_n_per_fold <- table(index_for_folds)
 
-  rank.all.fold <- matrix(0, nrow = n.fold, ncol = p.all)
-  adapt_param_composition <- matrix(0, nrow = n.fold, ncol = n.top)
-  psi.est_composition <- list()
-  EIC.est_composition <- list()
+  rank_in_folds <- matrix(0, nrow = n_fold, ncol = p_all)
+  adapt_param_composition <- matrix(0, nrow = n_fold, ncol = n_top)
+  psi_est_composition <- list()
+  EIC_est_composition <- list()
   # ============================================================================
   compute.a.fold <- function(data_adapt, it0) {
     print(paste('Fold:', it0))
-    chunk.as.est <- it0
+    chunk_as_est <- it0
 
     # create parameter generating data
-    Y.param <- data_adapt$Y[n.index.param.gen != chunk.as.est, ]
-    A.param <- data_adapt$A[n.index.param.gen != chunk.as.est]
-    W.param <- data_adapt$W[n.index.param.gen != chunk.as.est, ,drop = FALSE]
+    Y_param <- data_adapt$Y[index_for_folds != chunk_as_est, ]
+    A_param <- data_adapt$A[index_for_folds != chunk_as_est]
+    W_param <- data_adapt$W[index_for_folds != chunk_as_est, ,drop = FALSE]
 
     # create estimation data
-    Y.est <- data_adapt$Y[n.index.param.gen == chunk.as.est, ]
-    A.est <- data_adapt$A[n.index.param.gen == chunk.as.est]
-    W.est <- data_adapt$W[n.index.param.gen == chunk.as.est, ,drop = FALSE]
+    Y_est <- data_adapt$Y[index_for_folds == chunk_as_est, ]
+    A_est <- data_adapt$A[index_for_folds == chunk_as_est]
+    W_est <- data_adapt$W[index_for_folds == chunk_as_est, ,drop = FALSE]
 
-    #
-    # data-adaptive target parameter
-    # ---------------------------------------------------------------------------------------
-    data.adaptive.index <- data_adapt_rank(Y.param, A.param, W.param, absolute,
+    # generate data-adaptive target parameter
+    data_adaptive_index <- data_adapt_rank(Y_param, A_param, W_param, absolute,
                                            negative)
 
-    index.grid <- which(data.adaptive.index <= n.top)
-    SL.lib <- c("SL.glm", "SL.step", "SL.glm.interaction", 'SL.gam', 'SL.earth')
+    index_grid <- which(data_adaptive_index <= n_top)
+    # estimate the parameter on estimation sample
+    SL_lib <- c("SL.glm", "SL.step", "SL.glm.interaction", 'SL.gam', 'SL.earth')
     psi_list <- list()
     EIC_list <- list()
-    for(it_ind in seq_along(index.grid)){
-      print(index.grid[it_ind])
-      tmle.estimation <- tmle(Y = Y.est[, index.grid[it_ind]], A = A.est, W = W.est,
-                              Q.SL.library = SL.lib, g.SL.library = SL.lib)
-      psi_list[[it_ind]] <- tmle.estimation$estimates$ATE$psi
-      EIC_list[[it_ind]] <- tmle.estimation$estimates$IC$IC.ATE
+    for(it_index in seq_along(index_grid)){
+      print(index_grid[it_index])
+      tmle_estimation <- tmle(Y = Y_est[, index_grid[it_index]], A = A_est, W = W_est,
+                              Q.SL_library = SL_lib, g.SL_library = SL_lib)
+      psi_list[[it_index]] <- tmle_estimation$estimates$ATE$psi
+      EIC_list[[it_index]] <- tmle_estimation$estimates$IC$IC.ATE
     }
-    psi.est <- do.call(c, psi_list)
-    EIC.est <- do.call(cbind, EIC_list)
+    psi_est <- do.call(c, psi_list)
+    EIC_est <- do.call(cbind, EIC_list)
 
-    return(list(data.adaptive.index, index.grid, psi.est, EIC.est))
+    return(list(data_adaptive_index, index_grid, psi_est, EIC_est))
   }
 
   # ============================================================================
   # CV
   # ============================================================================
-  for (it0 in 1:n.fold) {
-    list[data.adaptive.index, index.grid_here, psi.est_here, EIC.est_here] <- compute.a.fold(data_adapt, it0)
-    rank.all.fold[it0,] <- data.adaptive.index
-    adapt_param_composition[it0,] <- index.grid_here
-    psi.est_composition[[it0]] <- psi.est_here
-    EIC.est_composition[[it0]] <- EIC.est_here
+  for (it0 in 1:n_fold) {
+    list[data_adaptive_index, index_grid_here, psi_est_here, EIC_est_here] <- compute.a.fold(data_adapt, it0)
+    rank_in_folds[it0,] <- data_adaptive_index
+    adapt_param_composition[it0,] <- index_grid_here
+    psi_est_composition[[it0]] <- psi_est_here
+    EIC_est_composition[[it0]] <- EIC_est_here
   }
-  psi.est_final <- do.call(rbind, psi.est_composition)
-  EIC.est_final <- do.call(rbind, EIC.est_composition)
+  psi_est_final <- do.call(rbind, psi_est_composition)
+  EIC_est_final <- do.call(rbind, EIC_est_composition)
   # ============================================================================
   # statistical inference
   # ============================================================================
-  Psi_output <- colMeans(psi.est_final)
-  list[p.init, upper, lower, sd_by_col] <- get_pval(Psi_output, EIC.est_final, alpha=0.05)
-  # adaptY_composition <- rank.all.fold[,1:n.top]
-  adaptY_composition <- adapt_param_composition[,1:n.top]
+  Psi_output <- colMeans(psi_est_final)
+  list[p_value, upper, lower, sd_by_col] <- get_pval(Psi_output, EIC_est_final, alpha=0.05)
+  adaptY_composition <- adapt_param_composition[,1:n_top]
   adaptY_composition <- apply(adaptY_composition, 2, function(x) table(x)/sum(table(x)))
-  # ============================================================================
+
   # compute average rank across all folds
-  # ============================================================================
-  mean.rank <- colMeans(rank.all.fold)
-  top.index <- which(rank(mean.rank) <= data_adapt$n.top)
+  mean_rank <- colMeans(rank_in_folds)
+  top_index <- which(rank(mean_rank) <= data_adapt$n_top)
 
-  top.mean.rank <- mean.rank[top.index]
+  mean_rank_top <- mean_rank[top_index]
 
-  # sort the top.index from the highest CV-rank to lowest
-  top.index <- top.index[order(top.mean.rank)]
-  top.mean.rank <- mean.rank[top.index]
-  not.top.index <- setdiff(1:p.all, top.index)
+  # sort the top_index from the highest CV-rank to lowest
+  top_index <- top_index[order(mean_rank_top)]
+  mean_rank_top <- mean_rank[top_index]
+  not_top_index <- setdiff(1:p_all, top_index)
 
-  # ============================================================================
   # compute proportion of existence in all folds
-  # ============================================================================
-  is.in.top.rank <- (rank.all.fold <= data_adapt$n.top) + 0
-  p.in.top.rank <- colMeans(is.in.top.rank)
+  mean_rank_in_top <- (rank_in_folds <= data_adapt$n_top) + 0
+  prob_in_top <- colMeans(mean_rank_in_top)
 
-  p.in.top.rank <- p.in.top.rank[top.index]
-  # ============================================================================
-  # calculate p value for top indices
-  # ============================================================================
-  # length.keep <- data_adapt$n.top
-  # ATE.subset <- rep(0, length.keep)
-  # p.val.subset <- rep(NA, length.keep)
-  #
-  # SL.lib <- c("SL.glm", "SL.step", "SL.glm.interaction", 'SL.gam', 'SL.earth')
-  # for (it2 in 1:length.keep) {
-  #   index.here <- top.index[it2]
-  #   print(paste('estimating:', index.here))
-  #   tmle.estimation <- tmle(Y[, index.here], A = A, W = W,
-  #                           Q.SL.library = SL.lib, g.SL.library = SL.lib)
-  #   tmle.result.here <- tmle.estimation$estimates$ATE$psi
-  #   tmle.p.val.here <- tmle.estimation$estimates$ATE$pvalue
-  #
-  #   ATE.subset[it2] <- tmle.result.here
-  #   p.val.subset[it2] <- tmle.p.val.here
-  # }
+  prob_in_top <- prob_in_top[top_index]
   # ============================================================================
   # perform FDR correction
   # ============================================================================
-  # p.init <- p.val.subset
-  p.final <- p.adjust(p.init, method = 'BH')
+  q_value <- p.adjust(p_value, method = 'BH')
 
-  still.sig <- p.final <= 0.05
-  # sig.p.FDR <- top.index[still.sig]
-  sig.p.FDR <- which(still.sig)
-  # ============================================================================
+  is_sig_q_value <- q_value <= 0.05
+  significant_q <- which(is_sig_q_value)
+
   # export covariate name for easier interpretation
-  # ============================================================================
-  # top.col.name <- names(data_adapt$Y)[top.index]
-  top.col.name <- adaptY_composition
-  top.col.name2 <- adaptY_composition[which(still.sig)]
+  top_colname <- adaptY_composition
+  top_colname_significant_q <- adaptY_composition[which(is_sig_q_value)]
   # ============================================================================
   # add all newly computed statistical objects to the original data_adapt object
   # ============================================================================
-
-  data_adapt$top.index <- top.index
-  data_adapt$top.col.name <- top.col.name
-  data_adapt$top.col.name2 <- top.col.name2
-  # data_adapt$ATE.subset <- ATE.subset
-  data_adapt$ATE.subset <- Psi_output
-  data_adapt$p.init <- p.init
-  data_adapt$p.final <- p.final
-  data_adapt$sig.p.FDR <- sig.p.FDR
-  data_adapt$top.mean.rank <- top.mean.rank
-  data_adapt$p.in.top.rank <- p.in.top.rank
+  data_adapt$top_index <- top_index
+  data_adapt$top_colname <- top_colname
+  data_adapt$top_colname_significant_q <- top_colname_significant_q
+  # data_adapt$DE <- DE
+  data_adapt$DE <- Psi_output
+  data_adapt$p_value <- p_value
+  data_adapt$q_value <- q_value
+  data_adapt$significant_q <- significant_q
+  data_adapt$mean_rank_top <- mean_rank_top
+  data_adapt$prob_in_top <- prob_in_top
 
   # export augmented object containing the computed data-adaptive statistics
   return(data_adapt)
