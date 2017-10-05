@@ -1,4 +1,4 @@
-Package: DA.Test
+Package: adaptest
 Title: Data-adaptive test statistics for multiple testing in high dimensions
 Version: 0.5.0
 Authors@R: as.person(c(
@@ -25,7 +25,7 @@ Suggests:
 License:
     GPL-2
 URL:
-    https://github.com/wilsoncai1992/DA.Test
+    https://github.com/wilsoncai1992/adaptest
 LazyData:
     true
 RoxygenNote: 6.0.1

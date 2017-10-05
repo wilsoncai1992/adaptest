@@ -1,4 +1,4 @@
-citHeader("To cite 'DA.Test' in publications, please use:")
+citHeader("To cite 'adaptest' in publications, please use:")
 
 citEntry(
     entry        = "Article",
@@ -10,11 +10,11 @@ citEntry(
     volume       = "1",
     number       = "X",
     author       = "Weixin Cai, Alan Hubbard, Nima Hejazi",
-    title        = "DA.Test: Data-adaptive test statistics for
+    title        = "adaptest: Data-adaptive test statistics for
                     high-dimensional multiple testing",
     journal      = "The Journal of Open Source Software",
     textVersion  = paste("Cai, W, Hubbard, A, and Hejazi, N (2016).",
-            "DA.Test: Data-adaptive test statistics for
+            "adaptest: Data-adaptive test statistics for
             high-dimensional multiple testing.",
             "Journal of Open Source Software, 1(X).",
             "X")
