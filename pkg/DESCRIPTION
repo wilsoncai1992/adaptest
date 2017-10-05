@@ -1,6 +1,6 @@
-Package: data.adapt.multi.test
+Package: DA.Test
 Title: Data-adaptive test statistics for multiple testing in high dimensions
-Version: 0.3.3
+Version: 0.5.0
 Authors@R: as.person(c(
     "Wilson Cai <wcai@berkeley.edu> [aut, cre]",
     "Alan Hubbard <hubbard@berkeley.edu> [aut]",
@@ -25,7 +25,7 @@ Suggests:
 License:
     GPL-2
 URL:
-    https://github.com/wilsoncai1992/data.adapt.multi.test
+    https://github.com/wilsoncai1992/DA.Test
 LazyData:
     true
 RoxygenNote: 6.0.1

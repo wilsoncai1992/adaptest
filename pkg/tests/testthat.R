@@ -1,4 +1,4 @@
 library(testthat)
-library(data.adapt.multi.test)
+library(DA.Test)
 
-test_check("data.adapt.multi.test")
+test_check("DA.Test")

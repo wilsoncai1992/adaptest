@@ -1,4 +1,4 @@
-library(data.adapt.multi.test)
+library(DA.Test)
 context("Creating data_adapt objects")
 
 test_that("data_adapt fails when invoked improperly", {
