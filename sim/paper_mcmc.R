@@ -54,7 +54,8 @@ simulate_once <- function(n.sim, p.all, p.true, signal.true, n.top.want, n.fold)
 # ========================================================================================
 
 data_here <- simulate_once(n.sim, p.all, p.true, signal.true, n.top.want, n.fold)
-
+Y = data_here[[1]]
+A.sample.vec = data_here[[2]]
 
 
 SNR <- (signal.true^2 /4 + 1) / 1
@@ -74,42 +75,22 @@ confusion_count <- function(vec_sig) {
         THREE <- p.true - ONE
         FOUR <- p.all - p.true - TWO
     }
-    return(list(ONE,TWO,THREE,FOUR))
+    return(matrix(c(ONE,TWO,THREE,FOUR), nrow = 2, ncol = 2, byrow = TRUE))
 }
 # ==============================================================================
 # fit DA.test
 # ==============================================================================
-library(data.adapt.multi.test)
+library(DA.Test)
 out_result <- data_adapt_multi_test(Y = Y, A = A.sample.vec, n.top = p.true + 5,
                                     # n.fold = 3, parallel = FALSE) # BH on all Y
                                     n.fold = 4, parallel = FALSE) # BH on all Y
 out_result
-col_id_sig_final <- as.numeric(unique(unlist(lapply(out_result$top.col.name2, names))))
+col_id_sig_final <- as.numeric(DA.Test::get_significant_biomarker(out_result))
 confusion_count(col_id_sig_final)
 
-print(out_result)
-plot(out_result)
-tables <- table.data_adapt(out_result)
-xtable::xtable(tables[[1]])
-xtable::xtable(tables[[2]])
 # ==============================================================================
 # fit naive BH
 # ==============================================================================
 lm_out <- lm(Y ~ A.sample.vec)
 B1_hat_lm <- lm_out$coefficients[2,]
 names(B1_hat_lm) <- c(1:ncol(Y))
-
-lm_summary <- summary(lm_out)
-pval_lm <- sapply(lm_summary, function(x) x$coefficients[2,4])
-qval_lm <- p.adjust(pval_lm, method = 'BH')
-lm_sig <- which(qval_lm < .05)
-
-confusion_count(lm_sig)
-
-
-names(qval_lm) <- gsub("Response ","",names(qval_lm))
-plot(head(sort(qval_lm), 100), ylim = c(0,1), ylab = 'q-value')
-library(calibrate)
-textxy(1:100, head(sort(qval_lm), 100), labs=names(head(sort(qval_lm), 100)), cx = 0.1, dcol = "black", m = c(-1, -4))
-
-xtable::xtable(t(data.frame(head(sort(qval_lm), 11))))
