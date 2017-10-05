@@ -16,34 +16,36 @@
 #'
 plot.data_adapt <- function(x, ..., plot_type = c("cvrank", "pvals")) {
 
-	top.index <- x$top.index
-	ATE.subset <- x$ATE.subset
-	p.init <- x$p.init
-	p.final <- x$p.final
-	still.sig.p <- x$sig.p.FDR
+  top.index <- x$top.index
+  ATE.subset <- x$ATE.subset
+  p.init <- x$p.init
+  p.final <- x$p.final
+  still.sig.p <- x$sig.p.FDR
 
-	top.mean.rank <- x$top.mean.rank
-	p.in.top.rank <- x$p.in.top.rank
-	n.top.want <- length(top.index)
+  top.mean.rank <- x$top.mean.rank
+  p.in.top.rank <- x$p.in.top.rank
+  n.top.want <- length(top.index)
 
-	if ("cvrank" %in% plot_type) {
-		# Plot sorted average CV-rank
-		plot(top.mean.rank, ylab = 'Mean CV-rank', pch = 20,
-		     main = 'Mean CV-rank of selected covariates \n (Smaller the better)')
+  if ("cvrank" %in% plot_type) {
+    # Plot sorted average CV-rank
+    plot(top.mean.rank, ylab = 'Mean CV-rank', pch = 20,
+         main = 'Mean CV-rank of selected covariates \n (Smaller the better)')
 
-		calibrate::textxy((1:n.top.want) - 0.3, top.mean.rank + 0.5, top.index,
-											offset = .6)
-		abline(a = 0, b = 1, lty = 3)
-	}
+    calibrate::textxy((1:n.top.want) - 0.3, top.mean.rank + 0.5, top.index,
+                      offset = .6)
+    abline(a = 0, b = 1, lty = 3)
+  }
 
-	if ("pvals" %in% plot_type) {
-		# plot sorted p-values, labeled with index
-		# temp.top.index <- top.index[order(p.final)]
-        temp.top.index <- c(1:n.top.want)[order(p.final)]
-		plot(sort(p.final), ylab = 'Adjusted P-value', pch = 20,
-				 main = 'Adjusted p-value of selected covariates \n (Smaller the better)')
-		calibrate::textxy((1:n.top.want) - 0.3, sort(p.final), temp.top.index,
-											offset = 1)
-		abline(h = 0.05, lty = 2)
-	}
+  if ("pvals" %in% plot_type) {
+    # plot sorted p-values, labeled with index
+    temp.top.index <- c(1:n.top.want)[order(p.final)]
+    plot(sort(p.final),
+         pch = 20,
+         ylab = 'Adjusted P-value',
+         main = 'Adjusted p-value of selected covariates \n (Smaller the better)'
+         )
+    calibrate::textxy((1:n.top.want) - 0.3, sort(p.final), temp.top.index,
+                      offset = 1)
+    abline(h = 0.05, lty = 2)
+  }
 }

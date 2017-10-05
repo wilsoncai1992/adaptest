@@ -95,9 +95,7 @@ data_adapt_multi_test <- function(Y,
     A.est <- data_adapt$A[n.index.param.gen == chunk.as.est]
     W.est <- data_adapt$W[n.index.param.gen == chunk.as.est, ,drop = FALSE]
 
-    #
-    # data-adaptive target parameter
-    # ---------------------------------------------------------------------------------------
+    # generate data-adaptive target parameter
     data.adaptive.index <- data_adapt_rank(Y.param, A.param, W.param, absolute,
                                            negative)
 
@@ -138,9 +136,8 @@ data_adapt_multi_test <- function(Y,
   # adaptY_composition <- rank.all.fold[,1:n.top]
   adaptY_composition <- adapt_param_composition[,1:n.top]
   adaptY_composition <- apply(adaptY_composition, 2, function(x) table(x)/sum(table(x)))
-  # ============================================================================
+
   # compute average rank across all folds
-  # ============================================================================
   mean.rank <- colMeans(rank.all.fold)
   top.index <- which(rank(mean.rank) <= data_adapt$n.top)
 
@@ -151,51 +148,25 @@ data_adapt_multi_test <- function(Y,
   top.mean.rank <- mean.rank[top.index]
   not.top.index <- setdiff(1:p.all, top.index)
 
-  # ============================================================================
   # compute proportion of existence in all folds
-  # ============================================================================
   is.in.top.rank <- (rank.all.fold <= data_adapt$n.top) + 0
   p.in.top.rank <- colMeans(is.in.top.rank)
 
   p.in.top.rank <- p.in.top.rank[top.index]
   # ============================================================================
-  # calculate p value for top indices
-  # ============================================================================
-  # length.keep <- data_adapt$n.top
-  # ATE.subset <- rep(0, length.keep)
-  # p.val.subset <- rep(NA, length.keep)
-  #
-  # SL.lib <- c("SL.glm", "SL.step", "SL.glm.interaction", 'SL.gam', 'SL.earth')
-  # for (it2 in 1:length.keep) {
-  #   index.here <- top.index[it2]
-  #   print(paste('estimating:', index.here))
-  #   tmle.estimation <- tmle(Y[, index.here], A = A, W = W,
-  #                           Q.SL.library = SL.lib, g.SL.library = SL.lib)
-  #   tmle.result.here <- tmle.estimation$estimates$ATE$psi
-  #   tmle.p.val.here <- tmle.estimation$estimates$ATE$pvalue
-  #
-  #   ATE.subset[it2] <- tmle.result.here
-  #   p.val.subset[it2] <- tmle.p.val.here
-  # }
-  # ============================================================================
   # perform FDR correction
   # ============================================================================
-  # p.init <- p.val.subset
   p.final <- p.adjust(p.init, method = 'BH')
 
   still.sig <- p.final <= 0.05
-  # sig.p.FDR <- top.index[still.sig]
   sig.p.FDR <- which(still.sig)
-  # ============================================================================
+
   # export covariate name for easier interpretation
-  # ============================================================================
-  # top.col.name <- names(data_adapt$Y)[top.index]
   top.col.name <- adaptY_composition
   top.col.name2 <- adaptY_composition[which(still.sig)]
   # ============================================================================
   # add all newly computed statistical objects to the original data_adapt object
   # ============================================================================
-
   data_adapt$top.index <- top.index
   data_adapt$top.col.name <- top.col.name
   data_adapt$top.col.name2 <- top.col.name2
