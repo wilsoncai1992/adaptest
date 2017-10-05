@@ -1,8 +1,8 @@
-# R/`data.adapt.multi.test`
+# R/`adaptest`
 
-[![Travis-CI Build Status](https://travis-ci.org/wilsoncai1992/data.adapt.multi.test.svg?branch=master)](https://travis-ci.org/wilsoncai1992/data.adapt.multi.test?branch=master)
-[![Coverage Status](https://coveralls.io/repos/github/wilsoncai1992/data.adapt.multi.test/badge.svg?branch=master)](https://coveralls.io/github/wilsoncai1992/data.adapt.multi.test?branch=master)
-[![CRAN](http://www.r-pkg.org/badges/version/data.adapt.multi.test)](http://www.r-pkg.org/pkg/data.adapt.multi.test)
+[![Travis-CI Build Status](https://travis-ci.org/wilsoncai1992/adaptest.svg?branch=master)](https://travis-ci.org/wilsoncai1992/adaptest?branch=master)
+[![Coverage Status](https://coveralls.io/repos/github/wilsoncai1992/adaptest/badge.svg?branch=master)](https://coveralls.io/github/wilsoncai1992/adaptest?branch=master)
+[![CRAN](http://www.r-pkg.org/badges/version/adaptest)](http://www.r-pkg.org/pkg/adaptest)
 [![Project Status: Active - The project has reached a stable, usable state and is being actively developed.](http://www.repostatus.org/badges/latest/active.svg)](http://www.repostatus.org/#active)
 [![GPL-2 License](http://img.shields.io/:license-gpl2-blue.svg)](http://www.gnu.org/licenses/gpl-2.0.html)
 [![JOSS status](http://joss.theoj.org/papers/7618d7d14ac77f6f502df3f9eac5917d/status.svg)](http://joss.theoj.org/papers/7618d7d14ac77f6f502df3f9eac5917d)
@@ -15,7 +15,7 @@
 
 ## Description
 
-The `data.adapt.multi.test` R package is a tool for performing multiple testing
+The `adaptest` R package is a tool for performing multiple testing
 on effects sizes under high-dimensional settings, using the approach of
 data-adaptive statistical target parameters and inference.
 
@@ -24,16 +24,16 @@ data-adaptive statistical target parameters and inference.
 ## Installation
 
 * Install the most recent _stable release_:
-  `devtools::install_github("wilsoncai1992/data.adapt.multi.test", subdir = "pkg")`
+  `devtools::install_github("wilsoncai1992/adaptest", subdir = "pkg")`
 
 * To contribute, install the _development version_:
-  `devtools::install_github("wilsoncai1992/data.adapt.multi.test", ref = "develop", subdir = "pkg")`
+  `devtools::install_github("wilsoncai1992/adaptest", ref = "develop", subdir = "pkg")`
 
 ---
 
 ## Citation
 
-After using the `data.adapt.multi.test` R package, please cite it:
+After using the `adaptest` R package, please cite it:
 
       @article{cai2017,
         doi = {},
@@ -44,7 +44,7 @@ After using the `data.adapt.multi.test` R package, please cite it:
         volume = {},
         number = {},
         author = {Cai, Weixin and Hubbard, Alan and Hejazi, Nima},
-        title = {data.adapt.multi.test: Data-Adaptive Statistics for
+        title = {adaptest: Data-Adaptive Statistics for
           High-Dimensional Testing},
         journal = {The Journal of Open Source Software}
       }
@@ -70,4 +70,4 @@ license. See file `LICENSE` for details.
 
 ## Contributing
 
-Please refer to `CONTRIBUTING.md` for guidelines on contributing to `data.adapt.multi.test`.
+Please refer to `CONTRIBUTING.md` for guidelines on contributing to `adaptest`.
