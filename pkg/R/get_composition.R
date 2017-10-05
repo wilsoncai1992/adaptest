@@ -11,6 +11,9 @@ get_composition <- function(adapt.fit, type = 'small') {
     if (type == 'small') col.name = adapt.fit$top.col.name2
     if (type == 'big') col.name = adapt.fit$top.col.name
 
+    # catch if there are no output
+    if (length(col.name) == 0) return(c(NULL, NULL))
+
     col_id_sig_final <- as.numeric(unique(unlist(lapply(col.name, names))))
     decomposition <- matrix(0, nrow = length(col.name), ncol = length(col_id_sig_final))
     decomposition <- as.data.frame(decomposition)
@@ -27,7 +30,7 @@ get_composition <- function(adapt.fit, type = 'small') {
 
 #' Title
 #'
-#' @param adapt.fit 
+#' @param adapt.fit
 #'
 #' @export get_significant_biomarker
 #'
