@@ -1,4 +1,4 @@
 library(testthat)
-library(DA.Test)
+library(adaptest)
 
-test_check("DA.Test")
+test_check("adaptest")
