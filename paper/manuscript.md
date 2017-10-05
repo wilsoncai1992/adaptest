@@ -35,7 +35,9 @@ of a package for the R language for statistical computing [@R].
 Data-adaptive test statistics for multiple testing are motivated by efforts to
 address the limitations of existing multiple testing methods such as the
 popular Benjamini-Hochberg procedure to control the False Discovery Rate (FDR)
-[@benjamini1995controlling]. Utilizing this recently developed data-adaptive
+[@benjamini1995controlling] or Bonferroni method to control the Family-Wise Error Rate (FWER) [@dunn1961multiple]. It has been well studied in literature that for a fixed targeted effect size and fixed sample size, power decreases as the number of tests and corresponding critical value increase [@lazzeroni2010cost]. @lazzeroni2010cost shows that if the power for a single test is 80\%, the power is approximately 50\% for 10; 10\% for 1000; and 1\% for 100,000 Bonferroni-adjusted tests, a classic method to correct for Type-I error when doing multiple testing.  This means that practitioners need to invest in prohibitively more resources to collect samples in order to get meaningful results under high-dimensional multiple testing.
+
+Utilizing this recently developed data-adaptive
 statistical framework, information loss induced by standard multiple testing
 procedures can be avoided by reducing the dimensionality of problems via
 variable reduction. This newly developed methodology is a natural extension of

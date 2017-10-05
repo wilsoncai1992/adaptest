@@ -38,7 +38,8 @@ plot.data_adapt <- function(x, ..., plot_type = c("cvrank", "pvals")) {
 
 	if ("pvals" %in% plot_type) {
 		# plot sorted p-values, labeled with index
-		temp.top.index <- top.index[order(p.final)]
+		# temp.top.index <- top.index[order(p.final)]
+        temp.top.index <- c(1:n.top.want)[order(p.final)]
 		plot(sort(p.final), ylab = 'Adjusted P-value', pch = 20,
 				 main = 'Adjusted p-value of selected covariates \n (Smaller the better)')
 		calibrate::textxy((1:n.top.want) - 0.3, sort(p.final), temp.top.index,

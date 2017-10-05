@@ -10,7 +10,7 @@
 #'
 print.data_adapt <- function(x, ...) {
 		print('The top covariates are')
-		print(x$top.col.name)
+		print(get_composition(x, type = 'big')[[1]])
 		print('The ATE estiamtes are')
 		print(x$ATE.subset)
 		print('The raw p-values are')
@@ -22,6 +22,8 @@ print.data_adapt <- function(x, ...) {
 		print(paste('The percentage of appearing in top', length(x$top.col.name),
 								'are (the larger the better)'))
 		print(x$p.in.top.rank*100)
-		print('The covariates still significant are')
-		print(x$sig.p.FDR)
+        print('The covariates still significant are')
+        print(x$sig.p.FDR)
+		print('Their compositions are')
+		print(get_composition(x, type = 'small')[[1]])
 }

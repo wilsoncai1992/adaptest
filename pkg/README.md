@@ -6,6 +6,7 @@
 [![Project Status: Active - The project has reached a stable, usable state and is being actively developed.](http://www.repostatus.org/badges/latest/active.svg)](http://www.repostatus.org/#active)
 [![GPL-2 License](http://img.shields.io/:license-gpl2-blue.svg)](http://www.gnu.org/licenses/gpl-2.0.html)
 [![JOSS status](http://joss.theoj.org/papers/7618d7d14ac77f6f502df3f9eac5917d/status.svg)](http://joss.theoj.org/papers/7618d7d14ac77f6f502df3f9eac5917d)
+[![Build status](https://ci.appveyor.com/api/projects/status/10uqx525cg3t1omh?svg=true)](https://ci.appveyor.com/project/wilsoncai1992/data-adapt-multi-test)
 
 
 > Data-adaptive statistics for multiple testing in high-dimensional problems.

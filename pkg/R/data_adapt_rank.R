@@ -38,12 +38,14 @@ data_adapt_rank <- function(Y.param,
 
 		# --------------------------------------------------------------------------
 		# TMLE for effect size
-		if ( !is.character(all.equal(W.param, as.matrix(rep(1, n.here)), check.attributes = FALSE)) ) {
+        # if ( !is.character(all.equal(W.param, as.matrix(rep(1, n.here)), check.attributes = FALSE)) ) {
+		if ( !identical(W.param, as.matrix(rep(1, n.here))) ) {
 			# if there are W
 			tmle.result <- tmle(Y = Y.fit, A = A.fit, W = W.param,
 													Q.SL.library = SL.lib, g.SL.library = SL.lib)
 			B1.result <- tmle.result$estimates$ATE$psi
 		} else {
+            # cat('No W specified, use OLS to accelerate\n')
     #---------------------------------------------------------------------------
 			# OLS for faster effect size
 			lm.result <- lm(Y.fit ~ A.fit)

@@ -1,6 +1,6 @@
 Package: data.adapt.multi.test
 Title: Data-adaptive test statistics for multiple testing in high dimensions
-Version: 0.2.0
+Version: 0.3.3
 Authors@R: as.person(c(
     "Wilson Cai <wcai@berkeley.edu> [aut, cre]",
     "Alan Hubbard <hubbard@berkeley.edu> [aut]",
@@ -14,15 +14,18 @@ Imports:
     foreach,
     parallel,
     doParallel,
+    SuperLearner,
     calibrate,
     magrittr,
     R2HTML
 Suggests:
-    testthat
+    testthat,
+    rmarkdown,
+    knitr
 License:
     GPL-2
 URL:
     https://github.com/wilsoncai1992/data.adapt.multi.test
 LazyData:
     true
-RoxygenNote: 6.0.0
+RoxygenNote: 6.0.1

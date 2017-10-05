@@ -77,7 +77,9 @@ data_adapt_multi_test <- function(Y,
   folds.table <- table(n.index.param.gen)
 
   rank.all.fold <- matrix(0, nrow = n.fold, ncol = p.all)
-
+  adapt_param_composition <- matrix(0, nrow = n.fold, ncol = n.top)
+  psi.est_composition <- list()
+  EIC.est_composition <- list()
   # ============================================================================
   compute.a.fold <- function(data_adapt, it0) {
     print(paste('Fold:', it0))
@@ -86,38 +88,56 @@ data_adapt_multi_test <- function(Y,
     # create parameter generating data
     Y.param <- data_adapt$Y[n.index.param.gen != chunk.as.est, ]
     A.param <- data_adapt$A[n.index.param.gen != chunk.as.est]
-    W.param <- data_adapt$W[n.index.param.gen != chunk.as.est, drop = FALSE]
+    W.param <- data_adapt$W[n.index.param.gen != chunk.as.est, ,drop = FALSE]
 
     # create estimation data
     Y.est <- data_adapt$Y[n.index.param.gen == chunk.as.est, ]
     A.est <- data_adapt$A[n.index.param.gen == chunk.as.est]
-    W.est <- data_adapt$W[n.index.param.gen == chunk.as.est, drop = FALSE]
+    W.est <- data_adapt$W[n.index.param.gen == chunk.as.est, ,drop = FALSE]
 
-    # ==========================================================================
+    #
     # data-adaptive target parameter
-    # ==========================================================================
+    # ---------------------------------------------------------------------------------------
     data.adaptive.index <- data_adapt_rank(Y.param, A.param, W.param, absolute,
-    																			 negative)
-    return(data.adaptive.index)
+                                           negative)
+
+    index.grid <- which(data.adaptive.index <= n.top)
+    SL.lib <- c("SL.glm", "SL.step", "SL.glm.interaction", 'SL.gam', 'SL.earth')
+    psi_list <- list()
+    EIC_list <- list()
+    for(it_ind in seq_along(index.grid)){
+      print(index.grid[it_ind])
+      tmle.estimation <- tmle(Y = Y.est[, index.grid[it_ind]], A = A.est, W = W.est,
+                              Q.SL.library = SL.lib, g.SL.library = SL.lib)
+      psi_list[[it_ind]] <- tmle.estimation$estimates$ATE$psi
+      EIC_list[[it_ind]] <- tmle.estimation$estimates$IC$IC.ATE
+    }
+    psi.est <- do.call(c, psi_list)
+    EIC.est <- do.call(cbind, EIC_list)
+
+    return(list(data.adaptive.index, index.grid, psi.est, EIC.est))
   }
 
   # ============================================================================
   # CV
   # ============================================================================
-  if (parallel) {
-    doParallel::registerDoParallel(parallel::detectCores())
-    rank.all.fold <- foreach(it2 = 1:n.fold, .combine = cbind) %dopar% {
-      compute.a.fold(data_adapt, it2)
-    }
-  } else {
-    for (it0 in 1:n.fold) {
-      data.adaptive.index <- compute.a.fold(data_adapt, it0)
-      rank.all.fold[it0,] <- data.adaptive.index
-    }
+  for (it0 in 1:n.fold) {
+    list[data.adaptive.index, index.grid_here, psi.est_here, EIC.est_here] <- compute.a.fold(data_adapt, it0)
+    rank.all.fold[it0,] <- data.adaptive.index
+    adapt_param_composition[it0,] <- index.grid_here
+    psi.est_composition[[it0]] <- psi.est_here
+    EIC.est_composition[[it0]] <- EIC.est_here
   }
-	if (parallel::detectCores() > 1) { ##checking colnames error
-		data.adaptive.index <- t(data.adaptive.index)
-	}
+  psi.est_final <- do.call(rbind, psi.est_composition)
+  EIC.est_final <- do.call(rbind, EIC.est_composition)
+  # ============================================================================
+  # statistical inference
+  # ============================================================================
+  Psi_output <- colMeans(psi.est_final)
+  list[p.init, upper, lower, sd_by_col] <- get_pval(Psi_output, EIC.est_final, alpha=0.05)
+  # adaptY_composition <- rank.all.fold[,1:n.top]
+  adaptY_composition <- adapt_param_composition[,1:n.top]
+  adaptY_composition <- apply(adaptY_composition, 2, function(x) table(x)/sum(table(x)))
   # ============================================================================
   # compute average rank across all folds
   # ============================================================================
@@ -141,43 +161,46 @@ data_adapt_multi_test <- function(Y,
   # ============================================================================
   # calculate p value for top indices
   # ============================================================================
-  length.keep <- data_adapt$n.top
-  ATE.subset <- rep(0, length.keep)
-  p.val.subset <- rep(NA, length.keep)
-
-  SL.lib <- c("SL.glm", "SL.step", "SL.glm.interaction", 'SL.gam', 'SL.earth')
-  for (it2 in 1:length.keep) {
-    index.here <- top.index[it2]
-    print(paste('estimating:', index.here))
-    tmle.estimation <- tmle(Y[, index.here], A = A, W = W,
-    												Q.SL.library = SL.lib, g.SL.library = SL.lib)
-    tmle.result.here <- tmle.estimation$estimates$ATE$psi
-    tmle.p.val.here <- tmle.estimation$estimates$ATE$pvalue
-
-    ATE.subset[it2] <- tmle.result.here
-    p.val.subset[it2] <- tmle.p.val.here
-  }
+  # length.keep <- data_adapt$n.top
+  # ATE.subset <- rep(0, length.keep)
+  # p.val.subset <- rep(NA, length.keep)
+  #
+  # SL.lib <- c("SL.glm", "SL.step", "SL.glm.interaction", 'SL.gam', 'SL.earth')
+  # for (it2 in 1:length.keep) {
+  #   index.here <- top.index[it2]
+  #   print(paste('estimating:', index.here))
+  #   tmle.estimation <- tmle(Y[, index.here], A = A, W = W,
+  #                           Q.SL.library = SL.lib, g.SL.library = SL.lib)
+  #   tmle.result.here <- tmle.estimation$estimates$ATE$psi
+  #   tmle.p.val.here <- tmle.estimation$estimates$ATE$pvalue
+  #
+  #   ATE.subset[it2] <- tmle.result.here
+  #   p.val.subset[it2] <- tmle.p.val.here
+  # }
   # ============================================================================
   # perform FDR correction
   # ============================================================================
-  p.init <- p.val.subset
+  # p.init <- p.val.subset
   p.final <- p.adjust(p.init, method = 'BH')
 
   still.sig <- p.final <= 0.05
-  sig.p.FDR <- top.index[still.sig]
-
+  # sig.p.FDR <- top.index[still.sig]
+  sig.p.FDR <- which(still.sig)
   # ============================================================================
   # export covariate name for easier interpretation
   # ============================================================================
-  top.col.name <- names(data_adapt$Y)[top.index]
-
+  # top.col.name <- names(data_adapt$Y)[top.index]
+  top.col.name <- adaptY_composition
+  top.col.name2 <- adaptY_composition[which(still.sig)]
   # ============================================================================
   # add all newly computed statistical objects to the original data_adapt object
   # ============================================================================
 
   data_adapt$top.index <- top.index
   data_adapt$top.col.name <- top.col.name
-  data_adapt$ATE.subset <- ATE.subset
+  data_adapt$top.col.name2 <- top.col.name2
+  # data_adapt$ATE.subset <- ATE.subset
+  data_adapt$ATE.subset <- Psi_output
   data_adapt$p.init <- p.init
   data_adapt$p.final <- p.final
   data_adapt$sig.p.FDR <- sig.p.FDR
