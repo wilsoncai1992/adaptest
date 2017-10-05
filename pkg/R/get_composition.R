@@ -2,14 +2,14 @@
 #'
 #' Customized informative tables for examining data-adaptive statistics
 #'
-#' @param adapt.fit data-adaptive statistical object of class \code{data_adapt}
-#'              as returned by \code{data_adapt_multi_test}
+#' @param object data-adaptive statistical object of class \code{data_adapt}
+#'              as returned by \code{adaptest}
 #'
 #' @export get_composition
 #'
-get_composition <- function(adapt.fit, type = 'small') {
-  if (type == 'small') col.name = adapt.fit$top_colname_significant_q
-  if (type == 'big') col.name = adapt.fit$top_colname
+get_composition <- function(object, type = 'small') {
+  if (type == 'small') col.name = object$top_colname_significant_q
+  if (type == 'big') col.name = object$top_colname
 
   # catch if there are no output
   if (length(col.name) == 0) return(c(NULL, NULL))
@@ -21,21 +21,21 @@ get_composition <- function(adapt.fit, type = 'small') {
   for (it in 1:nrow(decomposition)) {
     decomposition[it,names(col.name[[it]])] <-col.name[[it]]
   }
-  if (type == 'small') rownames(decomposition) <- adapt.fit$significant_q
+  if (type == 'small') rownames(decomposition) <- object$significant_q
 
-  if (type == 'small') out.table <- cbind(decomposition, 'q-values' = adapt.fit$q_value[adapt.fit$significant_q])
+  if (type == 'small') out.table <- cbind(decomposition, 'q-values' = object$q_value[object$significant_q])
   if (type == 'big') out.table <- cbind(decomposition, 'q-values' = NA)
   return(list(decomposition, out.table))
 }
 
 #' Title
 #'
-#' @param adapt.fit
+#' @param object
 #'
 #' @export get_significant_biomarker
 #'
 #' @examples
 #' # NA
-get_significant_biomarker <- function(adapt.fit) {
-  return(colnames(get_composition(adapt.fit, type = 'small')[[1]]))
+get_significant_biomarker <- function(object) {
+  return(colnames(get_composition(object, type = 'small')[[1]]))
 }

@@ -30,16 +30,16 @@
 #' @author Wilson Cai \email{wcai@@berkeley.edu}, in collaboration with Alan E.
 #'         Hubbard, with contributions from Nima S. Hejazi.
 #'
-#' @export data_adapt_multi_test
+#' @export adaptest
 #'
-data_adapt_multi_test <- function(Y,
-                                  A,
-                                  W = NULL,
-                                  n_top,
-                                  n_fold,
-                                  absolute = FALSE,
-                                  negative = FALSE,
-                                  parallel = FALSE) {
+adaptest <- function(Y,
+                     A,
+                     W = NULL,
+                     n_top,
+                     n_fold,
+                     absolute = FALSE,
+                     negative = FALSE,
+                     parallel = FALSE) {
   # check whether multiple cores are available if using parallel
   if (parallel) {
     if (parallel::detectCores() == 1) {
