@@ -8,8 +8,8 @@
 #' @export get_composition
 #'
 get_composition <- function(adapt.fit, type = 'small') {
-  if (type == 'small') col.name = adapt.fit$top.col.name2
-  if (type == 'big') col.name = adapt.fit$top.col.name
+  if (type == 'small') col.name = adapt.fit$top_colname_significant_q
+  if (type == 'big') col.name = adapt.fit$top_colname
 
   # catch if there are no output
   if (length(col.name) == 0) return(c(NULL, NULL))
@@ -21,9 +21,9 @@ get_composition <- function(adapt.fit, type = 'small') {
   for (it in 1:nrow(decomposition)) {
     decomposition[it,names(col.name[[it]])] <-col.name[[it]]
   }
-  if (type == 'small') rownames(decomposition) <- adapt.fit$sig.p.FDR
+  if (type == 'small') rownames(decomposition) <- adapt.fit$significant_q
 
-  if (type == 'small') out.table <- cbind(decomposition, 'q-values' = adapt.fit$p.final[adapt.fit$sig.p.FDR])
+  if (type == 'small') out.table <- cbind(decomposition, 'q-values' = adapt.fit$q_value[adapt.fit$significant_q])
   if (type == 'big') out.table <- cbind(decomposition, 'q-values' = NA)
   return(list(decomposition, out.table))
 }

@@ -10,8 +10,8 @@
 #' @examples
 #' #NA
 get_pval <- function(Psi_output, EIC.est_final, alpha=0.05) {
-  n.sim <- nrow(EIC.est_final)
-  var_by_col <- apply(EIC.est_final, 2, var)/n.sim
+  n_sim <- nrow(EIC.est_final)
+  var_by_col <- apply(EIC.est_final, 2, var)/n_sim
   sd_by_col <- sqrt(var_by_col)
   upper <- Psi_output + 1.96 * sd_by_col
   lower <- Psi_output - 1.96 * sd_by_col

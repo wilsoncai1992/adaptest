@@ -4,7 +4,7 @@
 \alias{data_adapt_multi_test}
 \title{Data-adaptive test statistics for high-dimensional multiple testing}
 \usage{
-data_adapt_multi_test(Y, A, W = NULL, n.top, n.fold, absolute = FALSE,
+data_adapt_multi_test(Y, A, W = NULL, n_top, n_fold, absolute = FALSE,
   negative = FALSE, parallel = FALSE)
 }
 \arguments{
@@ -14,10 +14,10 @@ data_adapt_multi_test(Y, A, W = NULL, n.top, n.fold, absolute = FALSE,
 
 \item{W}{matrix containing baseline covariates}
 
-\item{n.top}{integer value for the number of candidate covariates to generate
+\item{n_top}{integer value for the number of candidate covariates to generate
 using the data-adaptive estimation algorithm}
 
-\item{n.fold}{integer number of folds to be used for cross-validation}
+\item{n_fold}{integer number of folds to be used for cross-validation}
 
 \item{absolute}{boolean: \code{TRUE} = test for absolute effect size. This
 \code{FALSE} = test for directional effect. This overrides argument
