@@ -1,7 +1,7 @@
 #' Ranking for data-adaptive test statistics
 #'
 #' Performs ranking using Targeted Minimum Loss-Based Estimation. This function
-#' is designed to be called inside \code{data_adapt_multi_test}; it should not
+#' is designed to be called inside \code{adaptest}; it should not
 #' be run by itself outside of that contex.
 #'
 #' @param Y_param continuous or binary outcome variable

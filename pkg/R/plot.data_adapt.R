@@ -3,7 +3,7 @@
 #' Customized plotting method for easily examining data-adaptive statistics
 #'
 #' @param x data-adaptive statistical object of class \code{data_adapt} as
-#'       returned by \code{data_adapt_multi_test}
+#'       returned by \code{adaptest}
 #' @param plot_type character vector specifying which of the two types of plots
 #'        to generate: "cvrank" for a plot sorted average CV-rank, or "pvals"
 #'        for a plot sorted by p-values with labels corresponding to indices
