@@ -4,10 +4,10 @@
 \alias{shinyprint.data_adapt}
 \title{Method of \code{shinyprint} for objects of class \code{data_adapt}}
 \usage{
-shinyprint.data_adapt(object)
+shinyprint.data_adapt(x)
 }
 \arguments{
-\item{object}{data-adaptive statistical object of class \code{data_adapt}
+\item{x}{data-adaptive statistical object of class \code{data_adapt}
 as returned by \code{adaptest}}
 }
 \description{

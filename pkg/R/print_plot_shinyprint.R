@@ -9,40 +9,40 @@
 #' @export
 #'
 print.data_adapt <- function(x, ...) {
-    print('The top covariates are')
-    print(get_composition(x, type = 'big')[[1]])
-    print('The ATE estiamtes are')
-    print(x$DE)
-    print('The raw p-values are')
-    print(x$p_value)
-    print('The adjusted p-values are')
-    print(x$q_value)
-    print('The top mean CV-rank are (the smaller the better)')
-    print(x$mean_rank_top)
-    print(paste('The percentage of appearing in top', length(x$top_colname),
-                'are (the larger the better)'))
-    print(x$prob_in_top*100)
-    print('The covariates still significant are')
-    print(x$significant_q)
-    print('Their compositions are')
-    print(get_composition(x, type = 'small')[[1]])
+  print('The top covariates are')
+  print(get_composition(x, type = 'big')[[1]])
+  print('The ATE estiamtes are')
+  print(x$DE)
+  print('The raw p-values are')
+  print(x$p_value)
+  print('The adjusted p-values are')
+  print(x$q_value)
+  print('The top mean CV-rank are (the smaller the better)')
+  print(x$mean_rank_top)
+  print(paste('The percentage of appearing in top', length(x$top_colname),
+              'are (the larger the better)'))
+  print(x$prob_in_top*100)
+  print('The covariates still significant are')
+  print(x$significant_q)
+  print('Their compositions are')
+  print(get_composition(x, type = 'small')[[1]])
 }
 
 #' Method of \code{shinyprint} for objects of class \code{data_adapt}
 #'
 #' Provides HTML-based printing utility for examining data-adaptive statistics
 #'
-#' @param object data-adaptive statistical object of class \code{data_adapt}
+#' @param x data-adaptive statistical object of class \code{data_adapt}
 #'        as returned by \code{adaptest}
 #'
 #' @importFrom R2HTML HTML
 #'
 #' @export shinyprint.data_adapt
 #'
-shinyprint.data_adapt <- function(object) {
-  print.data_adapt(object)
+shinyprint.data_adapt <- function(x) {
+  print.data_adapt(x)
   HTML(paste('<b> The covariates still significant are </b>',
-             paste(object[[5]], collapse = ' '),
+             paste(x[[5]], collapse = ' '),
              sep = '<br/>'
   ))
 }
@@ -65,7 +65,6 @@ shinyprint.data_adapt <- function(object) {
 #' @export
 #'
 plot.data_adapt <- function(x, ..., plot_type = c("cvrank", "pvals")) {
-
   top_index <- x$top_index
   DE <- x$DE
   p_value <- x$p_value
@@ -100,3 +99,29 @@ plot.data_adapt <- function(x, ..., plot_type = c("cvrank", "pvals")) {
   }
 }
 
+
+table.data_adapt <- function(x, ..., type = 'adapt_param') {
+  data_adapt_param = 1:length(x$DE)
+  DE = x$DE
+  p_value = x$p_value
+  q_value = x$q_value
+
+  top_biomarker = x$top_index
+  mean_rank_top = x$mean_rank_top
+  prob_in_top = x$prob_in_top*100
+
+  if (type == 'adapt_param'){
+    table_out <- data.frame(data_adapt_param, DE, p_value, q_value)
+    colnames(table_out) <- c('data-adaptive parameters', 'Differential expression', 'p-values', 'q-values')
+    print(table_out)
+  }
+
+
+  if (type == 'biomarker'){
+    # len <- length(top_biomarker)
+    # table_out <- data.frame(top_biomarker, mean_rank_top, prob_in_top)
+    # colnames(table_out) <- c('biomakers', 'mean rank', paste('% appear in top ', len))
+    # print(table_out)
+  }
+
+}
