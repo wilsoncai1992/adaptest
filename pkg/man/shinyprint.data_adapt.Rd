@@ -4,11 +4,11 @@
 \alias{shinyprint.data_adapt}
 \title{Method of \code{shinyprint} for objects of class \code{data_adapt}}
 \usage{
-shinyprint.data_adapt(adapt.fit)
+shinyprint.data_adapt(object)
 }
 \arguments{
-\item{adapt.fit}{data-adaptive statistical object of class \code{data_adapt}
-as returned by \code{data_adapt_multi_test}}
+\item{object}{data-adaptive statistical object of class \code{data_adapt}
+as returned by \code{adaptest}}
 }
 \description{
 Provides HTML-based printing utility for examining data-adaptive statistics

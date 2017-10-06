@@ -69,8 +69,8 @@ SNR
 # ==============================================================================
 # fit DA.test
 # ==============================================================================
-library(data.adapt.multi.test)
-out_result <- data_adapt_multi_test(Y = Y, A = A.sample.vec, n.top = p.true + 5,
+library(adaptest)
+out_result <- adaptest(Y = Y, A = A.sample.vec, n.top = p.true + 5,
                                     # n.fold = 3, parallel = FALSE) # BH on all Y
                                     n.fold = 4, parallel = FALSE) # BH on all Y
 print(out_result)

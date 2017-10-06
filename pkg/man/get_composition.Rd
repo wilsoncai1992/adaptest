@@ -4,11 +4,11 @@
 \alias{get_composition}
 \title{Generic method of \code{table} for objects of class \code{data_adapt}}
 \usage{
-get_composition(adapt.fit, type = "small")
+get_composition(object, type = "small")
 }
 \arguments{
-\item{adapt.fit}{data-adaptive statistical object of class \code{data_adapt}
-as returned by \code{data_adapt_multi_test}}
+\item{object}{data-adaptive statistical object of class \code{data_adapt}
+as returned by \code{adaptest}}
 }
 \description{
 Customized informative tables for examining data-adaptive statistics
