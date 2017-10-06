@@ -5,7 +5,7 @@
 \title{Constructor function for class \code{data_adapt}}
 \usage{
 data_adapt(Y, A, W = NULL, n_top, n_fold, absolute, negative,
-  parameter_wrapper)
+  parameter_wrapper, SL_lib)
 }
 \arguments{
 \item{Y}{continuous or binary outcome variable}
@@ -27,6 +27,8 @@ using the data-adaptive estimation algorithm}
 \code{FALSE} = test for positive effect size}
 
 \item{parameter_wrapper}{function}
+
+\item{SL_lib}{character}
 }
 \value{
 S3 object of class "data_adapt" for data-adaptive multiple testing.

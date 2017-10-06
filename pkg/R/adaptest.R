@@ -12,6 +12,7 @@
 #'        \code{FALSE} = test for directional effect. This overrides argument
 #'        \code{negative}.
 #' @param parameter_wrapper function
+#' @param SL_lib character
 #'
 #' @return S3 object of class "data_adapt" for data-adaptive multiple testing.
 #'
@@ -24,7 +25,8 @@ data_adapt <- function(Y,
                        n_fold,
                        absolute,
                        negative,
-                       parameter_wrapper) {
+                       parameter_wrapper,
+                       SL_lib) {
   if (!is.data.frame(Y)) {
     if(!is.matrix(Y)) {
       stop("argument Y must be a data.frame or a matrix")
@@ -40,6 +42,7 @@ data_adapt <- function(Y,
   if (!is.logical(absolute)) stop("argument absolute must be boolean/logical")
   if (!is.logical(negative)) stop("argument negative must be boolean/logical")
   if (!is.function(parameter_wrapper)) stop("argument parameter_wrapper must be function")
+  if (!is.character(SL_lib)) stop("argument SL_lib must be character")
 
   # placeholders for outputs to be included when returning the data_adapt object
   top_colname <- NULL
@@ -50,13 +53,13 @@ data_adapt <- function(Y,
   mean_rank_top <- NULL
   prob_in_top <- NULL
 
-  out <- structure(list(Y, A, W, n_top, n_fold, absolute, negative, parameter_wrapper,
+  out <- structure(list(Y, A, W, n_top, n_fold, absolute, negative, parameter_wrapper, SL_lib,
                         top_colname, DE, p_value, q_value, significant_q,
                         mean_rank_top, prob_in_top),
                    class = "data_adapt")
 
   names(out) <- c("Y", "A", "W", "n_top", "n_fold", "absolute", "negative",
-                  "parameter_wrapper", "top_colname", "DE", "p_value", "q_value",
+                  "parameter_wrapper", "SL_lib", "top_colname", "DE", "p_value", "q_value",
                   "significant_q", "mean_rank_top", "prob_in_top")
 
   # export instance of "data_adapt" for downstream use
@@ -107,6 +110,7 @@ get_pval <- function(Psi_output, EIC_est_final, alpha=0.05) {
 #'        \code{FALSE} = test for directional effect. This overrides argument
 #'        \code{negative}.
 #' @param parameter_wrapper function
+#' @param SL_lib character
 #'
 #' @importFrom tmle tmle
 #' @importFrom foreach foreach "%dopar%"
@@ -127,15 +131,17 @@ adaptest <- function(Y,
                      n_top,
                      n_fold,
                      parameter_wrapper = adaptest::rank_DE,
+                     SL_lib = c("SL.glm", "SL.step", "SL.glm.interaction", 'SL.gam', 'SL.earth'),
                      absolute = FALSE,
                      negative = FALSE) {
   # use constructor function to instantiate "data_adapt" object
   data_adapt <- data_adapt(Y = Y, A = A, W = W,
                            n_top = n_top,
                            n_fold = n_fold,
-                           parameter_wrapper = parameter_wrapper,
                            absolute = absolute,
-                           negative = negative)
+                           negative = negative,
+                           parameter_wrapper = parameter_wrapper,
+                           SL_lib = SL_lib)
   # ============================================================================
   # preparation
   # ============================================================================
@@ -189,11 +195,10 @@ adaptest <- function(Y,
 
     index_grid <- which(data_adaptive_index <= n_top)
     # estimate the parameter on estimation sample
-    SL_lib <- c("SL.glm", "SL.step", "SL.glm.interaction", 'SL.gam', 'SL.earth')
     psi_list <- list()
     EIC_list <- list()
     for(it_index in seq_along(index_grid)){
-      print(index_grid[it_index])
+      # print(index_grid[it_index])
       tmle_estimation <- tmle(Y = Y_est[, index_grid[it_index]], A = A_est, W = W_est,
                               Q.SL.library = SL_lib, g.SL.library = SL_lib)
       psi_list[[it_index]] <- tmle_estimation$estimates$ATE$psi

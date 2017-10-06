@@ -5,7 +5,8 @@
 \title{Data-adaptive test statistics for high-dimensional multiple testing}
 \usage{
 adaptest(Y, A, W = NULL, n_top, n_fold,
-  parameter_wrapper = adaptest::rank_DE, absolute = FALSE,
+  parameter_wrapper = adaptest::rank_DE, SL_lib = c("SL.glm", "SL.step",
+  "SL.glm.interaction", "SL.gam", "SL.earth"), absolute = FALSE,
   negative = FALSE)
 }
 \arguments{
@@ -21,6 +22,8 @@ using the data-adaptive estimation algorithm}
 \item{n_fold}{integer number of folds to be used for cross-validation}
 
 \item{parameter_wrapper}{function}
+
+\item{SL_lib}{character}
 
 \item{absolute}{boolean: \code{TRUE} = test for absolute effect size. This
 \code{FALSE} = test for directional effect. This overrides argument
