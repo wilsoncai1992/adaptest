@@ -13,11 +13,11 @@ n.top = 30
 # n.fold = 3
 n.fold = 5
 
-library(data.adapt.multi.test)
+library(adaptest)
 # test for positive effects
 # data.adapt.fit <- data_adapt.multi_test(Y = exprHS, A = expose, n.top.want, n.fold, abs = FALSE, negative = FALSE)
 # data.adapt.fit <- data_adapt.multi_test(Y = exprHS, A = expose, W = NULL, n.top.want	= n.top.want, n.fold = n.fold, abs = FALSE, negative = FALSE)
-data.adapt.fit <- data_adapt_multi_test(Y = exprHS, A = expose, W = NULL,
+data.adapt.fit <- adaptest(Y = exprHS, A = expose, W = NULL,
                                         n.top	= n.top.want, n.fold = n.fold,
                                         absolute = FALSE, negative = FALSE,
                                         # parallel = TRUE)
@@ -32,7 +32,7 @@ plot(data.adapt.fit)
 colnames(exprHS)[as.numeric(colnames(tables[[1]]))]
 
 # negative effects
-data.adapt.fit <- data_adapt_multi_test(Y = exprHS, A = expose, W = NULL,
+data.adapt.fit <- adaptest(Y = exprHS, A = expose, W = NULL,
                                         n.top   = n.top.want, n.fold = n.fold,
                                         absolute = FALSE, negative = TRUE,
                                         # parallel = TRUE)

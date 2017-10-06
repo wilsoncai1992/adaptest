@@ -4,10 +4,10 @@
 \alias{get_significant_biomarker}
 \title{Title}
 \usage{
-get_significant_biomarker(adapt.fit)
+get_significant_biomarker(object)
 }
 \arguments{
-\item{adapt.fit}{}
+\item{object}{}
 }
 \description{
 Title

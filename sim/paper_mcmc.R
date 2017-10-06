@@ -85,7 +85,7 @@ for (it in 1:NUM_REPEAT) {
     SNR
     # fit DA.test
     library(adaptest)
-    out_result <- data_adapt_multi_test(Y = Y, A = A.sample.vec, n_top = p.true + 5,
+    out_result <- adaptest(Y = Y, A = A.sample.vec, n_top = p.true + 5,
                                         n_fold = 4, parallel = FALSE) # BH on all Y
     out_result
     col_id_sig_final <- as.numeric(adaptest::get_significant_biomarker(out_result))
