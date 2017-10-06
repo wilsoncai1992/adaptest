@@ -4,10 +4,10 @@
 #' is designed to be called inside \code{adaptest}; it should not
 #' be run by itself outside of that contex.
 #'
-#' @param Y_param continuous or binary outcome variable
-#' @param A_param binary treatment indicator: \code{1} = treatment,
+#' @param Y continuous or binary outcome variable
+#' @param A binary treatment indicator: \code{1} = treatment,
 #'        \code{0} = control
-#' @param W_param vector, matrix, or data.frame containing baseline covariates
+#' @param W vector, matrix, or data.frame containing baseline covariates
 #' @param absolute boolean: \code{TRUE} = test for absolute effect size. This
 #'        \code{FALSE} = test for directional effect. This overrides argument
 #'        \code{negative}.
@@ -19,26 +19,26 @@
 #'
 #' @export data_adapt_rank
 #'
-data_adapt_rank <- function(Y_param,
-                            A_param,
-                            W_param,
+data_adapt_rank <- function(Y,
+                            A,
+                            W,
                             absolute = FALSE,
                             negative = FALSE) {
-  n_here <- nrow(Y_param)
-  p_all <- ncol(Y_param)
+  n_here <- nrow(Y)
+  p_all <- ncol(Y)
 
   B1_fitted <- rep(0, p_all)
 
   SL_lib <- c("SL.glm", "SL.step", "SL.glm.interaction", 'SL.gam')
 
   for (it in 1:p_all) {
-    A_fit <- A_param
-    Y_fit <- Y_param[,it]
-    W_fit <- as.matrix(W_param)
-    # CASE 1: TMLE for effect size
-    if ( !identical(W_param, as.matrix(rep(1, n_here))) ) {
+    A_fit <- A
+    Y_fit <- Y[,it]
+    W_fit <- as.matrix(W)
+    # CASE 1: TMLE for DE effect size
+    if ( !identical(W, as.matrix(rep(1, n_here))) ) {
       # if there are W
-      tmle_fit <- tmle(Y = Y_fit, A = A_fit, W = W_param,
+      tmle_fit <- tmle(Y = Y_fit, A = A_fit, W = W,
                           Q.SL_library = SL_lib, g.SL_library = SL_lib)
       B1_fitted[it] <- tmle_fit$estimates$ATE$psi
     } else {
