@@ -6,7 +6,7 @@
 #'        returned by \code{adaptest}.
 #' @param ... additional arguments passed to \code{print} as necessary
 #'
-#' @export print.data_adapt
+#' @export
 #'
 print.data_adapt <- function(x, ...) {
     print('The top covariates are')
@@ -62,7 +62,7 @@ shinyprint.data_adapt <- function(object) {
 #' @importFrom graphics abline plot
 #' @importFrom calibrate textxy
 #'
-#' @export plot.data_adapt
+#' @export
 #'
 plot.data_adapt <- function(x, ..., plot_type = c("cvrank", "pvals")) {
 
