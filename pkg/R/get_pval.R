@@ -1,7 +1,7 @@
 #' Title
 #'
 #' @param Psi_output
-#' @param EIC.est_final
+#' @param EIC_est_final
 #' @param alpha
 #'
 #' @return
@@ -9,9 +9,9 @@
 #'
 #' @examples
 #' #NA
-get_pval <- function(Psi_output, EIC.est_final, alpha=0.05) {
-  n_sim <- nrow(EIC.est_final)
-  var_by_col <- apply(EIC.est_final, 2, var)/n_sim
+get_pval <- function(Psi_output, EIC_est_final, alpha=0.05) {
+  n_sim <- nrow(EIC_est_final)
+  var_by_col <- apply(EIC_est_final, 2, var)/n_sim
   sd_by_col <- sqrt(var_by_col)
   upper <- Psi_output + 1.96 * sd_by_col
   lower <- Psi_output - 1.96 * sd_by_col
