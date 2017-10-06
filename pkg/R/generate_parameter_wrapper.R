@@ -17,9 +17,9 @@
 #' @importFrom tmle tmle
 #' @importFrom stats lm p.adjust
 #'
-#' @export data_adapt_rank
+#' @export rank_DE
 #'
-data_adapt_rank <- function(Y,
+rank_DE <- function(Y,
                             A,
                             W,
                             absolute = FALSE,

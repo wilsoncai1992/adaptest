@@ -4,8 +4,9 @@
 \alias{adaptest}
 \title{Data-adaptive test statistics for high-dimensional multiple testing}
 \usage{
-adaptest(Y, A, W = NULL, n_top, n_fold, absolute = FALSE,
-  negative = FALSE, parallel = FALSE)
+adaptest(Y, A, W = NULL, n_top, n_fold,
+  parameter_wrapper = adaptest::rank_DE, absolute = FALSE,
+  negative = FALSE)
 }
 \arguments{
 \item{Y}{continuous or binary outcome variable}
@@ -19,15 +20,14 @@ using the data-adaptive estimation algorithm}
 
 \item{n_fold}{integer number of folds to be used for cross-validation}
 
+\item{parameter_wrapper}{function}
+
 \item{absolute}{boolean: \code{TRUE} = test for absolute effect size. This
 \code{FALSE} = test for directional effect. This overrides argument
 \code{negative}.}
 
 \item{negative}{boolean: \code{TRUE} = test for negative effect size,
 \code{FALSE} = test for positive effect size}
-
-\item{parallel}{boolean: \code{TRUE} = use multiple cores via \code{foreach},
-\code{FALSE} = single-core processing.}
 }
 \description{
 Performs targeted minimum loss-based estimation (TMLE )of a marginal additive

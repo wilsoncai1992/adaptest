@@ -11,8 +11,7 @@
 #' @param absolute boolean: \code{TRUE} = test for absolute effect size. This
 #'        \code{FALSE} = test for directional effect. This overrides argument
 #'        \code{negative}.
-#' @param parallel boolean: \code{TRUE} = use multiple cores via \code{foreach},
-#'        \code{FALSE} = single-core processing.
+#' @param parameter_wrapper function
 #'
 #' @return S3 object of class "data_adapt" for data-adaptive multiple testing.
 #'
@@ -25,7 +24,7 @@ data_adapt <- function(Y,
                        n_fold,
                        absolute,
                        negative,
-                       parallel) {
+											 parameter_wrapper) {
   if (!is.data.frame(Y)) {
     if(!is.matrix(Y)) {
       stop("argument Y must be a data.frame or a matrix")
@@ -40,9 +39,9 @@ data_adapt <- function(Y,
   if (!is.numeric(n_fold)) stop("argument n_fold must be numeric")
   if (!is.logical(absolute)) stop("argument absolute must be boolean/logical")
   if (!is.logical(negative)) stop("argument negative must be boolean/logical")
-  if (!is.logical(parallel)) stop("argument parallel must be boolean/logical")
+	if (!is.function(parameter_wrapper)) stop("argument parameter_wrapper must be function")
 
-  # placeholders for outputs to be included when returning the data_adapt object
+	# placeholders for outputs to be included when returning the data_adapt object
   top_colname <- NULL
   DE <- NULL
   p_value <- NULL
@@ -51,13 +50,13 @@ data_adapt <- function(Y,
   mean_rank_top <- NULL
   prob_in_top <- NULL
 
-  out <- structure(list(Y, A, W, n_top, n_fold, absolute, negative, parallel,
+  out <- structure(list(Y, A, W, n_top, n_fold, absolute, negative, parameter_wrapper,
                         top_colname, DE, p_value, q_value, significant_q,
                         mean_rank_top, prob_in_top),
                    class = "data_adapt")
 
   names(out) <- c("Y", "A", "W", "n_top", "n_fold", "absolute", "negative",
-                  "parallel", "top_colname", "DE", "p_value", "q_value",
+                  "parameter_wrapper", "top_colname", "DE", "p_value", "q_value",
                   "significant_q", "mean_rank_top", "prob_in_top")
 
   # export instance of "data_adapt" for downstream use
@@ -107,8 +106,7 @@ get_pval <- function(Psi_output, EIC_est_final, alpha=0.05) {
 #' @param absolute boolean: \code{TRUE} = test for absolute effect size. This
 #'        \code{FALSE} = test for directional effect. This overrides argument
 #'        \code{negative}.
-#' @param parallel boolean: \code{TRUE} = use multiple cores via \code{foreach},
-#'        \code{FALSE} = single-core processing.
+#' @param parameter_wrapper function
 #'
 #' @importFrom tmle tmle
 #' @importFrom foreach foreach "%dopar%"
@@ -128,20 +126,16 @@ adaptest <- function(Y,
                      W = NULL,
                      n_top,
                      n_fold,
+                     parameter_wrapper = adaptest::rank_DE,
                      absolute = FALSE,
-                     negative = FALSE,
-                     parallel = FALSE) {
-  # check whether multiple cores are available if using parallel
-  if (parallel) {
-    if (parallel::detectCores() == 1) {
-      stop("argument parallel == TRUE, but multiple cores not detected...")
-    }
-  }
-
+                     negative = FALSE) {
   # use constructor function to instantiate "data_adapt" object
-  data_adapt <- data_adapt(Y, A, W = NULL, n_top, n_fold, absolute = FALSE,
-                           negative = FALSE, parallel = FALSE)
-
+  data_adapt <- data_adapt(Y = Y, A = A, W = W,
+  												 n_top = n_top,
+  												 n_fold = n_fold,
+  												 parameter_wrapper = parameter_wrapper,
+  												 absolute = absolute,
+                           negative = negative)
   # ============================================================================
   # preparation
   # ============================================================================
@@ -187,8 +181,11 @@ adaptest <- function(Y,
     W_est <- data_adapt$W[index_for_folds == chunk_as_est, ,drop = FALSE]
 
     # generate data-adaptive target parameter
-    data_adaptive_index <- data_adapt_rank(Y_param, A_param, W_param, absolute,
-                                           negative)
+    data_adaptive_index <- parameter_wrapper(Y = Y_param,
+                                             A = A_param,
+                                             W = W_param,
+                                             absolute,
+                                             negative)
 
     index_grid <- which(data_adaptive_index <= n_top)
     # estimate the parameter on estimation sample
@@ -198,7 +195,7 @@ adaptest <- function(Y,
     for(it_index in seq_along(index_grid)){
       print(index_grid[it_index])
       tmle_estimation <- tmle(Y = Y_est[, index_grid[it_index]], A = A_est, W = W_est,
-                              Q.SL_library = SL_lib, g.SL_library = SL_lib)
+                              Q.SL.library = SL_lib, g.SL.library = SL_lib)
       psi_list[[it_index]] <- tmle_estimation$estimates$ATE$psi
       EIC_list[[it_index]] <- tmle_estimation$estimates$IC$IC.ATE
     }
