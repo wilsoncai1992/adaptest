@@ -225,9 +225,21 @@ adaptest <- function(Y,
   adaptY_composition <- adapt_param_composition[,1:n_top]
   adaptY_composition <- apply(adaptY_composition, 2, function(x) table(x)/sum(table(x)))
 
+  # ============================================================================
+  # perform FDR correction
+  # ============================================================================
+  q_value <- p.adjust(p_value, method = 'BH')
+
+  is_sig_q_value <- q_value <= 0.05
+  significant_q <- which(is_sig_q_value)
+
+  # export covariate name for easier interpretation
+  top_colname <- adaptY_composition
+  top_colname_significant_q <- adaptY_composition[which(is_sig_q_value)]
+  # ============================================================================
   # compute average rank across all folds
   mean_rank <- colMeans(rank_in_folds)
-  top_index <- which(rank(mean_rank) <= data_adapt$n_top)
+  top_index <- sort(as.numeric(unique(unlist(sapply(top_colname, names)))))
 
   mean_rank_top <- mean_rank[top_index]
 
@@ -241,17 +253,6 @@ adaptest <- function(Y,
   prob_in_top <- colMeans(mean_rank_in_top)
 
   prob_in_top <- prob_in_top[top_index]
-  # ============================================================================
-  # perform FDR correction
-  # ============================================================================
-  q_value <- p.adjust(p_value, method = 'BH')
-
-  is_sig_q_value <- q_value <= 0.05
-  significant_q <- which(is_sig_q_value)
-
-  # export covariate name for easier interpretation
-  top_colname <- adaptY_composition
-  top_colname_significant_q <- adaptY_composition[which(is_sig_q_value)]
   # ============================================================================
   # add all newly computed statistical objects to the original data_adapt object
   # ============================================================================
