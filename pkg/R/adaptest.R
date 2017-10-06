@@ -24,7 +24,7 @@ data_adapt <- function(Y,
                        n_fold,
                        absolute,
                        negative,
-											 parameter_wrapper) {
+                       parameter_wrapper) {
   if (!is.data.frame(Y)) {
     if(!is.matrix(Y)) {
       stop("argument Y must be a data.frame or a matrix")
@@ -39,9 +39,9 @@ data_adapt <- function(Y,
   if (!is.numeric(n_fold)) stop("argument n_fold must be numeric")
   if (!is.logical(absolute)) stop("argument absolute must be boolean/logical")
   if (!is.logical(negative)) stop("argument negative must be boolean/logical")
-	if (!is.function(parameter_wrapper)) stop("argument parameter_wrapper must be function")
+  if (!is.function(parameter_wrapper)) stop("argument parameter_wrapper must be function")
 
-	# placeholders for outputs to be included when returning the data_adapt object
+  # placeholders for outputs to be included when returning the data_adapt object
   top_colname <- NULL
   DE <- NULL
   p_value <- NULL
@@ -131,10 +131,10 @@ adaptest <- function(Y,
                      negative = FALSE) {
   # use constructor function to instantiate "data_adapt" object
   data_adapt <- data_adapt(Y = Y, A = A, W = W,
-  												 n_top = n_top,
-  												 n_fold = n_fold,
-  												 parameter_wrapper = parameter_wrapper,
-  												 absolute = absolute,
+                           n_top = n_top,
+                           n_fold = n_fold,
+                           parameter_wrapper = parameter_wrapper,
+                           absolute = absolute,
                            negative = negative)
   # ============================================================================
   # preparation
