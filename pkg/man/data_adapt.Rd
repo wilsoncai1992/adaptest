@@ -4,7 +4,8 @@
 \alias{data_adapt}
 \title{Constructor function for class \code{data_adapt}}
 \usage{
-data_adapt(Y, A, W = NULL, n_top, n_fold, absolute, negative, parallel)
+data_adapt(Y, A, W = NULL, n_top, n_fold, absolute, negative,
+  parameter_wrapper)
 }
 \arguments{
 \item{Y}{continuous or binary outcome variable}
@@ -25,8 +26,7 @@ using the data-adaptive estimation algorithm}
 \item{negative}{boolean: \code{TRUE} = test for negative effect size,
 \code{FALSE} = test for positive effect size}
 
-\item{parallel}{boolean: \code{TRUE} = use multiple cores via \code{foreach},
-\code{FALSE} = single-core processing.}
+\item{parameter_wrapper}{function}
 }
 \value{
 S3 object of class "data_adapt" for data-adaptive multiple testing.
