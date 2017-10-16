@@ -169,7 +169,8 @@ adaptest <- function(Y,
   psi_est_composition <- list()
   EIC_est_composition <- list()
   # ============================================================================
-  compute_a_fold <- function(fold, data, Y_name, A_name) {
+  compute_a_fold <- function(fold, data, Y_name, A_name, W_name, SL_lib) {
+    browser()
     # define training and validation sets based on input object of class "folds"
     param_data <- training(data)
     estim_data <- validation(data)
@@ -192,7 +193,8 @@ adaptest <- function(Y,
                                              A = A_param,
                                              W = W_param,
                                              absolute,
-                                             negative)
+                                             negative,
+                                             SL_lib = SL_lib)
 
     index_grid <- which(data_adaptive_index <= n_top)
     # estimate the parameter on estimation sample
@@ -217,25 +219,24 @@ adaptest <- function(Y,
   }
   library(origami)
 
-  folds <- make_folds(n = n_sim)
-  # if (!all.equal(data_adapt$W, as.matrix(rep(1, n_sim)))) df_all <- data.frame(Y = Y, A = A.sample.vec, W)
-  # if (all.equal(data_adapt$W, as.matrix(rep(1, n_sim)))) df_all <- data.frame(Y = Y, A = A.sample.vec)
+  folds <- make_folds(n = n_sim, V = 3)
   df_all <- data.frame(Y = Y, A = A.sample.vec, W = W)
-  cvrf_results <- cross_validate(cv_fun = compute_a_fold, folds = folds, data = df_all,
-                                 Y_name = 'Y', A_name = 'A')
+  # browser()
+  cv_results <- cross_validate(cv_fun = compute_a_fold, folds = folds, data = df_all,
+                               Y_name = 'Y', A_name = 'A', W_name = 'W', SL_lib = SL_lib)
   mean(cvrf_results$SE)
   # ============================================================================
   # CV
   # ============================================================================
-  for (it0 in 1:n_fold) {
-    list[data_adaptive_index, index_grid_here, psi_est_here, EIC_est_here] <- compute.a.fold(data_adapt, it0)
-    rank_in_folds[it0,] <- data_adaptive_index
-    adapt_param_composition[it0,] <- index_grid_here
-    psi_est_composition[[it0]] <- psi_est_here
-    EIC_est_composition[[it0]] <- EIC_est_here
-  }
-  psi_est_final <- do.call(rbind, psi_est_composition)
-  EIC_est_final <- do.call(rbind, EIC_est_composition)
+  # for (it0 in 1:n_fold) {
+  #   list[data_adaptive_index, index_grid_here, psi_est_here, EIC_est_here] <- compute.a.fold(data_adapt, it0)
+  #   rank_in_folds[it0,] <- data_adaptive_index
+  #   adapt_param_composition[it0,] <- index_grid_here
+  #   psi_est_composition[[it0]] <- psi_est_here
+  #   EIC_est_composition[[it0]] <- EIC_est_here
+  # }
+  psi_est_final <- do.call(rbind, cv_results$psi_est_composition)
+  EIC_est_final <- do.call(rbind, cv_results$EIC_est_composition)
   # ============================================================================
   # statistical inference
   # ============================================================================

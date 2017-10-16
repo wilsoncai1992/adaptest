@@ -20,10 +20,11 @@
 #' @export rank_DE
 #'
 rank_DE <- function(Y,
-                            A,
-                            W,
-                            absolute = FALSE,
-                            negative = FALSE) {
+                    A,
+                    W,
+                    absolute = FALSE,
+                    negative = FALSE,
+                    SL_lib) {
   n_here <- nrow(Y)
   p_all <- ncol(Y)
 
@@ -39,7 +40,7 @@ rank_DE <- function(Y,
     if ( !identical(W, as.matrix(rep(1, n_here))) ) {
       # if there are W
       tmle_fit <- tmle(Y = Y_fit, A = A_fit, W = W,
-                          Q.SL_library = SL_lib, g.SL_library = SL_lib)
+                          Q.SL.library = SL_lib, g.SL.library = SL_lib)
       B1_fitted[it] <- tmle_fit$estimates$ATE$psi
     } else {
       # CASE 2: OLS for faster effect size
