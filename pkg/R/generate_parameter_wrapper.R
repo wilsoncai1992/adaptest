@@ -23,8 +23,7 @@ rank_DE <- function(Y,
                     A,
                     W,
                     absolute = FALSE,
-                    negative = FALSE,
-                    SL_lib) {
+                    negative = FALSE) {
   n_here <- nrow(Y)
   p_all <- ncol(Y)
 
@@ -37,7 +36,7 @@ rank_DE <- function(Y,
     Y_fit <- Y[,it]
     W_fit <- as.matrix(W)
     # CASE 1: TMLE for DE effect size
-    if ( !identical(W, as.matrix(rep(1, n_here))) ) {
+    if (sum(W - as.matrix(rep(1, n_here))) != 0) {
       # if there are W
       tmle_fit <- tmle(Y = Y_fit, A = A_fit, W = W,
                           Q.SL.library = SL_lib, g.SL.library = SL_lib)
