@@ -56,14 +56,14 @@ Y <- b0 + temp1 + epsilon
 rm(list = c('b0', 'epsilon', 'temp1'))
 gc()
 # ------------------------------------
-
+save(Y, A.sample.vec, file = 'input.Rdata')
 # ==============================================================================
 # fit DA.test
 # ==============================================================================
 library(adaptest)
-out_result <- adaptest(Y = Y, A = A.sample.vec, n.top = p.true + 5,
-                                    # n.fold = 3, parallel = FALSE) # BH on all Y
-                                    n.fold = 4, parallel = FALSE) # BH on all Y
+out_result <- adaptest(Y = Y, A = A.sample.vec,
+                       n_top = p.true + 5,
+                       n_fold = 4) # BH on all Y
 print(out_result)
 plot(out_result)
 # print.data_adapt(out_result)
