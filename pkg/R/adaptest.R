@@ -153,17 +153,14 @@ adaptest <- function(Y,
     W <- as.matrix(rep(1, n_sim))
     data_adapt$W <- W
   }
-
   # ============================================================================
   # create parameter generating sample
   # ============================================================================
   # determine number of samples per fold
   sample_each_fold <- ceiling(n_sim / n_fold)
-
   # random index
   index_for_folds <- sample(head(rep(1:n_fold, each = sample_each_fold),
                                    n = n_sim))
-
   # number of observations in each fold
   table_n_per_fold <- table(index_for_folds)
 
@@ -172,19 +169,23 @@ adaptest <- function(Y,
   psi_est_composition <- list()
   EIC_est_composition <- list()
   # ============================================================================
-  compute.a.fold <- function(data_adapt, it0) {
-    print(paste('Fold:', it0))
-    chunk_as_est <- it0
+  compute_a_fold <- function(fold, data, Y_name, A_name) {
+    # define training and validation sets based on input object of class "folds"
+    param_data <- training(data)
+    estim_data <- validation(data)
 
-    # create parameter generating data
-    Y_param <- data_adapt$Y[index_for_folds != chunk_as_est, ]
-    A_param <- data_adapt$A[index_for_folds != chunk_as_est]
-    W_param <- data_adapt$W[index_for_folds != chunk_as_est, ,drop = FALSE]
-
-    # create estimation data
-    Y_est <- data_adapt$Y[index_for_folds == chunk_as_est, ]
-    A_est <- data_adapt$A[index_for_folds == chunk_as_est]
-    W_est <- data_adapt$W[index_for_folds == chunk_as_est, ,drop = FALSE]
+    # get param generating data
+    A_param <- param_data[,grep(A_name, colnames(df_all))]
+    Y_param <- as.matrix(param_data[,grep(Y_name, colnames(df_all))])
+    param_data[,grep(A_name, colnames(df_all))] <- NULL
+    param_data[,grep(Y_name, colnames(df_all))] <- NULL
+    W_param <- as.matrix(param_data)
+    # get estimation data
+    A_estim <- estim_data[,grep(A_name, colnames(df_all))]
+    Y_estim <- as.matrix(estim_data[,grep(Y_name, colnames(df_all))])
+    estim_data[,grep(A_name, colnames(df_all))] <- NULL
+    estim_data[,grep(Y_name, colnames(df_all))] <- NULL
+    W_estim <- as.matrix(estim_data)
 
     # generate data-adaptive target parameter
     data_adaptive_index <- parameter_wrapper(Y = Y_param,
@@ -207,9 +208,22 @@ adaptest <- function(Y,
     psi_est <- do.call(c, psi_list)
     EIC_est <- do.call(cbind, EIC_list)
 
-    return(list(data_adaptive_index, index_grid, psi_est, EIC_est))
+    # define output object to be returned as list (for flexibility)
+    out <- list(data_adaptive_index = data_adaptive_index,
+                index_grid = index_grid,
+                psi_est = psi_est,
+                EIC_est = EIC_est)
+    return(out)
   }
+  library(origami)
 
+  folds <- make_folds(n = n_sim)
+  # if (!all.equal(data_adapt$W, as.matrix(rep(1, n_sim)))) df_all <- data.frame(Y = Y, A = A.sample.vec, W)
+  # if (all.equal(data_adapt$W, as.matrix(rep(1, n_sim)))) df_all <- data.frame(Y = Y, A = A.sample.vec)
+  df_all <- data.frame(Y = Y, A = A.sample.vec, W = W)
+  cvrf_results <- cross_validate(cv_fun = compute_a_fold, folds = folds, data = df_all,
+                                 Y_name = 'Y', A_name = 'A')
+  mean(cvrf_results$SE)
   # ============================================================================
   # CV
   # ============================================================================
