@@ -170,7 +170,6 @@ adaptest <- function(Y,
   EIC_est_composition <- list()
   # ============================================================================
   compute_a_fold <- function(fold, data, Y_name, A_name, W_name) {
-    browser()
     # define training and validation sets based on input object of class "folds"
     param_data <- training(data)
     estim_data <- validation(data)
@@ -218,29 +217,23 @@ adaptest <- function(Y,
   }
   library(origami)
 
-  folds <- make_folds(n = n_sim, V = 3)
+  folds <- make_folds(n = n_sim, V = n_fold)
   df_all <- data.frame(Y = Y, A = A.sample.vec, W = W)
-  # browser()
   cv_results <- cross_validate(cv_fun = compute_a_fold, folds = folds, data = df_all,
                                Y_name = 'Y', A_name = 'A', W_name = 'W')
-  mean(cvrf_results$SE)
   # ============================================================================
   # CV
   # ============================================================================
-  # for (it0 in 1:n_fold) {
-  #   list[data_adaptive_index, index_grid_here, psi_est_here, EIC_est_here] <- compute.a.fold(data_adapt, it0)
-  #   rank_in_folds[it0,] <- data_adaptive_index
-  #   adapt_param_composition[it0,] <- index_grid_here
-  #   psi_est_composition[[it0]] <- psi_est_here
-  #   EIC_est_composition[[it0]] <- EIC_est_here
-  # }
-  psi_est_final <- do.call(rbind, cv_results$psi_est_composition)
-  EIC_est_final <- do.call(rbind, cv_results$EIC_est_composition)
+  rank_in_folds <- matrix(data = cv_results$data_adaptive_index, nrow = n_fold, ncol = p_all, byrow = TRUE)
+  adapt_param_composition <- matrix(data = cv_results$index_grid, nrow = n_fold, ncol = n_top, byrow = TRUE)
+  psi_est_final <- matrix(data = cv_results$psi_est, nrow = n_fold, ncol = n_top, byrow = TRUE)
+  EIC_est_final <- cv_results$EIC_est
+  # browser()
   # ============================================================================
   # statistical inference
   # ============================================================================
   Psi_output <- colMeans(psi_est_final)
-  list[p_value, upper, lower, sd_by_col] <- get_pval(Psi_output, EIC_est_final, alpha=0.05)
+  list[p_value, upper, lower, sd_by_col] <- get_pval(Psi_output, EIC_est_final, alpha = 0.05)
   adaptY_composition <- adapt_param_composition[,1:n_top]
   adaptY_composition <- apply(adaptY_composition, 2, function(x) table(x)/sum(table(x)))
 
