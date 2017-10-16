@@ -169,7 +169,7 @@ adaptest <- function(Y,
   psi_est_composition <- list()
   EIC_est_composition <- list()
   # ============================================================================
-  compute_a_fold <- function(fold, data, Y_name, A_name, W_name, SL_lib) {
+  compute_a_fold <- function(fold, data, Y_name, A_name, W_name) {
     browser()
     # define training and validation sets based on input object of class "folds"
     param_data <- training(data)
@@ -193,8 +193,7 @@ adaptest <- function(Y,
                                              A = A_param,
                                              W = W_param,
                                              absolute,
-                                             negative,
-                                             SL_lib = SL_lib)
+                                             negative)
 
     index_grid <- which(data_adaptive_index <= n_top)
     # estimate the parameter on estimation sample
@@ -202,7 +201,7 @@ adaptest <- function(Y,
     EIC_list <- list()
     for(it_index in seq_along(index_grid)){
       # print(index_grid[it_index])
-      tmle_estimation <- tmle(Y = Y_est[, index_grid[it_index]], A = A_est, W = W_est,
+      tmle_estimation <- tmle(Y = Y_estim[, index_grid[it_index]], A = A_estim, W = W_estim,
                               Q.SL.library = SL_lib, g.SL.library = SL_lib)
       psi_list[[it_index]] <- tmle_estimation$estimates$ATE$psi
       EIC_list[[it_index]] <- tmle_estimation$estimates$IC$IC.ATE
@@ -223,7 +222,7 @@ adaptest <- function(Y,
   df_all <- data.frame(Y = Y, A = A.sample.vec, W = W)
   # browser()
   cv_results <- cross_validate(cv_fun = compute_a_fold, folds = folds, data = df_all,
-                               Y_name = 'Y', A_name = 'A', W_name = 'W', SL_lib = SL_lib)
+                               Y_name = 'Y', A_name = 'A', W_name = 'W')
   mean(cvrf_results$SE)
   # ============================================================================
   # CV
