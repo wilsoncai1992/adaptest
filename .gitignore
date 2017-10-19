@@ -2,4 +2,6 @@
 .Rhistory
 .RData
 .Ruserdata
+vignettes/*.html
+README.html
 input.Rdata

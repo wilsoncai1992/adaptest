@@ -40,5 +40,5 @@ associated with multiple testing.
 }
 \author{
 Wilson Cai \email{wcai@berkeley.edu}, in collaboration with Alan E.
-        Hubbard, with contributions from Nima S. Hejazi.
+ Hubbard, with contributions from Nima S. Hejazi.
 }

@@ -2,7 +2,7 @@
 % Please edit documentation in R/adaptest.R
 \name{get_pval}
 \alias{get_pval}
-\title{Title}
+\title{Extract p-values}
 \usage{
 get_pval(Psi_output, EIC_est_final, alpha = 0.05)
 }
@@ -10,8 +10,5 @@ get_pval(Psi_output, EIC_est_final, alpha = 0.05)
 \item{alpha}{}
 }
 \description{
-Title
-}
-\examples{
-#NA
+Extract p-values
 }
