@@ -267,15 +267,11 @@ cv_param_est <- function(fold, data, Y_name, A_name, W_name) {
   # get param generating data
   A_param <- param_data[, grep(A_name, colnames(df_all))]
   Y_param <- as.matrix(param_data[, grep(Y_name, colnames(df_all))])
-  param_data[, grep(A_name, colnames(df_all))] <- NULL
-  param_data[, grep(Y_name, colnames(df_all))] <- NULL
-  W_param <- as.matrix(param_data)
+  W_param <- as.matrix(param_data[, grep(W_name, colnames(df_all))])
   # get estimation data
   A_estim <- estim_data[, grep(A_name, colnames(df_all))]
   Y_estim <- as.matrix(estim_data[, grep(Y_name, colnames(df_all))])
-  estim_data[, grep(A_name, colnames(df_all))] <- NULL
-  estim_data[, grep(Y_name, colnames(df_all))] <- NULL
-  W_estim <- as.matrix(estim_data)
+  W_estim <- as.matrix(estim_data[, grep(W_name, colnames(df_all))])
 
   # generate data-adaptive target parameter
   data_adaptive_index <- parameter_wrapper(Y = Y_param,
