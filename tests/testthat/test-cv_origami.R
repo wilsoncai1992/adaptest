@@ -70,6 +70,7 @@ time_seq <- system.time(
 plan(multiprocess)
 set.seed(48915672)
 time_mc <- system.time(
+    set.seed(4321)
     result_mc <- adaptest(Y = Y, A = A.sample.vec, n_top = p.true + 5,
                           n_fold = 4)
 )
