@@ -35,7 +35,7 @@ epsilon <- matrix(rnorm(n = n.sim * p.all), nrow = n.sim, ncol = p.all)
 A.candidate <- list(rep(1, p.all), rep(0, p.all))
 A.sample <- sample(A.candidate, size = n.sim, replace = TRUE)
 A.sample <- do.call(rbind, A.sample)
-A.sample.vec <- A.sample[,1]
+A.sample.vec <- A.sample[, 1]
 
 # B1
 b1.row <- c(rep(signal.true, p.true), rep(0, p.all - p.true))

@@ -29,6 +29,7 @@ Imports:
   SuperLearner,
   calibrate,
   magrittr,
+  Matrix,
   R2HTML
 Suggests:
   testthat,

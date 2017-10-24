@@ -6,7 +6,7 @@ library(MASS)
 library(Matrix)
 library(future)
 library(adaptest)
-context("adaptest works the same under sequential and multicore evaluation")
+context("adaptest works the same under old and origami implementations")
 
 ################################################################################
 # simulation
@@ -69,8 +69,8 @@ time_seq <- system.time(
 
 set.seed(48915672)
 time_old <- system.time(
-    result_old <- adaptest:::adaptest_old(Y = Y, A = A.sample.vec, n.top = p.true + 5,
-                          n.fold = 4)
+    result_old <- adaptest:::adaptest_old(Y = Y, A = A.sample.vec,
+                                          n.top = p.true + 5, n.fold = 4)
 )
 
 test_that("Multiprocess and sequential evaluation return identical objects", {
