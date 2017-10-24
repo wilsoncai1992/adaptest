@@ -1,11 +1,12 @@
 ################################################################################
 # setup
 ################################################################################
-set.seed(4321)
+set.seed(628957)
 library(MASS)
 library(Matrix)
 library(future)
 library(adaptest)
+context("adaptest works the same under sequential and multicore evaluation")
 
 ################################################################################
 # simulation
@@ -60,19 +61,21 @@ rm(list = c('b0', 'epsilon', 'temp1'))
 # adaptest should be fast with futures...
 ################################################################################
 plan(sequential)
+set.seed(48915672)
 time_seq <- system.time(
     result_seq <- adaptest(Y = Y, A = A.sample.vec, n_top = p.true + 5,
                            n_fold = 4)
 )
 
 plan(multiprocess)
+set.seed(48915672)
 time_mc <- system.time(
     result_mc <- adaptest(Y = Y, A = A.sample.vec, n_top = p.true + 5,
                           n_fold = 4)
 )
 
 test_that("Multiprocess and sequential evaluation return identical objects", {
-  expect_equivalent(result_seq, result_mc)
+  expect_equal(result_seq, result_mc)
 })
 
 if(availableCores() > 1) {
