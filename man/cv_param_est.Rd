@@ -4,7 +4,8 @@
 \alias{cv_param_est}
 \title{Data-adaptive parameter estimate to be cross-validated}
 \usage{
-cv_param_est(fold, data, Y_name, A_name, W_name)
+cv_param_est(fold, data, parameter_wrapper, absolute, negative, n_top, SL_lib,
+  Y_name, A_name, W_name)
 }
 \arguments{
 \item{fold}{...}
