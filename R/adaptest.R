@@ -176,7 +176,13 @@ adaptest <- function(Y,
   df_all <- data.frame(Y = Y, A = A.sample.vec, W = W)
   cv_results <- origami::cross_validate(cv_fun = cv_param_est, folds = folds,
                                         data = df_all,
-                                        Y_name = 'Y', A_name = 'A',
+                                        parameter_wrapper = parameter_wrapper,
+                                        absolute = absolute,
+                                        negative = negative,
+                                        n_top = n_top,
+                                        SL_lib = SL_lib,
+                                        Y_name = 'Y',
+                                        A_name = 'A',
                                         W_name = 'W')
   # ============================================================================
   # CV
@@ -258,7 +264,8 @@ adaptest <- function(Y,
 #' @importFrom origami training validation
 #' @importFrom tmle tmle
 
-cv_param_est <- function(fold, data, Y_name, A_name, W_name) {
+cv_param_est <- function(fold, data, parameter_wrapper, absolute, negative, n_top, SL_lib, Y_name, A_name, W_name) {
+  browser()
   # define training and validation sets based on input object of class "folds"
   param_data <- origami::training(data)
   estim_data <- origami::validation(data)
