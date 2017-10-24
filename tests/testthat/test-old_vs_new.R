@@ -60,7 +60,7 @@ rm(list = c('b0', 'epsilon', 'temp1'))
 ################################################################################
 # adaptest should be fast with futures...
 ################################################################################
-plan(multicore)
+plan(multiprocess)
 set.seed(48915672)
 time_seq <- system.time(
     result_seq <- adaptest(Y = Y, A = A.sample.vec, n_top = p.true + 5,
@@ -69,8 +69,8 @@ time_seq <- system.time(
 
 set.seed(48915672)
 time_old <- system.time(
-    result_old <- adaptest:::adaptest_old(Y = Y, A = A.sample.vec,
-                                          n.top = p.true + 5, n.fold = 4)
+    result_old <- adaptest:::adaptest_old(Y = Y, A = A.sample.vec, n_top = p.true + 5,
+                          n_fold = 4)
 )
 
 test_that("Multiprocess and sequential evaluation return identical objects", {
