@@ -60,8 +60,8 @@ rm(list = c('b0', 'epsilon', 'temp1'))
 # adaptest should be fast with futures...
 ################################################################################
 plan(sequential)
+set.seed(4321)
 time_seq <- system.time(
-    set.seed(4321)
     result_seq <- adaptest(Y = Y, A = A.sample.vec, n_top = p.true + 5,
                            n_fold = 4)
 )

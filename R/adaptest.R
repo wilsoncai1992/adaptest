@@ -172,7 +172,6 @@ adaptest <- function(Y,
   EIC_est_composition <- list()
 
   # ============================================================================
-
   folds <- origami::make_folds(n = n_sim, V = n_fold)
   df_all <- data.frame(Y = Y, A = A.sample.vec, W = W)
   cv_results <- origami::cross_validate(cv_fun = cv_param_est, folds = folds,
@@ -265,13 +264,13 @@ cv_param_est <- function(fold, data, Y_name, A_name, W_name) {
   estim_data <- origami::validation(data)
 
   # get param generating data
-  A_param <- param_data[, grep(A_name, colnames(df_all))]
-  Y_param <- as.matrix(param_data[, grep(Y_name, colnames(df_all))])
-  W_param <- as.matrix(param_data[, grep(W_name, colnames(df_all))])
+  A_param <- param_data[, grep(A_name, colnames(data))]
+  Y_param <- as.matrix(param_data[, grep(Y_name, colnames(data))])
+  W_param <- as.matrix(param_data[, grep(W_name, colnames(data))])
   # get estimation data
-  A_estim <- estim_data[, grep(A_name, colnames(df_all))]
-  Y_estim <- as.matrix(estim_data[, grep(Y_name, colnames(df_all))])
-  W_estim <- as.matrix(estim_data[, grep(W_name, colnames(df_all))])
+  A_estim <- estim_data[, grep(A_name, colnames(data))]
+  Y_estim <- as.matrix(estim_data[, grep(Y_name, colnames(data))])
+  W_estim <- as.matrix(estim_data[, grep(W_name, colnames(data))])
 
   # generate data-adaptive target parameter
   data_adaptive_index <- parameter_wrapper(Y = Y_param,
