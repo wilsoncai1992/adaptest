@@ -61,12 +61,14 @@ rm(list = c('b0', 'epsilon', 'temp1'))
 ################################################################################
 plan(sequential)
 time_seq <- system.time(
+    set.seed(4321)
     result_seq <- adaptest(Y = Y, A = A.sample.vec, n_top = p.true + 5,
                            n_fold = 4)
 )
 
 plan(multiprocess)
 time_mc <- system.time(
+    set.seed(4321)
     result_mc <- adaptest(Y = Y, A = A.sample.vec, n_top = p.true + 5,
                           n_fold = 4)
 )
