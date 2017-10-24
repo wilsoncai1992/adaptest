@@ -265,7 +265,7 @@ adaptest <- function(Y,
 #' @importFrom tmle tmle
 
 cv_param_est <- function(fold, data, parameter_wrapper, absolute, negative, n_top, SL_lib, Y_name, A_name, W_name) {
-  browser()
+  # browser()
   # define training and validation sets based on input object of class "folds"
   param_data <- origami::training(data)
   estim_data <- origami::validation(data)

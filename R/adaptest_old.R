@@ -20,9 +20,6 @@
 #' @param SL_lib character
 #'
 #' @importFrom tmle tmle
-#' @importFrom foreach foreach "%dopar%"
-#' @importFrom parallel detectCores
-#' @importFrom doParallel registerDoParallel
 #' @importFrom stats lm p.adjust
 #' @importFrom utils head
 #' @importFrom magrittr "%>%"
