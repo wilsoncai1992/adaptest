@@ -62,25 +62,18 @@ rm(list = c('b0', 'epsilon', 'temp1'))
 ################################################################################
 plan(multiprocess)
 set.seed(48915672)
-time_seq <- system.time(
-    result_seq <- adaptest(Y = Y, A = A.sample.vec, n_top = p.true + 5,
+time_new <- system.time(
+    result_new <- adaptest(Y = Y, A = A.sample.vec, n_top = p.true + 5,
                            n_fold = 4)
 )
 
 set.seed(48915672)
 time_old <- system.time(
-    result_old <- adaptest:::adaptest_old(Y = Y, A = A.sample.vec, n_top = p.true + 5,
-                          n_fold = 4)
+    result_old <- adaptest:::adaptest_old(Y = Y, A = A.sample.vec,
+                                          n_top = p.true + 5, n_fold = 4)
 )
 
-test_that("Multiprocess and sequential evaluation return identical objects", {
-  expect_equal(result_seq, result_old)
+test_that("New and old routines return identical objects", {
+  expect_equal(result_new, result_old)
 })
-
-if(availableCores() > 1) {
-  test_that("Multiprocess evaluation is faster than sequential evaluation", {
-    skip_on_os("windows") # Windows doesn't support multicore
-    expect_lt(time_old["elapsed"], time_seq["elapsed"])
-  })
-}
 

@@ -30,7 +30,9 @@ Imports:
   calibrate,
   magrittr,
   Matrix,
-  R2HTML
+  R2HTML,
+  earth,
+  gam
 Suggests:
   testthat,
   rmarkdown,
