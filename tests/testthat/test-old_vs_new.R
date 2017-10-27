@@ -73,6 +73,9 @@ time_old <- system.time(
                                           n_top = p.true + 5, n_fold = 4)
 )
 
+test_that("New and old routines return same data-adaptive target parameter", {
+  expect_equal(result_new$mean_rank_top, result_old$mean_rank_top)
+})
 test_that("New and old routines return identical objects", {
   expect_equal(result_new, result_old)
 })
