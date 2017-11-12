@@ -1,4 +1,4 @@
-#' Constructor function for class data_adapt
+#' Class Constructor for Data Adaptive Parameters
 #'
 #' @param Y continuous or binary outcome variable
 #' @param A binary treatment indicator: \code{1} = treatment, \code{0} = control
@@ -15,8 +15,6 @@
 #' @param SL_lib character
 #'
 #' @return S3 object of class "data_adapt" for data-adaptive multiple testing.
-#'
-#' @export data_adapt
 #
 data_adapt <- function(Y,
                        A,
@@ -54,16 +52,18 @@ data_adapt <- function(Y,
   significant_q <- NULL
   mean_rank_top <- NULL
   prob_in_top <- NULL
+  folds <- NULL
 
   out <- structure(list(Y, A, W, n_top, n_fold, absolute, negative,
-                        parameter_wrapper, SL_lib,
-                        top_colname, DE, p_value, q_value, significant_q,
-                        mean_rank_top, prob_in_top),
+                        parameter_wrapper, SL_lib, top_colname, DE,
+                        p_value, q_value, significant_q,
+                        mean_rank_top, prob_in_top, folds),
                    class = "data_adapt")
 
   names(out) <- c("Y", "A", "W", "n_top", "n_fold", "absolute", "negative",
                   "parameter_wrapper", "SL_lib", "top_colname", "DE", "p_value",
-                  "q_value", "significant_q", "mean_rank_top", "prob_in_top")
+                  "q_value", "significant_q", "mean_rank_top", "prob_in_top",
+                  "folds")
 
   # export instance of "data_adapt" for downstream use
   return(out)
@@ -71,7 +71,7 @@ data_adapt <- function(Y,
 
 ################################################################################
 
-#' Extract p-values
+#' Statistical Inference for Data-Adaptive Parameters
 #'
 #' @param Psi_output
 #' @param EIC_est_final
@@ -80,21 +80,22 @@ data_adapt <- function(Y,
 #' @return
 #' @export
 #
-get_pval <- function(Psi_output, EIC_est_final, alpha=0.05) {
+get_pval <- function(Psi_output, EIC_est_final, alpha = 0.05) {
   n_sim <- nrow(EIC_est_final)
-  var_by_col <- apply(EIC_est_final, 2, var)/n_sim
+  var_by_col <- apply(EIC_est_final, 2, var) / n_sim
   sd_by_col <- sqrt(var_by_col)
-  upper <- Psi_output + 1.96 * sd_by_col
-  lower <- Psi_output - 1.96 * sd_by_col
+  upper <- Psi_output + abs(qnorm(alpha / 2)) * sd_by_col
+  lower <- Psi_output - abs(qnorm(alpha / 2)) * sd_by_col
 
-  pval <- pnorm(abs(Psi_output/sd_by_col), mean = 0, sd = 1, lower.tail = FALSE) * 2
+  pval <- pnorm(abs(Psi_output / sd_by_col), mean = 0, sd = 1,
+                lower.tail = FALSE) * 2
 
   return(list(pval, upper, lower, sd_by_col))
 }
 
 ################################################################################
 
-#' Data-adaptive test statistics for high-dimensional multiple testing
+#' Data-adaptive Statistics for High-Dimensional Multiple Testing
 #'
 #' Performs targeted minimum loss-based estimation (TMLE )of a marginal additive
 #' treatment effect of a binary point treatment on an outcome. The data-adaptive
@@ -120,8 +121,7 @@ get_pval <- function(Psi_output, EIC_est_final, alpha=0.05) {
 #' @importFrom magrittr "%>%"
 #' @importFrom origami make_folds cross_validate
 #'
-#' @author Wilson Cai \email{wcai@@berkeley.edu}, in collaboration with Alan E.
-#'  Hubbard, with contributions from Nima S. Hejazi.
+#' @author Wilson Cai \email{wcai@@berkeley.edu}, Alan Hubbard and Nima Hejazi
 #'
 #' @export adaptest
 #
@@ -161,8 +161,8 @@ adaptest <- function(Y,
   # determine number of samples per fold
   sample_each_fold <- ceiling(n_sim / n_fold)
   # random index
-  index_for_folds <- sample(head(rep(1:n_fold, each = sample_each_fold),
-                                   n = n_sim))
+  index_for_folds <- sample(head(rep(seq_len(n_fold), each = sample_each_fold),
+                                 n = n_sim))
   # number of observations in each fold
   table_n_per_fold <- table(index_for_folds)
 
@@ -181,9 +181,9 @@ adaptest <- function(Y,
                                         negative = negative,
                                         n_top = n_top,
                                         SL_lib = SL_lib,
-                                        Y_name = 'Y',
-                                        A_name = 'A',
-                                        W_name = 'W')
+                                        Y_name = "Y",
+                                        A_name = "A",
+                                        W_name = "W")
   # ============================================================================
   # CV
   # ============================================================================
@@ -201,14 +201,14 @@ adaptest <- function(Y,
   Psi_output <- colMeans(psi_est_final)
   list[p_value, upper, lower, sd_by_col] <- get_pval(Psi_output, EIC_est_final,
                                                      alpha = 0.05)
-  adaptY_composition <- adapt_param_composition[,1:n_top]
+  adaptY_composition <- adapt_param_composition[, seq_len(n_top)]
   adaptY_composition <- apply(adaptY_composition, 2,
                               function(x) table(x) / sum(table(x)))
 
   # ============================================================================
   # perform FDR correction
   # ============================================================================
-  q_value <- p.adjust(p_value, method = 'BH')
+  q_value <- p.adjust(p_value, method = "BH")
 
   is_sig_q_value <- q_value <= 0.05
   significant_q <- which(is_sig_q_value)
@@ -226,7 +226,7 @@ adaptest <- function(Y,
   # sort the top_index from the highest CV-rank to lowest
   top_index <- top_index[order(mean_rank_top)]
   mean_rank_top <- mean_rank[top_index]
-  not_top_index <- setdiff(1:p_all, top_index)
+  not_top_index <- setdiff(seq_len(p_all), top_index)
 
   # compute proportion of existence in all folds
   mean_rank_in_top <- (rank_in_folds <= data_adapt$n_top) + 0
@@ -246,6 +246,7 @@ adaptest <- function(Y,
   data_adapt$significant_q <- significant_q
   data_adapt$mean_rank_top <- mean_rank_top
   data_adapt$prob_in_top <- prob_in_top
+  data_adapt$folds <- folds
 
   # export augmented object containing the computed data-adaptive statistics
   return(data_adapt)
@@ -253,7 +254,7 @@ adaptest <- function(Y,
 
 ################################################################################
 
-#' Data-adaptive parameter estimate to be cross-validated
+#' Data-Adaptive Parameter Estimate for a Single CV Fold
 #'
 #' @param fold ...
 #' @param data ...
@@ -264,7 +265,8 @@ adaptest <- function(Y,
 #' @importFrom origami training validation
 #' @importFrom tmle tmle
 
-cv_param_est <- function(fold, data, parameter_wrapper, absolute, negative, n_top, SL_lib, Y_name, A_name, W_name) {
+cv_param_est <- function(fold, data, parameter_wrapper, absolute, negative,
+                         n_top, SL_lib, Y_name, A_name, W_name) {
   # browser()
   # define training and validation sets based on input object of class "folds"
   param_data <- origami::training(data)

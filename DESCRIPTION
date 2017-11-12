@@ -1,6 +1,6 @@
 Package: adaptest
 Title: Data-adaptive test statistics for multiple testing in high dimensions
-Version: 0.7.0
+Version: 0.7.1
 Authors@R: c(
   person("Weixin", "Cai", email = "wcai@berkeley.edu",
          role = c("aut", "cre", "cph"),
@@ -25,7 +25,7 @@ Encoding: UTF-8
 Imports:
   tmle,
   future,
-  origami,
+  origami (>= 0.8.2),
   SuperLearner,
   calibrate,
   magrittr,
