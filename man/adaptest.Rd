@@ -2,7 +2,7 @@
 % Please edit documentation in R/adaptest.R
 \name{adaptest}
 \alias{adaptest}
-\title{Data-adaptive test statistics for high-dimensional multiple testing}
+\title{Data-adaptive Statistics for High-Dimensional Multiple Testing}
 \usage{
 adaptest(Y, A, W = NULL, n_top, n_fold,
   parameter_wrapper = adaptest::rank_DE, SL_lib = c("SL.glm", "SL.step",
@@ -39,6 +39,5 @@ algorithm is used to perform variable reduction to avoid the disadvantages
 associated with multiple testing.
 }
 \author{
-Wilson Cai \email{wcai@berkeley.edu}, in collaboration with Alan E.
-        Hubbard, with contributions from Nima S. Hejazi.
+Wilson Cai \email{wcai@berkeley.edu}, Alan Hubbard and Nima Hejazi
 }

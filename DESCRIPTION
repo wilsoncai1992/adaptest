@@ -1,0 +1,41 @@
+Package: adaptest
+Title: Data-adaptive test statistics for multiple testing in high dimensions
+Version: 0.7.1
+Authors@R: c(
+  person("Weixin", "Cai", email = "wcai@berkeley.edu",
+         role = c("aut", "cre", "cph"),
+         comment = c(ORCID = "0000-0003-2680-3066")),
+  person("Nima", "Hejazi", email = "nhejazi@berkeley.edu",
+         role = "aut",
+         comment = c(ORCID = "0000-0002-7127-2789")),
+  person("Alan", "Hubbard", email = "hubbard@berkeley",
+         role = "ctb",
+         comment = c(ORCID = "0000-0002-3769-0127"))
+  )
+Description: Data-adaptive test statistics represent a general methodology for
+  performing multiple testing on effects sizes under high-dimensional settings,
+  using the approach of data-adaptive statistical target parameters and
+  inference.
+Depends:
+  R (>= 3.0.0)
+License: GPL-2
+URL: https://github.com/wilsoncai1992/adaptest
+BugReports: https://github.com/wilsoncai1992/adaptest/issues
+Encoding: UTF-8
+Imports:
+  tmle,
+  future,
+  origami (>= 0.8.2),
+  SuperLearner,
+  calibrate,
+  magrittr,
+  Matrix,
+  R2HTML,
+  earth,
+  gam
+Suggests:
+  testthat,
+  rmarkdown,
+  knitr
+VignetteBuilder: knitr
+RoxygenNote: 6.0.1.9000

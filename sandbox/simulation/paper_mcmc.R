@@ -13,19 +13,14 @@ simulate_once <- function(n.sim, p.all, p.true, signal.true, n.top.want, n.fold)
     # ==============================================================================
     library(MASS)
     library(Matrix)
-    # ------------------------------------------------------------------------------
     # epsilon
     epsilon <- matrix(rnorm(n = n.sim * p.all), nrow = n.sim, ncol = p.all)
-
-    # ------------------------------------------------------------------------------
     # A
     A.candidate <- list(rep(1, p.all), rep(0, p.all))
     A.sample <- sample(A.candidate, size = n.sim, replace = TRUE)
 
     A.sample <- do.call(rbind, A.sample)
     A.sample.vec <- A.sample[,1]
-
-    # ------------------------------------------------------------------------------
     # B1
     b1.row <- c(rep(signal.true, p.true), rep(0, p.all - p.true))
 
@@ -33,20 +28,14 @@ simulate_once <- function(n.sim, p.all, p.true, signal.true, n.top.want, n.fold)
       matrix(rep(x,each=n),nrow=n)
     }
     b1 <- rep.row(b1.row, n = n.sim)
-    # ------------------------------------------------------------------------------
     # B0
     b0.row <- rnorm(n = p.all)
     b0 <- rep.row(b0.row, n = n.sim)
-    # ------------------------------------------------------------------------------
     # Y
     temp1 <- b1 * A.sample
-    # ------------------------------------
     rm(list = c('b1', 'A.sample'))
     gc()
-    # ------------------------------------
     Y <- b0 + temp1 + epsilon
-    # ------------------------------------
-    # rm(list = c('b0', 'epsilon', 'temp1'))
     rm(list = c('b0', 'temp1'))
     gc()
     return(list(Y, A.sample.vec))

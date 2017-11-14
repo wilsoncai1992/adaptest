@@ -1,121 +1,29 @@
-#' Constructor function for class \code{data_adapt}
-#'
-#' @param Y continuous or binary outcome variable
-#' @param A binary treatment indicator: \code{1} = treatment, \code{0} = control
-#' @param W vector, matrix, or data.frame containing baseline covariates
-#' @param n_top integer value for the number of candidate covariates to generate
-#'        using the data-adaptive estimation algorithm
-#' @param n_fold integer number of folds to be used for cross-validation
-#' @param negative boolean: \code{TRUE} = test for negative effect size,
-#'        \code{FALSE} = test for positive effect size
-#' @param absolute boolean: \code{TRUE} = test for absolute effect size. This
-#'        \code{FALSE} = test for directional effect. This overrides argument
-#'        \code{negative}.
-#' @param parameter_wrapper function
-#' @param SL_lib character
-#'
-#' @return S3 object of class "data_adapt" for data-adaptive multiple testing.
-#'
-#' @export data_adapt
-#'
-data_adapt <- function(Y,
-                       A,
-                       W = NULL,
-                       n_top,
-                       n_fold,
-                       absolute,
-                       negative,
-                       parameter_wrapper,
-                       SL_lib) {
-  if (!is.data.frame(Y)) {
-    if(!is.matrix(Y)) {
-      stop("argument Y must be a data.frame or a matrix")
-    }
-    Y <- as.data.frame(Y)
-  }
-  if (!is.vector(A)) stop("argument A must be numeric")
-  if (!is.null(W)) {
-    if(!is.matrix(W)) stop("argument W must be matrix")
-  }
-  if (!is.numeric(n_top)) stop("argument n_top must be numeric")
-  if (!is.numeric(n_fold)) stop("argument n_fold must be numeric")
-  if (!is.logical(absolute)) stop("argument absolute must be boolean/logical")
-  if (!is.logical(negative)) stop("argument negative must be boolean/logical")
-  if (!is.function(parameter_wrapper)) stop("argument parameter_wrapper must be function")
-  if (!is.character(SL_lib)) stop("argument SL_lib must be character")
-
-  # placeholders for outputs to be included when returning the data_adapt object
-  top_colname <- NULL
-  DE <- NULL
-  p_value <- NULL
-  q_value <- NULL
-  significant_q <- NULL
-  mean_rank_top <- NULL
-  prob_in_top <- NULL
-
-  out <- structure(list(Y, A, W, n_top, n_fold, absolute, negative, parameter_wrapper, SL_lib,
-                        top_colname, DE, p_value, q_value, significant_q,
-                        mean_rank_top, prob_in_top),
-                   class = "data_adapt")
-
-  names(out) <- c("Y", "A", "W", "n_top", "n_fold", "absolute", "negative",
-                  "parameter_wrapper", "SL_lib", "top_colname", "DE", "p_value", "q_value",
-                  "significant_q", "mean_rank_top", "prob_in_top")
-
-  # export instance of "data_adapt" for downstream use
-  return(out)
-}
-
-#' Title
-#'
-#' @param Psi_output
-#' @param EIC_est_final
-#' @param alpha
-#'
-#' @return
-#' @export
-#'
-#' @examples
-#' #NA
-get_pval <- function(Psi_output, EIC_est_final, alpha=0.05) {
-  n_sim <- nrow(EIC_est_final)
-  var_by_col <- apply(EIC_est_final, 2, var)/n_sim
-  sd_by_col <- sqrt(var_by_col)
-  upper <- Psi_output + 1.96 * sd_by_col
-  lower <- Psi_output - 1.96 * sd_by_col
-
-  pval <- pnorm(abs(Psi_output/sd_by_col), mean = 0, sd = 1, lower.tail = FALSE) * 2
-
-  return(list(pval, upper, lower, sd_by_col))
-}
-
-
-
-#' Data-adaptive test statistics for high-dimensional multiple testing
+#' OLD Data-Adaptive Algorithm Implementation (for reference only)
 #'
 #' Performs targeted minimum loss-based estimation (TMLE )of a marginal additive
 #' treatment effect of a binary point treatment on an outcome. The data-adaptive
 #' algorithm is used to perform variable reduction to avoid the disadvantages
-#' associated with multiple testing.
+#' associated with multiple testing. INTERNAL USE ONLY.
 #'
 #' @param Y continuous or binary outcome variable
 #' @param A binary treatment indicator: \code{1} = treatment, \code{0} = control
 #' @param W matrix containing baseline covariates
 #' @param n_top integer value for the number of candidate covariates to generate
-#'        using the data-adaptive estimation algorithm
+#'  using the data-adaptive estimation algorithm
 #' @param n_fold integer number of folds to be used for cross-validation
 #' @param negative boolean: \code{TRUE} = test for negative effect size,
-#'        \code{FALSE} = test for positive effect size
+#'  \code{FALSE} = test for positive effect size
+#' @param folds_vec Vector of \code{numeric} indicating the validation fold in
+#'  which a given observation falls for a standard V-fold cross-validation
+#'  procedure. Default is \code{NULL}, in which case a custom cross-validation
+#'  procedure is used.
 #' @param absolute boolean: \code{TRUE} = test for absolute effect size. This
-#'        \code{FALSE} = test for directional effect. This overrides argument
-#'        \code{negative}.
+#'  \code{FALSE} = test for directional effect. This overrides argument
+#'  \code{negative}.
 #' @param parameter_wrapper function
 #' @param SL_lib character
 #'
 #' @importFrom tmle tmle
-#' @importFrom foreach foreach "%dopar%"
-#' @importFrom parallel detectCores
-#' @importFrom doParallel registerDoParallel
 #' @importFrom stats lm p.adjust
 #' @importFrom utils head
 #' @importFrom magrittr "%>%"
@@ -123,17 +31,19 @@ get_pval <- function(Psi_output, EIC_est_final, alpha=0.05) {
 #' @author Wilson Cai \email{wcai@@berkeley.edu}, in collaboration with Alan E.
 #'         Hubbard, with contributions from Nima S. Hejazi.
 #'
-#' @export adaptest
 #'
-adaptest <- function(Y,
-                     A,
-                     W = NULL,
-                     n_top,
-                     n_fold,
-                     parameter_wrapper = adaptest::rank_DE,
-                     SL_lib = c("SL.glm", "SL.step", "SL.glm.interaction", 'SL.gam', 'SL.earth'),
-                     absolute = FALSE,
-                     negative = FALSE) {
+adaptest_old <- function(Y,
+                         A,
+                         W = NULL,
+                         n_top,
+                         n_fold,
+                         folds_vec = NULL,
+                         parameter_wrapper = adaptest::rank_DE,
+                         SL_lib = c("SL.glm", "SL.step", "SL.glm.interaction",
+                                    "SL.gam", "SL.earth"),
+                         absolute = FALSE,
+                         negative = FALSE) {
+
   # use constructor function to instantiate "data_adapt" object
   data_adapt <- data_adapt(Y = Y, A = A, W = W,
                            n_top = n_top,
@@ -160,9 +70,15 @@ adaptest <- function(Y,
   # determine number of samples per fold
   sample_each_fold <- ceiling(n_sim / n_fold)
 
-  # random index
-  index_for_folds <- sample(head(rep(1:n_fold, each = sample_each_fold),
+  # Generate training set status if not given via an external input
+  if (!is.null(folds_vec)) {
+    index_for_folds <- folds_vec
+  } else {
+    # random index for cross-validation if origami not used
+    index_for_folds <- sample(head(rep(seq_len(n_fold),
+                                       each = sample_each_fold),
                                    n = n_sim))
+  }
 
   # number of observations in each fold
   table_n_per_fold <- table(index_for_folds)
@@ -173,18 +89,18 @@ adaptest <- function(Y,
   EIC_est_composition <- list()
   # ============================================================================
   compute.a.fold <- function(data_adapt, it0) {
-    print(paste('Fold:', it0))
+    print(paste("Fold:", it0))
     chunk_as_est <- it0
 
     # create parameter generating data
     Y_param <- data_adapt$Y[index_for_folds != chunk_as_est, ]
     A_param <- data_adapt$A[index_for_folds != chunk_as_est]
-    W_param <- data_adapt$W[index_for_folds != chunk_as_est, ,drop = FALSE]
+    W_param <- data_adapt$W[index_for_folds != chunk_as_est, , drop = FALSE]
 
     # create estimation data
     Y_est <- data_adapt$Y[index_for_folds == chunk_as_est, ]
     A_est <- data_adapt$A[index_for_folds == chunk_as_est]
-    W_est <- data_adapt$W[index_for_folds == chunk_as_est, ,drop = FALSE]
+    W_est <- data_adapt$W[index_for_folds == chunk_as_est, , drop = FALSE]
 
     # generate data-adaptive target parameter
     data_adaptive_index <- parameter_wrapper(Y = Y_param,
@@ -197,10 +113,13 @@ adaptest <- function(Y,
     # estimate the parameter on estimation sample
     psi_list <- list()
     EIC_list <- list()
-    for(it_index in seq_along(index_grid)){
+    for (it_index in seq_along(index_grid)) {
       # print(index_grid[it_index])
-      tmle_estimation <- tmle(Y = Y_est[, index_grid[it_index]], A = A_est, W = W_est,
-                              Q.SL.library = SL_lib, g.SL.library = SL_lib)
+      tmle_estimation <- tmle(Y = Y_est[, index_grid[it_index]],
+                              A = A_est,
+                              W = W_est,
+                              Q.SL.library = SL_lib,
+                              g.SL.library = SL_lib)
       psi_list[[it_index]] <- tmle_estimation$estimates$ATE$psi
       EIC_list[[it_index]] <- tmle_estimation$estimates$IC$IC.ATE
     }
@@ -213,10 +132,11 @@ adaptest <- function(Y,
   # ============================================================================
   # CV
   # ============================================================================
-  for (it0 in 1:n_fold) {
-    list[data_adaptive_index, index_grid_here, psi_est_here, EIC_est_here] <- compute.a.fold(data_adapt, it0)
-    rank_in_folds[it0,] <- data_adaptive_index
-    adapt_param_composition[it0,] <- index_grid_here
+  for (it0 in seq_len(n_fold)) {
+    list[data_adaptive_index, index_grid_here, psi_est_here, EIC_est_here] <-
+      compute.a.fold(data_adapt, it0)
+    rank_in_folds[it0, ] <- data_adaptive_index
+    adapt_param_composition[it0, ] <- index_grid_here
     psi_est_composition[[it0]] <- psi_est_here
     EIC_est_composition[[it0]] <- EIC_est_here
   }
@@ -226,14 +146,16 @@ adaptest <- function(Y,
   # statistical inference
   # ============================================================================
   Psi_output <- colMeans(psi_est_final)
-  list[p_value, upper, lower, sd_by_col] <- get_pval(Psi_output, EIC_est_final, alpha=0.05)
-  adaptY_composition <- adapt_param_composition[,1:n_top]
-  adaptY_composition <- apply(adaptY_composition, 2, function(x) table(x)/sum(table(x)))
+  list[p_value, upper, lower, sd_by_col] <- get_pval(Psi_output, EIC_est_final,
+                                                     alpha = 0.05)
+  adaptY_composition <- adapt_param_composition[, seq_len(n_top)]
+  adaptY_composition <- apply(adaptY_composition, 2, function(x)
+                              table(x) / sum(table(x)))
 
   # ============================================================================
   # perform FDR correction
   # ============================================================================
-  q_value <- p.adjust(p_value, method = 'BH')
+  q_value <- p.adjust(p_value, method = "BH")
 
   is_sig_q_value <- q_value <= 0.05
   significant_q <- which(is_sig_q_value)
@@ -251,7 +173,7 @@ adaptest <- function(Y,
   # sort the top_index from the highest CV-rank to lowest
   top_index <- top_index[order(mean_rank_top)]
   mean_rank_top <- mean_rank[top_index]
-  not_top_index <- setdiff(1:p_all, top_index)
+  not_top_index <- setdiff(seq_len(p_all), top_index)
 
   # compute proportion of existence in all folds
   mean_rank_in_top <- (rank_in_folds <= data_adapt$n_top) + 0
@@ -275,3 +197,4 @@ adaptest <- function(Y,
   # export augmented object containing the computed data-adaptive statistics
   return(data_adapt)
 }
+

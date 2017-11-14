@@ -2,7 +2,7 @@
 % Please edit documentation in R/adaptest.R
 \name{data_adapt}
 \alias{data_adapt}
-\title{Constructor function for class \code{data_adapt}}
+\title{Class Constructor for Data Adaptive Parameters}
 \usage{
 data_adapt(Y, A, W = NULL, n_top, n_fold, absolute, negative,
   parameter_wrapper, SL_lib)
@@ -32,7 +32,9 @@ using the data-adaptive estimation algorithm}
 }
 \value{
 S3 object of class "data_adapt" for data-adaptive multiple testing.
+
+S3 object of class "data_adapt" for data-adaptive multiple testing.
 }
 \description{
-Constructor function for class \code{data_adapt}
+Class Constructor for Data Adaptive Parameters
 }
