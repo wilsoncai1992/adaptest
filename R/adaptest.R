@@ -15,6 +15,7 @@
 #' @param SL_lib character
 #'
 #' @return S3 object of class "data_adapt" for data-adaptive multiple testing.
+#' @return S3 object of class "data_adapt" for data-adaptive multiple testing.
 #
 data_adapt <- function(Y,
                        A,
@@ -73,22 +74,24 @@ data_adapt <- function(Y,
 
 #' Statistical Inference for Data-Adaptive Parameters
 #'
-#' @param Psi_output
-#' @param EIC_est_final
-#' @param alpha
+#' @param Psi_output ...
+#' @param EIC_est_final ...
+#' @param alpha ...
+#'
+#' @importFrom stats qnorm pnorm var
 #'
 #' @return
 #' @export
 #
 get_pval <- function(Psi_output, EIC_est_final, alpha = 0.05) {
   n_sim <- nrow(EIC_est_final)
-  var_by_col <- apply(EIC_est_final, 2, var) / n_sim
+  var_by_col <- apply(EIC_est_final, 2, stat::var) / n_sim
   sd_by_col <- sqrt(var_by_col)
-  upper <- Psi_output + abs(qnorm(alpha / 2)) * sd_by_col
-  lower <- Psi_output - abs(qnorm(alpha / 2)) * sd_by_col
+  upper <- Psi_output + abs(stats::qnorm(alpha / 2)) * sd_by_col
+  lower <- Psi_output - abs(stats::qnorm(alpha / 2)) * sd_by_col
 
-  pval <- pnorm(abs(Psi_output / sd_by_col), mean = 0, sd = 1,
-                lower.tail = FALSE) * 2
+  pval <- stats::pnorm(abs(Psi_output / sd_by_col), mean = 0, sd = 1,
+                       lower.tail = FALSE) * 2
 
   return(list(pval, upper, lower, sd_by_col))
 }

@@ -2,13 +2,17 @@
 % Please edit documentation in R/adaptest.R
 \name{get_pval}
 \alias{get_pval}
-\title{Extract p-values}
+\title{Statistical Inference for Data-Adaptive Parameters}
 \usage{
 get_pval(Psi_output, EIC_est_final, alpha = 0.05)
 }
 \arguments{
-\item{alpha}{}
+\item{Psi_output}{...}
+
+\item{EIC_est_final}{...}
+
+\item{alpha}{...}
 }
 \description{
-Extract p-values
+Statistical Inference for Data-Adaptive Parameters
 }

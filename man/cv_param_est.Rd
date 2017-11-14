@@ -2,7 +2,7 @@
 % Please edit documentation in R/adaptest.R
 \name{cv_param_est}
 \alias{cv_param_est}
-\title{Data-adaptive parameter estimate to be cross-validated}
+\title{Data-Adaptive Parameter Estimate for a Single CV Fold}
 \usage{
 cv_param_est(fold, data, parameter_wrapper, absolute, negative, n_top, SL_lib,
   Y_name, A_name, W_name)
@@ -19,5 +19,5 @@ cv_param_est(fold, data, parameter_wrapper, absolute, negative, n_top, SL_lib,
 \item{W_name}{...}
 }
 \description{
-Data-adaptive parameter estimate to be cross-validated
+Data-Adaptive Parameter Estimate for a Single CV Fold
 }

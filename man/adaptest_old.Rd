@@ -2,9 +2,9 @@
 % Please edit documentation in R/adaptest_old.R
 \name{adaptest_old}
 \alias{adaptest_old}
-\title{OLDOLDOLDO}
+\title{OLD Data-Adaptive Algorithm Implementation (for reference only)}
 \usage{
-adaptest_old(Y, A, W = NULL, n_top, n_fold,
+adaptest_old(Y, A, W = NULL, n_top, n_fold, folds_vec = NULL,
   parameter_wrapper = adaptest::rank_DE, SL_lib = c("SL.glm", "SL.step",
   "SL.glm.interaction", "SL.gam", "SL.earth"), absolute = FALSE,
   negative = FALSE)
@@ -21,6 +21,11 @@ using the data-adaptive estimation algorithm}
 
 \item{n_fold}{integer number of folds to be used for cross-validation}
 
+\item{folds_vec}{Vector of \code{numeric} indicating the validation fold in
+which a given observation falls for a standard V-fold cross-validation
+procedure. Default is \code{NULL}, in which case a custom cross-validation
+procedure is used.}
+
 \item{parameter_wrapper}{function}
 
 \item{SL_lib}{character}
@@ -36,7 +41,7 @@ using the data-adaptive estimation algorithm}
 Performs targeted minimum loss-based estimation (TMLE )of a marginal additive
 treatment effect of a binary point treatment on an outcome. The data-adaptive
 algorithm is used to perform variable reduction to avoid the disadvantages
-associated with multiple testing.
+associated with multiple testing. INTERNAL USE ONLY.
 }
 \author{
 Wilson Cai \email{wcai@berkeley.edu}, in collaboration with Alan E.
