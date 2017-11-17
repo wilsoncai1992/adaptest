@@ -2,22 +2,36 @@
 % Please edit documentation in R/adaptest.R
 \name{cv_param_est}
 \alias{cv_param_est}
-\title{Data-Adaptive Parameter Estimate for a Single CV Fold}
+\title{A Single corss validaiton fold for Data-Adaptive Parameter Estimate}
 \usage{
 cv_param_est(fold, data, parameter_wrapper, absolute, negative, n_top, SL_lib,
   Y_name, A_name, W_name)
 }
 \arguments{
-\item{fold}{...}
+\item{fold}{fold output from origami}
 
-\item{data}{...}
+\item{data}{entire training data}
 
-\item{Y_name}{...}
+\item{parameter_wrapper}{user-defined function}
 
-\item{A_name}{...}
+\item{absolute}{boolean: \code{TRUE} = test for absolute effect size. This
+\code{FALSE} = test for directional effect. This overrides argument
+\code{negative}.}
 
-\item{W_name}{...}
+\item{negative}{boolean: \code{TRUE} = test for negative effect size,
+\code{FALSE} = test for positive effect size}
+
+\item{n_top}{integer value for the number of candidate covariates to generate
+using the data-adaptive estimation algorithm}
+
+\item{SL_lib}{character of SuperLearner library}
+
+\item{Y_name}{string of colnames that all biomarkers share}
+
+\item{A_name}{string of colname of treatment}
+
+\item{W_name}{string of colnames that all baeline covariates share}
 }
 \description{
-Data-Adaptive Parameter Estimate for a Single CV Fold
+A Single corss validaiton fold for Data-Adaptive Parameter Estimate
 }

@@ -100,18 +100,18 @@ plot.data_adapt <- function(x, ..., plot_type = c("biomarker", "adapt_param")) {
 }
 
 
-#' Title
+#' summary of data_adapt
 #'
-#' @param x
-#' @param ...
-#' @param type
+#' @param object \code{data_adapt} object
+#' @param ... not implemented
+#' @param type char of either `adapt_param` or `biomarker`.
+#' `adapt_param` mode outputs summary table of the data adaptive target parameter.
+#' `biomarker` mode summarizes chracteristis of the biomarkers from the original data
 #'
 #' @return
 #' @export
 #' @method summary data_adapt
 #'
-#' @examples
-#' #NA
 summary.data_adapt <- function(object, ..., type = 'adapt_param') {
   data_adapt_param = 1:length(object$DE)
   DE = object$DE

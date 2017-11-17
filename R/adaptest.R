@@ -11,8 +11,8 @@
 #'        \code{negative}.
 #' @param negative boolean: \code{TRUE} = test for negative effect size,
 #'        \code{FALSE} = test for positive effect size
-#' @param parameter_wrapper function
-#' @param SL_lib character
+#' @param parameter_wrapper user-defined function
+#' @param SL_lib character of SuperLearner library
 #'
 #' @return \code{S3} object of class "data_adapt" for data-adaptive multiple testing.
 #
@@ -262,20 +262,28 @@ adaptest <- function(Y,
 
 ################################################################################
 
-#' Data-Adaptive Parameter Estimate for a Single CV Fold
+#' A Single corss validaiton fold for Data-Adaptive Parameter Estimate
 #'
-#' @param fold ...
-#' @param data ...
-#' @param Y_name ...
-#' @param A_name ...
-#' @param W_name ...
+#' @param fold fold output from origami
+#' @param data entire training data
+#' @param Y_name string of colnames that all biomarkers share
+#' @param A_name string of colname of treatment
+#' @param W_name string of colnames that all baeline covariates share
+#' @param parameter_wrapper user-defined function
+#' @param absolute boolean: \code{TRUE} = test for absolute effect size. This
+#'        \code{FALSE} = test for directional effect. This overrides argument
+#'        \code{negative}.
+#' @param negative boolean: \code{TRUE} = test for negative effect size,
+#'        \code{FALSE} = test for positive effect size
+#' @param n_top integer value for the number of candidate covariates to generate
+#'        using the data-adaptive estimation algorithm
+#' @param SL_lib character of SuperLearner library
 #'
 #' @importFrom origami training validation
 #' @importFrom tmle tmle
 
 cv_param_est <- function(fold, data, parameter_wrapper, absolute, negative,
                          n_top, SL_lib, Y_name, A_name, W_name) {
-  # browser()
   # define training and validation sets based on input object of class "folds"
   param_data <- origami::training(data)
   estim_data <- origami::validation(data)

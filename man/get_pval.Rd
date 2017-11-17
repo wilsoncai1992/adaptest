@@ -7,11 +7,11 @@
 get_pval(Psi_output, EIC_est_final, alpha = 0.05)
 }
 \arguments{
-\item{Psi_output}{...}
+\item{Psi_output}{vector containing differential expression estimates}
 
-\item{EIC_est_final}{...}
+\item{EIC_est_final}{matrix where each column is the efficient influence curves of the \code{Psi_output}}
 
-\item{alpha}{...}
+\item{alpha}{floating number between (0,1), significance level of the test}
 }
 \description{
 Statistical Inference for Data-Adaptive Parameters
