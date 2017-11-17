@@ -118,7 +118,7 @@ get_pval <- function(Psi_output, EIC_est_final, alpha = 0.05) {
 #' @param negative boolean: \code{TRUE} = test for negative effect size,
 #'  \code{FALSE} = test for positive effect size
 #'
-#' @importFrom stats lm p.adjust
+#' @importFrom stats p.adjust
 #' @importFrom utils head
 #' @importFrom magrittr "%>%"
 #' @importFrom origami make_folds cross_validate
@@ -216,7 +216,7 @@ adaptest <- function(Y,
   # ============================================================================
   # perform FDR correction
   # ============================================================================
-  q_value <- p.adjust(p_value, method = "BH")
+  q_value <- stats::p.adjust(p_value, method = "BH")
 
   is_sig_q_value <- q_value <= 0.05
   significant_q <- which(is_sig_q_value)

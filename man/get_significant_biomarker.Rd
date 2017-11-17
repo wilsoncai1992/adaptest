@@ -7,7 +7,7 @@
 get_significant_biomarker(object)
 }
 \arguments{
-\item{object}{}
+\item{object}{\code{data_adapt} object}
 }
 \description{
 Title

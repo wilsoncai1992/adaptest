@@ -15,7 +15,7 @@
 #'        \code{FALSE} = test for positive effect size
 #'
 #' @importFrom tmle tmle
-#' @importFrom stats lm p.adjust
+#' @importFrom stats lm
 #'
 #' @export rank_DE
 #'
@@ -43,7 +43,7 @@ rank_DE <- function(Y,
       B1_fitted[it] <- tmle_fit$estimates$ATE$psi
     } else {
       # CASE 2: OLS for faster effect size
-      lm_fit <- lm(Y_fit ~ A_fit)
+      lm_fit <- stats::lm(Y_fit ~ A_fit)
       B1_fitted[it] <- lm_fit$coefficients[2]
     }
   }

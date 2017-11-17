@@ -9,6 +9,8 @@ get_composition(object, type = "small")
 \arguments{
 \item{object}{data-adaptive statistical object of class \code{data_adapt}
 as returned by \code{adaptest}}
+
+\item{type}{string. 'small' or 'big'. 'small' mode returns composition of significant data-adaptive parameters. 'big' mode returns composition of all data-adaptive parameters}
 }
 \description{
 Customized informative tables for examining data-adaptive statistics

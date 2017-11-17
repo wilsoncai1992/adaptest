@@ -155,7 +155,7 @@ adaptest_old <- function(Y,
   # ============================================================================
   # perform FDR correction
   # ============================================================================
-  q_value <- p.adjust(p_value, method = "BH")
+  q_value <- stats::p.adjust(p_value, method = "BH")
 
   is_sig_q_value <- q_value <= 0.05
   significant_q <- which(is_sig_q_value)

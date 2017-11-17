@@ -4,6 +4,7 @@
 #'
 #' @param object data-adaptive statistical object of class \code{data_adapt}
 #'              as returned by \code{adaptest}
+#' @param type string. 'small' or 'big'. 'small' mode returns composition of significant data-adaptive parameters. 'big' mode returns composition of all data-adaptive parameters
 #'
 #' @export get_composition
 #'
@@ -30,7 +31,7 @@ get_composition <- function(object, type = 'small') {
 
 #' Title
 #'
-#' @param object
+#' @param object \code{data_adapt} object
 #'
 #' @export get_significant_biomarker
 #'
