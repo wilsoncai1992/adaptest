@@ -173,7 +173,7 @@ adaptest <- function(Y,
   psi_est_composition <- list()
   EIC_est_composition <- list()
 
-  # ============================================================================
+  # origami folds
   folds <- origami::make_folds(n = n_sim, V = n_fold)
   df_all <- data.frame(Y = Y, A = A, W = W)
   cv_results <- origami::cross_validate(cv_fun = cv_param_est, folds = folds,
@@ -224,7 +224,7 @@ adaptest <- function(Y,
   # export covariate name for easier interpretation
   top_colname <- adaptY_composition
   top_colname_significant_q <- adaptY_composition[which(is_sig_q_value)]
-  # ============================================================================
+
   # compute average rank across all folds
   mean_rank <- colMeans(rank_in_folds)
   top_index <- sort(as.numeric(unique(unlist(sapply(top_colname, names)))))
@@ -282,8 +282,16 @@ adaptest <- function(Y,
 #' @importFrom origami training validation
 #' @importFrom tmle tmle
 
-cv_param_est <- function(fold, data, parameter_wrapper, absolute, negative,
-                         n_top, SL_lib, Y_name, A_name, W_name) {
+cv_param_est <- function(fold,
+                         data,
+                         parameter_wrapper,
+                         absolute,
+                         negative,
+                         n_top,
+                         SL_lib,
+                         Y_name,
+                         A_name,
+                         W_name) {
   # define training and validation sets based on input object of class "folds"
   param_data <- origami::training(data)
   estim_data <- origami::validation(data)
