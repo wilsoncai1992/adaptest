@@ -4,7 +4,7 @@
 \alias{summary.data_adapt}
 \title{Title}
 \usage{
-\method{summary}{data_adapt}(x, ..., type = "adapt_param")
+\method{summary}{data_adapt}(object, ..., type = "adapt_param")
 }
 \arguments{
 \item{type}{}

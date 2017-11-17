@@ -14,8 +14,7 @@
 #' @param parameter_wrapper function
 #' @param SL_lib character
 #'
-#' @return S3 object of class "data_adapt" for data-adaptive multiple testing.
-#' @return S3 object of class "data_adapt" for data-adaptive multiple testing.
+#' @return \code{S3} object of class "data_adapt" for data-adaptive multiple testing.
 #
 data_adapt <- function(Y,
                        A,

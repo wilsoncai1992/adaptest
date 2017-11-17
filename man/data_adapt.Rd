@@ -31,9 +31,7 @@ using the data-adaptive estimation algorithm}
 \item{SL_lib}{character}
 }
 \value{
-S3 object of class "data_adapt" for data-adaptive multiple testing.
-
-S3 object of class "data_adapt" for data-adaptive multiple testing.
+\code{S3} object of class "data_adapt" for data-adaptive multiple testing.
 }
 \description{
 Class Constructor for Data Adaptive Parameters
