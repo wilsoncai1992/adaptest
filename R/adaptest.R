@@ -87,7 +87,7 @@ data_adapt <- function(Y,
 #
 get_pval <- function(Psi_output, EIC_est_final, alpha = 0.05) {
   n_sim <- nrow(EIC_est_final)
-  var_by_col <- apply(EIC_est_final, 2, stat::var) / n_sim
+  var_by_col <- apply(EIC_est_final, 2, stats::var) / n_sim
   sd_by_col <- sqrt(var_by_col)
   upper <- Psi_output + abs(stats::qnorm(alpha / 2)) * sd_by_col
   lower <- Psi_output - abs(stats::qnorm(alpha / 2)) * sd_by_col
