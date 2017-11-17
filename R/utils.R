@@ -108,7 +108,7 @@ plot.data_adapt <- function(x, ..., plot_type = c("biomarker", "adapt_param")) {
 #' `adapt_param` mode outputs summary table of the data adaptive target parameter.
 #' `biomarker` mode summarizes chracteristis of the biomarkers from the original data
 #'
-#' @return
+#' @return data.frame of the summary statistics
 #' @export
 #' @method summary data_adapt
 #'

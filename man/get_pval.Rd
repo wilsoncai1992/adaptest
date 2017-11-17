@@ -13,6 +13,15 @@ get_pval(Psi_output, EIC_est_final, alpha = 0.05)
 
 \item{alpha}{floating number between (0,1), significance level of the test}
 }
+\value{
+\code{pval} p-values for each \code{Psi_output}
+
+\code{upper} upper confidence bound for each \code{Psi_output}
+
+\code{lower} lower confidence bound for each \code{Psi_output}
+
+\code{sd_by_col} standard error of efficient influence curve for each \code{Psi_output}
+}
 \description{
 Statistical Inference for Data-Adaptive Parameters
 }

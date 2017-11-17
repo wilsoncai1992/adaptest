@@ -15,6 +15,9 @@
 `adapt_param` mode outputs summary table of the data adaptive target parameter.
 `biomarker` mode summarizes chracteristis of the biomarkers from the original data}
 }
+\value{
+data.frame of the summary statistics
+}
 \description{
 summary of data_adapt
 }

@@ -79,7 +79,10 @@ data_adapt <- function(Y,
 #'
 #' @importFrom stats qnorm pnorm var
 #'
-#' @return
+#' @return \code{pval} p-values for each \code{Psi_output}
+#' @return \code{upper} upper confidence bound for each \code{Psi_output}
+#' @return \code{lower} lower confidence bound for each \code{Psi_output}
+#' @return \code{sd_by_col} standard error of efficient influence curve for each \code{Psi_output}
 #' @export
 #
 get_pval <- function(Psi_output, EIC_est_final, alpha = 0.05) {
