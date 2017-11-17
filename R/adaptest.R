@@ -6,11 +6,11 @@
 #' @param n_top integer value for the number of candidate covariates to generate
 #'        using the data-adaptive estimation algorithm
 #' @param n_fold integer number of folds to be used for cross-validation
-#' @param negative boolean: \code{TRUE} = test for negative effect size,
-#'        \code{FALSE} = test for positive effect size
 #' @param absolute boolean: \code{TRUE} = test for absolute effect size. This
 #'        \code{FALSE} = test for directional effect. This overrides argument
 #'        \code{negative}.
+#' @param negative boolean: \code{TRUE} = test for negative effect size,
+#'        \code{FALSE} = test for positive effect size
 #' @param parameter_wrapper function
 #' @param SL_lib character
 #'
@@ -73,9 +73,9 @@ data_adapt <- function(Y,
 
 #' Statistical Inference for Data-Adaptive Parameters
 #'
-#' @param Psi_output ...
-#' @param EIC_est_final ...
-#' @param alpha ...
+#' @param Psi_output vector containing differential expression estimates
+#' @param EIC_est_final matrix where each column is the efficient influence curves of the \code{Psi_output}
+#' @param alpha floating number between (0,1), significance level of the test
 #'
 #' @importFrom stats qnorm pnorm var
 #'
@@ -110,13 +110,13 @@ get_pval <- function(Psi_output, EIC_est_final, alpha = 0.05) {
 #' @param n_top integer value for the number of candidate covariates to generate
 #'  using the data-adaptive estimation algorithm
 #' @param n_fold integer number of folds to be used for cross-validation
-#' @param negative boolean: \code{TRUE} = test for negative effect size,
-#'  \code{FALSE} = test for positive effect size
+#' @param parameter_wrapper function
+#' @param SL_lib character
 #' @param absolute boolean: \code{TRUE} = test for absolute effect size. This
 #'  \code{FALSE} = test for directional effect. This overrides argument
 #'  \code{negative}.
-#' @param parameter_wrapper function
-#' @param SL_lib character
+#' @param negative boolean: \code{TRUE} = test for negative effect size,
+#'  \code{FALSE} = test for positive effect size
 #'
 #' @importFrom stats lm p.adjust
 #' @importFrom utils head
@@ -201,8 +201,14 @@ adaptest <- function(Y,
   # statistical inference
   # ============================================================================
   Psi_output <- colMeans(psi_est_final)
-  list[p_value, upper, lower, sd_by_col] <- get_pval(Psi_output, EIC_est_final,
-                                                     alpha = 0.05)
+  # list[p_value, upper, lower, sd_by_col] <- get_pval(Psi_output, EIC_est_final,
+  #                                                    alpha = 0.05)
+  inference_out <- get_pval(Psi_output, EIC_est_final, alpha = 0.05)
+  p_value <- inference_out[[1]]
+  upper <- inference_out[[2]]
+  lower <- inference_out[[3]]
+  sd_by_col <- inference_out[[4]]
+
   adaptY_composition <- adapt_param_composition[, seq_len(n_top)]
   adaptY_composition <- apply(adaptY_composition, 2,
                               function(x) table(x) / sum(table(x)))
