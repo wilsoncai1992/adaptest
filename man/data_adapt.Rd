@@ -26,14 +26,12 @@ using the data-adaptive estimation algorithm}
 \item{negative}{boolean: \code{TRUE} = test for negative effect size,
 \code{FALSE} = test for positive effect size}
 
-\item{parameter_wrapper}{function}
+\item{parameter_wrapper}{user-defined function}
 
-\item{SL_lib}{character}
+\item{SL_lib}{character of SuperLearner library}
 }
 \value{
-S3 object of class "data_adapt" for data-adaptive multiple testing.
-
-S3 object of class "data_adapt" for data-adaptive multiple testing.
+\code{S3} object of class "data_adapt" for data-adaptive multiple testing.
 }
 \description{
 Class Constructor for Data Adaptive Parameters
