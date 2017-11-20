@@ -2,13 +2,13 @@
 % Please edit documentation in R/adaptest.R
 \name{cv_param_est}
 \alias{cv_param_est}
-\title{A Single corss validaiton fold for Data-Adaptive Parameter Estimate}
+\title{Compute data-adaptive parameter estimate for a single cross-validation fold}
 \usage{
 cv_param_est(fold, data, parameter_wrapper, absolute, negative, n_top, SL_lib,
   Y_name, A_name, W_name)
 }
 \arguments{
-\item{fold}{fold output from origami}
+\item{fold}{fold output from \code{origami}}
 
 \item{data}{entire training data}
 
@@ -24,14 +24,14 @@ cv_param_est(fold, data, parameter_wrapper, absolute, negative, n_top, SL_lib,
 \item{n_top}{integer value for the number of candidate covariates to generate
 using the data-adaptive estimation algorithm}
 
-\item{SL_lib}{character of SuperLearner library}
+\item{SL_lib}{character of \code{SuperLearner} library}
 
-\item{Y_name}{string of colnames that all biomarkers share}
+\item{Y_name}{string of \code{colnames} that all biomarkers share}
 
-\item{A_name}{string of colname of treatment}
+\item{A_name}{string of \code{colnames} of treatment}
 
-\item{W_name}{string of colnames that all baeline covariates share}
+\item{W_name}{string of \code{colnames} that all baeline covariates share}
 }
 \description{
-A Single corss validaiton fold for Data-Adaptive Parameter Estimate
+Compute data-adaptive parameter estimate for a single cross-validation fold
 }

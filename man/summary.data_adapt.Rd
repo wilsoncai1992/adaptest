@@ -12,8 +12,9 @@
 \item{...}{not implemented}
 
 \item{type}{char of either `adapt_param` or `biomarker`.
-`adapt_param` mode outputs summary table of the data adaptive target parameter.
-`biomarker` mode summarizes chracteristis of the biomarkers from the original data}
+`adapt_param` mode outputs summary table of the data adaptive target
+parameter. `biomarker` mode summarizes chracteristis of the biomarkers from
+the original data}
 }
 \value{
 data.frame of the summary statistics

@@ -39,8 +39,8 @@ A.sample.vec <- A.sample[, 1]
 
 # B1
 b1.row <- c(rep(signal.true, p.true), rep(0, p.all - p.true))
-rep.row<-function(x,n){
-  matrix(rep(x,each=n),nrow=n)
+rep.row <- function(x, n) {
+  matrix(rep(x, each = n), nrow = n)
 }
 b1 <- rep.row(b1.row, n = n.sim)
 

@@ -28,3 +28,4 @@ test_that("data_adapt fails when invoked improperly", {
 #               )
 
 # })
+

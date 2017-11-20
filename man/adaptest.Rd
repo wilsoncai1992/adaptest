@@ -7,7 +7,7 @@
 adaptest(Y, A, W = NULL, n_top, n_fold,
   parameter_wrapper = adaptest::rank_DE, SL_lib = c("SL.glm", "SL.step",
   "SL.glm.interaction", "SL.gam", "SL.earth"), absolute = FALSE,
-  negative = FALSE)
+  negative = FALSE, p_cutoff = 0.05, q_cutoff = 0.05)
 }
 \arguments{
 \item{Y}{continuous or binary outcome variable}
@@ -31,13 +31,17 @@ using the data-adaptive estimation algorithm}
 
 \item{negative}{boolean: \code{TRUE} = test for negative effect size,
 \code{FALSE} = test for positive effect size}
+
+\item{p_cutoff}{A \code{numeric} indicating the cutoff at and below which
+p-values are to be considered significant.}
+
+\item{q_cutoff}{A \code{numeric} indicating the cutoff at and below which
+q-values (p-values after multiple testing corrections are applied) are to be
+considered significant.}
 }
 \description{
 Performs targeted minimum loss-based estimation (TMLE )of a marginal additive
 treatment effect of a binary point treatment on an outcome. The data-adaptive
 algorithm is used to perform variable reduction to avoid the disadvantages
 associated with multiple testing.
-}
-\author{
-Wilson Cai \email{wcai@berkeley.edu}, Alan Hubbard and Nima Hejazi
 }

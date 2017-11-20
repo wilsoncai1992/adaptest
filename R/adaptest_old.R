@@ -1,3 +1,7 @@
+utils::globalVariables(c("EIC_est_here", "data_adaptive_index",
+                         "index_grid_here", "lower", "p_value", "psi_est_here",
+                         "sd_by_col", "upper"))
+
 #' OLD Data-Adaptive Algorithm Implementation (for reference only)
 #'
 #' Performs targeted minimum loss-based estimation (TMLE )of a marginal additive

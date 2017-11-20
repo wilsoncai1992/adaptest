@@ -4,7 +4,9 @@
 #'
 #' @param object data-adaptive statistical object of class \code{data_adapt}
 #'              as returned by \code{adaptest}
-#' @param type string. 'small' or 'big'. 'small' mode returns composition of significant data-adaptive parameters. 'big' mode returns composition of all data-adaptive parameters
+#' @param type string. 'small' or 'big'. 'small' mode returns composition of
+#'  significant data-adaptive parameters. 'big' mode returns composition of all
+#'  data-adaptive parameters
 #'
 #' @export get_composition
 #'
@@ -16,7 +18,8 @@ get_composition <- function(object, type = 'small') {
   if (length(col.name) == 0) return(c(NULL, NULL))
 
   col_id_sig_final <- as.numeric(unique(unlist(lapply(col.name, names))))
-  decomposition <- matrix(0, nrow = length(col.name), ncol = length(col_id_sig_final))
+  decomposition <- matrix(0, nrow = length(col.name),
+                          ncol = length(col_id_sig_final))
   decomposition <- as.data.frame(decomposition)
   names(decomposition) <- col_id_sig_final
   for (it in 1:nrow(decomposition)) {
@@ -24,19 +27,23 @@ get_composition <- function(object, type = 'small') {
   }
   if (type == 'small') rownames(decomposition) <- object$significant_q
 
-  if (type == 'small') out.table <- cbind(decomposition, 'q-values' = object$q_value[object$significant_q])
+  if (type == 'small') {
+    out.table <- cbind(decomposition,
+                       'q-values' = object$q_value[object$significant_q])
+  }
   if (type == 'big') out.table <- cbind(decomposition, 'q-values' = NA)
   return(list(decomposition, out.table))
 }
 
-#' Title
+#' Extract statisticall significant biomarkers
 #'
 #' @param object \code{data_adapt} object
 #'
 #' @export get_significant_biomarker
 #'
 #' @examples
-#' # NA
+#
 get_significant_biomarker <- function(object) {
   return(colnames(get_composition(object, type = 'small')[[1]]))
 }
+

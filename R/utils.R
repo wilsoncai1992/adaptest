@@ -3,7 +3,7 @@
 #' Customized informative print method for examining data-adaptive statistics
 #'
 #' @param x data-adaptive statistical object of class \code{data_adapt} as
-#'        returned by \code{adaptest}.
+#'  returned by \code{adaptest}.
 #' @param ... additional arguments passed to \code{print} as necessary
 #'
 #' @export
@@ -33,7 +33,7 @@ print.data_adapt <- function(x, ...) {
 #' Provides HTML-based printing utility for examining data-adaptive statistics
 #'
 #' @param x data-adaptive statistical object of class \code{data_adapt}
-#'        as returned by \code{adaptest}
+#'  as returned by \code{adaptest}
 #'
 #' @importFrom R2HTML HTML
 #'
@@ -53,17 +53,17 @@ shinyprint.data_adapt <- function(x) {
 #' Customized plotting method for easily examining data-adaptive statistics
 #'
 #' @param x data-adaptive statistical object of class \code{data_adapt} as
-#'       returned by \code{adaptest}
+#'  returned by \code{adaptest}
 #' @param plot_type character vector specifying which of the two types of plots
-#'        to generate: "biomarker" for a plot sorted average CV-rank, or "adapt_param"
-#'        for a plot sorted by p-values with labels corresponding to indices
+#'  to generate: "biomarker" for a plot sorted average CV-rank, or "adapt_param"
+#'  for a plot sorted by p-values with labels corresponding to indices
 #' @param ... additional arguments passed to \code{plot} as necessary
 #'
 #' @importFrom graphics abline plot
 #' @importFrom calibrate textxy
 #'
 #' @export
-#'
+#
 plot.data_adapt <- function(x, ..., plot_type = c("biomarker", "adapt_param")) {
   top_index <- x$top_index
   DE <- x$DE
@@ -99,14 +99,14 @@ plot.data_adapt <- function(x, ..., plot_type = c("biomarker", "adapt_param")) {
   }
 }
 
-
 #' summary of data_adapt
 #'
 #' @param object \code{data_adapt} object
 #' @param ... not implemented
 #' @param type char of either `adapt_param` or `biomarker`.
-#' `adapt_param` mode outputs summary table of the data adaptive target parameter.
-#' `biomarker` mode summarizes chracteristis of the biomarkers from the original data
+#'  `adapt_param` mode outputs summary table of the data adaptive target
+#'  parameter. `biomarker` mode summarizes chracteristis of the biomarkers from
+#'  the original data
 #'
 #' @return data.frame of the summary statistics
 #' @export
@@ -124,16 +124,17 @@ summary.data_adapt <- function(object, ..., type = 'adapt_param') {
 
   if (type == 'adapt_param'){
     table_out <- data.frame(data_adapt_param, DE, p_value, q_value)
-    colnames(table_out) <- c('data-adaptive parameters', 'Differential expression', 'p-values', 'q-values')
+    colnames(table_out) <- c('data-adaptive parameters',
+                             'Differential expression', 'p-values', 'q-values')
     print(table_out)
   }
 
-
-  if (type == 'biomarker'){
+  if (type == 'biomarker') {
     # len <- length(top_biomarker)
     # table_out <- data.frame(top_biomarker, mean_rank_top, prob_in_top)
-    # colnames(table_out) <- c('biomakers', 'mean rank', paste('% appear in top ', len))
+    # colnames(table_out) <- c('biomakers', 'mean rank',
+    #                          paste('% appear in top ', len))
     # print(table_out)
   }
-
 }
+
