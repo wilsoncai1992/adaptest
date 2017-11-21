@@ -63,8 +63,12 @@ rm(list = c('b0', 'epsilon', 'temp1'))
 plan(sequential)
 set.seed(48915672)
 time_seq <- system.time(
-    result_seq <- adaptest(Y = Y, A = A.sample.vec, n_top = p.true + 5,
-                           n_fold = 4)
+    result_seq <- adaptest(Y = Y,
+                           A = A.sample.vec,
+                           n_top = p.true + 5,
+                           n_fold = 4,
+                           SL_lib = c("SL.mean", "SL.glm", "SL.step")
+                          )
 )
 
 if (availableCores() > 1) {
@@ -72,8 +76,12 @@ if (availableCores() > 1) {
 }
 set.seed(48915672)
 time_mc <- system.time(
-    result_mc <- adaptest(Y = Y, A = A.sample.vec, n_top = p.true + 5,
-                          n_fold = 4)
+    result_mc <- adaptest(Y = Y,
+                          A = A.sample.vec,
+                          n_top = p.true + 5,
+                          n_fold = 4,
+                          SL_lib = c("SL.mean", "SL.glm", "SL.step")
+                         )
 )
 
 test_that("Multiprocess and sequential evaluation return identical objects", {
