@@ -156,8 +156,14 @@ adaptest_old <- function(Y,
   # statistical inference
   # ============================================================================
   Psi_output <- colMeans(psi_est_final)
-  list[p_value, upper, lower, sd_by_col] <- get_pval(Psi_output, EIC_est_final,
-                                                     alpha = 0.05)
+  # list[p_value, upper, lower, sd_by_col] <- get_pval(Psi_output, EIC_est_final,
+                                                     # alpha = 0.05)
+  pval_out <- get_pval(Psi_output, EIC_est_final, alpha = 0.05)
+  p_value <- pval_out[[1]]
+  upper <- pval_out[[2]]
+  lower <- pval_out[[3]]
+  sd_by_col <- pval_out[[4]]
+
   adaptY_composition <- adapt_param_composition[, seq_len(n_top)]
   adaptY_composition <- apply(adaptY_composition, 2, function(x)
                               table(x) / sum(table(x)))
