@@ -5,8 +5,8 @@ set.seed(628957)
 library(MASS)
 library(Matrix)
 library(future)
-library(adaptest)
 library(origami)
+library(adaptest)
 context("adaptest works the same under old and origami implementations")
 
 ################################################################################

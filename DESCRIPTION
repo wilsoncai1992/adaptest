@@ -1,6 +1,6 @@
 Package: adaptest
 Title: Data-adaptive test statistics for multiple testing in high dimensions
-Version: 0.8.0
+Version: 0.8.1
 Authors@R: c(
   person("Weixin", "Cai", email = "wcai@berkeley.edu",
          role = c("aut", "cre", "cph"),
@@ -24,19 +24,20 @@ BugReports: https://github.com/wilsoncai1992/adaptest/issues
 Encoding: UTF-8
 Imports:
   tmle,
-  future,
   origami (>= 0.8.2),
   SuperLearner,
   calibrate,
   magrittr,
   Matrix,
-  R2HTML,
-  earth,
-  gam
+  future,
+  R2HTML
 Suggests:
   testthat,
   rmarkdown,
-  knitr
+  knitr,
+  earth,
+  gam,
+  nnls
 Remotes:
   github::jeremyrcoyle/origami
 VignetteBuilder: knitr

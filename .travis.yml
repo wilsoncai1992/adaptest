@@ -18,6 +18,7 @@ r:
 
 r_github_packages:
   - jimhester/covr
+  - jeremyrcoyle/origami
 
 bioc_packages:
   - SummarizedExperiment
