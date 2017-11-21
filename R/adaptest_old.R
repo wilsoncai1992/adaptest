@@ -137,8 +137,14 @@ adaptest_old <- function(Y,
   # CV
   # ============================================================================
   for (it0 in seq_len(n_fold)) {
-    list[data_adaptive_index, index_grid_here, psi_est_here, EIC_est_here] <-
-      compute.a.fold(data_adapt, it0)
+    # list[data_adaptive_index, index_grid_here, psi_est_here, EIC_est_here] <-
+      # compute.a.fold(data_adapt, it0)
+    fold_out <- compute.a.fold(data_adapt, it0)
+    data_adaptive_index <- fold_out[[1]]
+    index_grid_here <- fold_out[[2]]
+    psi_est_here <- fold_out[[3]]
+    EIC_est_here <- fold_out[[4]]
+
     rank_in_folds[it0, ] <- data_adaptive_index
     adapt_param_composition[it0, ] <- index_grid_here
     psi_est_composition[[it0]] <- psi_est_here
