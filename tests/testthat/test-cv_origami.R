@@ -67,7 +67,9 @@ time_seq <- system.time(
                            n_fold = 4)
 )
 
-plan(multiprocess)
+if (availableCores() > 1) {
+  plan(multiprocess)
+}
 set.seed(48915672)
 time_mc <- system.time(
     result_mc <- adaptest(Y = Y, A = A.sample.vec, n_top = p.true + 5,
@@ -78,7 +80,7 @@ test_that("Multiprocess and sequential evaluation return identical objects", {
   expect_equal(result_seq, result_mc)
 })
 
-if(availableCores() > 1) {
+if (availableCores() > 1) {
   test_that("Multiprocess evaluation is faster than sequential evaluation", {
     skip_on_os("windows") # Windows doesn't support multicore
     expect_lt(time_mc["elapsed"], time_seq["elapsed"])

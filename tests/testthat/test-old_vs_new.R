@@ -62,8 +62,10 @@ rm(list = c("b0", "epsilon", "temp1"))
 # adaptest should be fast with futures...
 ################################################################################
 
-if(availableCores() > 1) {
+if (availableCores() > 1) {
   plan(multiprocess)
+} else {
+  plan(sequential)
 }
 
 set.seed(48915672)
