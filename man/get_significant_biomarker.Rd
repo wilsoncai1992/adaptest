@@ -2,16 +2,13 @@
 % Please edit documentation in R/get_summary.R
 \name{get_significant_biomarker}
 \alias{get_significant_biomarker}
-\title{Title}
+\title{Extract statisticall significant biomarkers}
 \usage{
 get_significant_biomarker(object)
 }
 \arguments{
-\item{object}{}
+\item{object}{\code{data_adapt} object}
 }
 \description{
-Title
-}
-\examples{
-# NA
+Extract statisticall significant biomarkers
 }

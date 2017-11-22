@@ -1,24 +1,23 @@
 #' Ranking for data-adaptive test statistics
 #'
 #' Performs ranking using Targeted Minimum Loss-Based Estimation. This function
-#' is designed to be called inside \code{adaptest}; it should not
-#' be run by itself outside of that contex.
+#' is designed to be called inside \code{adaptest}; it should not be run by
+#' itself outside of that contex.
 #'
 #' @param Y continuous or binary outcome variable
-#' @param A binary treatment indicator: \code{1} = treatment,
-#'        \code{0} = control
+#' @param A binary treatment indicator: \code{1} = treatment, \code{0} = control
 #' @param W vector, matrix, or data.frame containing baseline covariates
 #' @param absolute boolean: \code{TRUE} = test for absolute effect size. This
-#'        \code{FALSE} = test for directional effect. This overrides argument
-#'        \code{negative}.
+#'  \code{FALSE} = test for directional effect. This overrides argument
+#'  \code{negative}.
 #' @param negative boolean: \code{TRUE} = test for negative effect size,
-#'        \code{FALSE} = test for positive effect size
+#'  \code{FALSE} = test for positive effect size
 #'
 #' @importFrom tmle tmle
-#' @importFrom stats lm p.adjust
+#' @importFrom stats lm
 #'
-#' @export rank_DE
-#'
+#' @export
+#
 rank_DE <- function(Y,
                     A,
                     W,
@@ -31,9 +30,9 @@ rank_DE <- function(Y,
 
   SL_lib <- c("SL.glm", "SL.step", "SL.glm.interaction", 'SL.gam')
 
-  for (it in 1:p_all) {
+  for (it in seq_len(p_all)) {
     A_fit <- A
-    Y_fit <- Y[,it]
+    Y_fit <- Y[, it]
     W_fit <- as.matrix(W)
     # CASE 1: TMLE for DE effect size
     if (sum(W - as.matrix(rep(1, n_here))) != 0) {
@@ -43,7 +42,7 @@ rank_DE <- function(Y,
       B1_fitted[it] <- tmle_fit$estimates$ATE$psi
     } else {
       # CASE 2: OLS for faster effect size
-      lm_fit <- lm(Y_fit ~ A_fit)
+      lm_fit <- stats::lm(Y_fit ~ A_fit)
       B1_fitted[it] <- lm_fit$coefficients[2]
     }
   }
@@ -65,3 +64,4 @@ rank_DE <- function(Y,
   # final object to be exported by this function
   return(rank_out)
 }
+

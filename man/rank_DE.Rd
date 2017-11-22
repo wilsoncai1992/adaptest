@@ -9,8 +9,7 @@ rank_DE(Y, A, W, absolute = FALSE, negative = FALSE)
 \arguments{
 \item{Y}{continuous or binary outcome variable}
 
-\item{A}{binary treatment indicator: \code{1} = treatment,
-\code{0} = control}
+\item{A}{binary treatment indicator: \code{1} = treatment, \code{0} = control}
 
 \item{W}{vector, matrix, or data.frame containing baseline covariates}
 
@@ -23,6 +22,6 @@ rank_DE(Y, A, W, absolute = FALSE, negative = FALSE)
 }
 \description{
 Performs ranking using Targeted Minimum Loss-Based Estimation. This function
-is designed to be called inside \code{adaptest}; it should not
-be run by itself outside of that contex.
+is designed to be called inside \code{adaptest}; it should not be run by
+itself outside of that contex.
 }

@@ -2,16 +2,23 @@
 % Please edit documentation in R/utils.R
 \name{summary.data_adapt}
 \alias{summary.data_adapt}
-\title{Title}
+\title{summary of data_adapt}
 \usage{
-\method{summary}{data_adapt}(x, ..., type = "adapt_param")
+\method{summary}{data_adapt}(object, ..., type = "adapt_param")
 }
 \arguments{
-\item{type}{}
+\item{object}{\code{data_adapt} object}
+
+\item{...}{not implemented}
+
+\item{type}{char of either `adapt_param` or `biomarker`.
+`adapt_param` mode outputs summary table of the data adaptive target
+parameter. `biomarker` mode summarizes chracteristis of the biomarkers from
+the original data}
+}
+\value{
+data.frame of the summary statistics
 }
 \description{
-Title
-}
-\examples{
-#NA
+summary of data_adapt
 }

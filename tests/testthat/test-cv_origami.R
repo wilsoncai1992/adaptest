@@ -39,8 +39,8 @@ A.sample.vec <- A.sample[, 1]
 
 # B1
 b1.row <- c(rep(signal.true, p.true), rep(0, p.all - p.true))
-rep.row<-function(x,n){
-  matrix(rep(x,each=n),nrow=n)
+rep.row <- function(x, n) {
+  matrix(rep(x, each = n), nrow = n)
 }
 b1 <- rep.row(b1.row, n = n.sim)
 
@@ -63,22 +63,32 @@ rm(list = c('b0', 'epsilon', 'temp1'))
 plan(sequential)
 set.seed(48915672)
 time_seq <- system.time(
-    result_seq <- adaptest(Y = Y, A = A.sample.vec, n_top = p.true + 5,
-                           n_fold = 4)
+    result_seq <- adaptest(Y = Y,
+                           A = A.sample.vec,
+                           n_top = p.true + 5,
+                           n_fold = 4,
+                           SL_lib = c("SL.mean", "SL.glm", "SL.step")
+                          )
 )
 
-plan(multiprocess)
+if (availableCores() > 1) {
+  plan(multiprocess)
+}
 set.seed(48915672)
 time_mc <- system.time(
-    result_mc <- adaptest(Y = Y, A = A.sample.vec, n_top = p.true + 5,
-                          n_fold = 4)
+    result_mc <- adaptest(Y = Y,
+                          A = A.sample.vec,
+                          n_top = p.true + 5,
+                          n_fold = 4,
+                          SL_lib = c("SL.mean", "SL.glm", "SL.step")
+                         )
 )
 
 test_that("Multiprocess and sequential evaluation return identical objects", {
   expect_equal(result_seq, result_mc)
 })
 
-if(availableCores() > 1) {
+if (availableCores() > 1) {
   test_that("Multiprocess evaluation is faster than sequential evaluation", {
     skip_on_os("windows") # Windows doesn't support multicore
     expect_lt(time_mc["elapsed"], time_seq["elapsed"])

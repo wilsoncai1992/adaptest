@@ -1,21 +1,21 @@
-#' Class Constructor for Data Adaptive Parameters
+#' S3-Style Constructor for Data Adaptive Parameter Class
 #'
 #' @param Y continuous or binary outcome variable
 #' @param A binary treatment indicator: \code{1} = treatment, \code{0} = control
 #' @param W vector, matrix, or data.frame containing baseline covariates
 #' @param n_top integer value for the number of candidate covariates to generate
-#'        using the data-adaptive estimation algorithm
+#'  using the data-adaptive estimation algorithm
 #' @param n_fold integer number of folds to be used for cross-validation
-#' @param negative boolean: \code{TRUE} = test for negative effect size,
-#'        \code{FALSE} = test for positive effect size
 #' @param absolute boolean: \code{TRUE} = test for absolute effect size. This
-#'        \code{FALSE} = test for directional effect. This overrides argument
-#'        \code{negative}.
-#' @param parameter_wrapper function
-#' @param SL_lib character
+#'  \code{FALSE} = test for directional effect. This overrides argument
+#'  \code{negative}.
+#' @param negative boolean: \code{TRUE} = test for negative effect size,
+#'  \code{FALSE} = test for positive effect size
+#' @param parameter_wrapper user-defined function
+#' @param SL_lib character of SuperLearner library
 #'
-#' @return S3 object of class "data_adapt" for data-adaptive multiple testing.
-#' @return S3 object of class "data_adapt" for data-adaptive multiple testing.
+#' @return \code{S3} object of class "data_adapt" for data-adaptive multiple
+#'  testing.
 #
 data_adapt <- function(Y,
                        A,
@@ -74,18 +74,24 @@ data_adapt <- function(Y,
 
 #' Statistical Inference for Data-Adaptive Parameters
 #'
-#' @param Psi_output ...
-#' @param EIC_est_final ...
-#' @param alpha ...
+#' @param Psi_output vector containing differential expression estimates
+#' @param EIC_est_final matrix where each column is the efficient influence
+#'  curves of the \code{Psi_output}
+#' @param alpha floating number between (0,1), significance level of the test
 #'
 #' @importFrom stats qnorm pnorm var
 #'
-#' @return
+#' @return \code{pval} p-values for each \code{Psi_output}
+#' @return \code{upper} upper confidence bound for each \code{Psi_output}
+#' @return \code{lower} lower confidence bound for each \code{Psi_output}
+#' @return \code{sd_by_col} standard error of efficient influence curve for each
+#'  \code{Psi_output}
+#'
 #' @export
 #
 get_pval <- function(Psi_output, EIC_est_final, alpha = 0.05) {
   n_sim <- nrow(EIC_est_final)
-  var_by_col <- apply(EIC_est_final, 2, stat::var) / n_sim
+  var_by_col <- apply(EIC_est_final, 2, stats::var) / n_sim
   sd_by_col <- sqrt(var_by_col)
   upper <- Psi_output + abs(stats::qnorm(alpha / 2)) * sd_by_col
   lower <- Psi_output - abs(stats::qnorm(alpha / 2)) * sd_by_col
@@ -111,20 +117,23 @@ get_pval <- function(Psi_output, EIC_est_final, alpha = 0.05) {
 #' @param n_top integer value for the number of candidate covariates to generate
 #'  using the data-adaptive estimation algorithm
 #' @param n_fold integer number of folds to be used for cross-validation
-#' @param negative boolean: \code{TRUE} = test for negative effect size,
-#'  \code{FALSE} = test for positive effect size
+#' @param parameter_wrapper function
+#' @param SL_lib character
 #' @param absolute boolean: \code{TRUE} = test for absolute effect size. This
 #'  \code{FALSE} = test for directional effect. This overrides argument
 #'  \code{negative}.
-#' @param parameter_wrapper function
-#' @param SL_lib character
+#' @param negative boolean: \code{TRUE} = test for negative effect size,
+#'  \code{FALSE} = test for positive effect size
+#' @param p_cutoff A \code{numeric} indicating the cutoff at and below which
+#'  p-values are to be considered significant.
+#' @param q_cutoff A \code{numeric} indicating the cutoff at and below which
+#'  q-values (p-values after multiple testing corrections are applied) are to be
+#'  considered significant.
 #'
-#' @importFrom stats lm p.adjust
+#' @importFrom stats p.adjust
 #' @importFrom utils head
 #' @importFrom magrittr "%>%"
 #' @importFrom origami make_folds cross_validate
-#'
-#' @author Wilson Cai \email{wcai@@berkeley.edu}, Alan Hubbard and Nima Hejazi
 #'
 #' @export adaptest
 #
@@ -137,7 +146,9 @@ adaptest <- function(Y,
                      SL_lib = c("SL.glm", "SL.step", "SL.glm.interaction",
                                 "SL.gam", "SL.earth"),
                      absolute = FALSE,
-                     negative = FALSE) {
+                     negative = FALSE,
+                     p_cutoff = 0.05,
+                     q_cutoff = 0.05) {
 
   # use constructor function to instantiate "data_adapt" object
   data_adapt <- data_adapt(Y = Y, A = A, W = W,
@@ -174,7 +185,7 @@ adaptest <- function(Y,
   psi_est_composition <- list()
   EIC_est_composition <- list()
 
-  # ============================================================================
+  # origami folds
   folds <- origami::make_folds(n = n_sim, V = n_fold)
   df_all <- data.frame(Y = Y, A = A, W = W)
   cv_results <- origami::cross_validate(cv_fun = cv_param_est, folds = folds,
@@ -202,8 +213,14 @@ adaptest <- function(Y,
   # statistical inference
   # ============================================================================
   Psi_output <- colMeans(psi_est_final)
-  list[p_value, upper, lower, sd_by_col] <- get_pval(Psi_output, EIC_est_final,
-                                                     alpha = 0.05)
+  # list[p_value, upper, lower, sd_by_col] <- get_pval(Psi_output, EIC_est_final,
+  #                                                    alpha = 0.05)
+  inference_out <- get_pval(Psi_output, EIC_est_final, alpha = p_cutoff)
+  p_value <- inference_out[[1]]
+  upper <- inference_out[[2]]
+  lower <- inference_out[[3]]
+  sd_by_col <- inference_out[[4]]
+
   adaptY_composition <- adapt_param_composition[, seq_len(n_top)]
   adaptY_composition <- apply(adaptY_composition, 2,
                               function(x) table(x) / sum(table(x)))
@@ -211,15 +228,15 @@ adaptest <- function(Y,
   # ============================================================================
   # perform FDR correction
   # ============================================================================
-  q_value <- p.adjust(p_value, method = "BH")
+  q_value <- stats::p.adjust(p_value, method = "BH")
 
-  is_sig_q_value <- q_value <= 0.05
+  is_sig_q_value <- q_value <= q_cutoff
   significant_q <- which(is_sig_q_value)
 
   # export covariate name for easier interpretation
   top_colname <- adaptY_composition
   top_colname_significant_q <- adaptY_composition[which(is_sig_q_value)]
-  # ============================================================================
+
   # compute average rank across all folds
   mean_rank <- colMeans(rank_in_folds)
   top_index <- sort(as.numeric(unique(unlist(sapply(top_colname, names)))))
@@ -242,7 +259,6 @@ adaptest <- function(Y,
   data_adapt$top_index <- top_index
   data_adapt$top_colname <- top_colname
   data_adapt$top_colname_significant_q <- top_colname_significant_q
-  # data_adapt$DE <- DE
   data_adapt$DE <- Psi_output
   data_adapt$p_value <- p_value
   data_adapt$q_value <- q_value
@@ -257,20 +273,36 @@ adaptest <- function(Y,
 
 ################################################################################
 
-#' Data-Adaptive Parameter Estimate for a Single CV Fold
+#' Compute data-adaptive parameter estimate for a single cross-validation fold
 #'
-#' @param fold ...
-#' @param data ...
-#' @param Y_name ...
-#' @param A_name ...
-#' @param W_name ...
+#' @param fold fold output from \code{origami}
+#' @param data entire training data
+#' @param Y_name string of \code{colnames} that all biomarkers share
+#' @param A_name string of \code{colnames} of treatment
+#' @param W_name string of \code{colnames} that all baeline covariates share
+#' @param parameter_wrapper user-defined function
+#' @param absolute boolean: \code{TRUE} = test for absolute effect size. This
+#'  \code{FALSE} = test for directional effect. This overrides argument
+#'  \code{negative}.
+#' @param negative boolean: \code{TRUE} = test for negative effect size,
+#'  \code{FALSE} = test for positive effect size
+#' @param n_top integer value for the number of candidate covariates to generate
+#'  using the data-adaptive estimation algorithm
+#' @param SL_lib character of \code{SuperLearner} library
 #'
 #' @importFrom origami training validation
 #' @importFrom tmle tmle
-
-cv_param_est <- function(fold, data, parameter_wrapper, absolute, negative,
-                         n_top, SL_lib, Y_name, A_name, W_name) {
-  # browser()
+#
+cv_param_est <- function(fold,
+                         data,
+                         parameter_wrapper,
+                         absolute,
+                         negative,
+                         n_top,
+                         SL_lib,
+                         Y_name,
+                         A_name,
+                         W_name) {
   # define training and validation sets based on input object of class "folds"
   param_data <- origami::training(data)
   estim_data <- origami::validation(data)
@@ -295,8 +327,7 @@ cv_param_est <- function(fold, data, parameter_wrapper, absolute, negative,
   # estimate the parameter on estimation sample
   psi_list <- list()
   EIC_list <- list()
-  for(it_index in seq_along(index_grid)){
-    # print(index_grid[it_index])
+  for (it_index in seq_along(index_grid)) {
     tmle_estimation <- tmle::tmle(Y = Y_estim[, index_grid[it_index]],
                                   A = A_estim, W = W_estim,
                                   Q.SL.library = SL_lib,
