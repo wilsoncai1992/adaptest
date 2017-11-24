@@ -41,7 +41,6 @@ get_composition <- function(object, type = 'small') {
 #'
 #' @export get_significant_biomarker
 #'
-#' @examples
 #
 get_significant_biomarker <- function(object) {
   return(colnames(get_composition(object, type = 'small')[[1]]))
