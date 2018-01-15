@@ -10,38 +10,51 @@ adaptest(Y, A, W = NULL, n_top, n_fold,
   negative = FALSE, p_cutoff = 0.05, q_cutoff = 0.05)
 }
 \arguments{
-\item{Y}{continuous or binary outcome variable}
+\item{Y}{(numeric vector) - continuous or binary biomarkers (outcome variables)}
 
-\item{A}{binary treatment indicator: \code{1} = treatment, \code{0} = control}
+\item{A}{(numeric vector) - binary treatment indicator: \code{1} = treatment, \code{0} = control}
 
-\item{W}{matrix containing baseline covariates}
+\item{W}{(numeric vector, numeric matrix, or numeric data.frame) - matrix of baseline covariates where each column corrspond to one baseline covariate. each row correspond to one observation}
 
-\item{n_top}{integer value for the number of candidate covariates to generate
+\item{n_top}{(integer vector) - value for the number of candidate covariates to generate
 using the data-adaptive estimation algorithm}
 
-\item{n_fold}{integer number of folds to be used for cross-validation}
+\item{n_fold}{(integer vector) - number of cross-validation folds.}
 
-\item{parameter_wrapper}{function}
+\item{parameter_wrapper}{(function) - user-defined function that takes input (Y, A, W, absolute, negative) and outputs a (integer vector) containing ranks of biomarkers (outcome variables). For detail, refer to `rank_DE`}
 
-\item{SL_lib}{character}
+\item{SL_lib}{(character vector) - library of learning algorithms to be used in fitting the "Q" and "g" step of the standard TMLE procedure.}
 
-\item{absolute}{boolean: \code{TRUE} = test for absolute effect size. This
-\code{FALSE} = test for directional effect. This overrides argument
-\code{negative}.}
+\item{absolute}{(logical) - whether or not to test for absolute effect size. If \code{FALSE}, test for directional effect. This overrides argument \code{negative}.}
 
-\item{negative}{boolean: \code{TRUE} = test for negative effect size,
-\code{FALSE} = test for positive effect size}
+\item{negative}{(logical) - whether or not to test for negative effect size. If \code{FALSE} = test for positive effect size. This is effective only when \code{absolute = FALSE}.}
 
-\item{p_cutoff}{A \code{numeric} indicating the cutoff at and below which
-p-values are to be considered significant.}
+\item{p_cutoff}{(numeric) - p-value cutoff (default as 0.05) at and below which to be considered significant. Used in inference stage.}
 
-\item{q_cutoff}{A \code{numeric} indicating the cutoff at and below which
-q-values (p-values after multiple testing corrections are applied) are to be
-considered significant.}
+\item{q_cutoff}{(numeric) - q-value cutoff (default as 0.05) at and below which to be considered significant. Used in multiple testing stage.}
+}
+\value{
+S4 object of class data_adapt, with the following additional slots containing data-mining selected biomarkers and their TMLE-based differential expression and inference, as well as the original call to this function (for user reference), respectively.
+
+\code{top_index} (integer vector) - indices for the data-mining selected biomarkers
+
+\code{top_colname} (character vector) - names for the data-mining selected biomarkers
+
+\code{top_colname_significant_q} (character vector) - names for the data-mining selected biomarkers, which are significant after multiple testing stage
+
+\code{DE} (numeric vector) - differential expression effect sizes for the biomarkers in \code{top_colname}
+
+\code{p_value} (numeric vector) - p-values for the biomarkers in \code{top_colname}
+
+\code{q_value} (numeric vector) - q-values for the biomarkers in \code{top_colname}
+
+\code{significant_q} (integer vector) - indices of \code{top_colname} which is significant after multiple testing stage.
+
+\code{mean_rank_top} (numeric vector) - average ranking across cross-validation folds for the biomarkers in \code{top_colname}
+
+\code{folds} (origami::folds class) - cross validation object
 }
 \description{
-Performs targeted minimum loss-based estimation (TMLE )of a marginal additive
-treatment effect of a binary point treatment on an outcome. The data-adaptive
-algorithm is used to perform variable reduction to avoid the disadvantages
-associated with multiple testing.
+Computes marginal average treatment effects of a binary point treatment on multi-dimensional outcomes, adjusting for baseline covariates, using Targeted Minimum Loss-Based Estimation. A data-mining
+algorithm is used to perform biomarker selection before multiple testing to increase power.
 }

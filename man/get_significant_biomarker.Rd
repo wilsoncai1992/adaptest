@@ -2,7 +2,7 @@
 % Please edit documentation in R/get_summary.R
 \name{get_significant_biomarker}
 \alias{get_significant_biomarker}
-\title{Extract statisticall significant biomarkers}
+\title{Extract statistically significant biomarkers}
 \usage{
 get_significant_biomarker(object)
 }
@@ -10,6 +10,6 @@ get_significant_biomarker(object)
 \item{object}{\code{data_adapt} object}
 }
 \description{
-Extract statisticall significant biomarkers
+Extract statistically significant biomarkers
 }
 \keyword{internal}

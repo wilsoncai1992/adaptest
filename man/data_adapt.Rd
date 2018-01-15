@@ -8,7 +8,7 @@ data_adapt(Y, A, W = NULL, n_top, n_fold, absolute, negative,
   parameter_wrapper, SL_lib)
 }
 \arguments{
-\item{Y}{(numeric vector) - continuous or binary outcome variable}
+\item{Y}{(numeric vector) - continuous or binary biomarkers (outcome variables)}
 
 \item{A}{(numeric vector) - binary treatment indicator: \code{1} = treatment, \code{0} = control}
 
@@ -23,7 +23,7 @@ using the data-adaptive estimation algorithm}
 
 \item{negative}{(logical) - whether or not to test for negative effect size. If \code{FALSE} = test for positive effect size. This is effective only when \code{absolute = FALSE}.}
 
-\item{parameter_wrapper}{(function) - user-defined function that takes input (Y, A, W, absolute, negative) and outputs a (integer vector) containing ranks of outcome variables. For detail, refer to `rank_DE`}
+\item{parameter_wrapper}{(function) - user-defined function that takes input (Y, A, W, absolute, negative) and outputs a (integer vector) containing ranks of biomarkers (outcome variables). For detail, refer to `rank_DE`}
 
 \item{SL_lib}{(character vector) - library of learning algorithms to be used in fitting the "Q" and "g" step of the standard TMLE procedure.}
 }

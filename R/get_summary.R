@@ -1,14 +1,14 @@
-#' Generic method of \code{table} for objects of class \code{data_adapt}
+#' Decomposition tables of the data-adaptive parameter after data-mining
 #'
-#' Customized informative tables for examining data-adaptive statistics
+#' Customized informative tables for examining data-adaptive statistics.
 #'
-#' @param object data-adaptive statistical object of class \code{data_adapt}
-#'              as returned by \code{adaptest}
-#' @param type string. 'small' or 'big'. 'small' mode returns composition of
-#'  significant data-adaptive parameters. 'big' mode returns composition of all
-#'  data-adaptive parameters
+#' @param object (data_adapt) - object of class \code{data_adapt} as returned by \code{adaptest}
+#' @param type (character) - 'small' or 'big'. 'small' mode returns composition of
+#'  data-adaptive parameters after multiple testing stage. 'big' mode returns composition of
+#'  data-adaptive parameters before multiple testing stage.
 #'
-#' @keywords internal
+#' @return (numeric matrix) containing what fraction of the data-adaptive parameter comes from which biomarker in the original dataset.
+#' @export
 #'
 get_composition <- function(object, type = 'small') {
   if (type == 'small') col.name = object$top_colname_significant_q
@@ -35,7 +35,7 @@ get_composition <- function(object, type = 'small') {
   return(list(decomposition, out.table))
 }
 
-#' Extract statisticall significant biomarkers
+#' Extract statistically significant biomarkers
 #'
 #' @param object \code{data_adapt} object
 #'
