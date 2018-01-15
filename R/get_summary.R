@@ -8,7 +8,7 @@
 #'  significant data-adaptive parameters. 'big' mode returns composition of all
 #'  data-adaptive parameters
 #'
-#' @export get_composition
+#' @keywords internal
 #'
 get_composition <- function(object, type = 'small') {
   if (type == 'small') col.name = object$top_colname_significant_q
@@ -39,8 +39,7 @@ get_composition <- function(object, type = 'small') {
 #'
 #' @param object \code{data_adapt} object
 #'
-#' @export get_significant_biomarker
-#'
+#' @keywords internal
 #
 get_significant_biomarker <- function(object) {
   return(colnames(get_composition(object, type = 'small')[[1]]))

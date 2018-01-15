@@ -1,18 +1,15 @@
 #' S3-Style Constructor for Data Adaptive Parameter Class
 #'
-#' @param Y continuous or binary outcome variable
-#' @param A binary treatment indicator: \code{1} = treatment, \code{0} = control
-#' @param W vector, matrix, or data.frame containing baseline covariates
-#' @param n_top integer value for the number of candidate covariates to generate
+#' @param Y (numeric vector) - continuous or binary outcome variable
+#' @param A (numeric vector) - binary treatment indicator: \code{1} = treatment, \code{0} = control
+#' @param W (numeric vector, numeric matrix, or numeric data.frame) - matrix of baseline covariates where each column corrspond to one baseline covariate. each row correspond to one observation
+#' @param n_top (integer vector) - value for the number of candidate covariates to generate
 #'  using the data-adaptive estimation algorithm
-#' @param n_fold integer number of folds to be used for cross-validation
-#' @param absolute boolean: \code{TRUE} = test for absolute effect size. This
-#'  \code{FALSE} = test for directional effect. This overrides argument
-#'  \code{negative}.
-#' @param negative boolean: \code{TRUE} = test for negative effect size,
-#'  \code{FALSE} = test for positive effect size
-#' @param parameter_wrapper user-defined function
-#' @param SL_lib character of SuperLearner library
+#' @param n_fold (integer vector) - number of cross-validation folds.
+#' @param absolute (logical) - whether or not to test for absolute effect size. If \code{FALSE}, test for directional effect. This overrides argument \code{negative}.
+#' @param negative (logical) - whether or not to test for negative effect size. If \code{FALSE} = test for positive effect size. This is effective only when \code{absolute = FALSE}.
+#' @param parameter_wrapper (function) - user-defined function that takes input (Y, A, W, absolute, negative) and outputs a (integer vector) containing ranks of outcome variables. For detail, refer to `rank_DE`
+#' @param SL_lib (character vector) - library of learning algorithms to be used in fitting the "Q" and "g" step of the standard TMLE procedure.
 #'
 #' @return \code{S3} object of class "data_adapt" for data-adaptive multiple
 #'  testing.
@@ -33,16 +30,12 @@ data_adapt <- function(Y,
     Y <- as.data.frame(Y)
   }
   if (!is.vector(A)) stop("argument A must be numeric")
-  if (!is.null(W)) {
-    if(!is.matrix(W)) stop("argument W must be matrix")
-  }
+  if (!is.null(W)) if(!is.matrix(W)) stop("argument W must be matrix")
   if (!is.numeric(n_top)) stop("argument n_top must be numeric")
   if (!is.numeric(n_fold)) stop("argument n_fold must be numeric")
   if (!is.logical(absolute)) stop("argument absolute must be boolean/logical")
   if (!is.logical(negative)) stop("argument negative must be boolean/logical")
-  if (!is.function(parameter_wrapper)) {
-    stop("argument parameter_wrapper must be function")
-  }
+  if (!is.function(parameter_wrapper)) stop("argument parameter_wrapper must be function")
   if (!is.character(SL_lib)) stop("argument SL_lib must be character")
 
   # placeholders for outputs to be included when returning the data_adapt object
@@ -87,7 +80,7 @@ data_adapt <- function(Y,
 #' @return \code{sd_by_col} standard error of efficient influence curve for each
 #'  \code{Psi_output}
 #'
-#' @export
+#' @keywords internal
 #
 get_pval <- function(Psi_output, EIC_est_final, alpha = 0.05) {
   n_sim <- nrow(EIC_est_final)

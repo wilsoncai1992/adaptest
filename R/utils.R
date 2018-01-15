@@ -6,7 +6,7 @@
 #'  returned by \code{adaptest}.
 #' @param ... additional arguments passed to \code{print} as necessary
 #'
-#' @export
+#' @keywords internal
 #'
 print.data_adapt <- function(x, ...) {
   print('The top covariates are')
@@ -109,7 +109,7 @@ plot.data_adapt <- function(x, ..., plot_type = c("biomarker", "adapt_param")) {
 #'  the original data
 #'
 #' @return data.frame of the summary statistics
-#' @export
+#' @keywords internal
 #' @method summary data_adapt
 #'
 summary.data_adapt <- function(object, ..., type = 'adapt_param') {
