@@ -22,3 +22,4 @@ data.frame of the summary statistics
 \description{
 summary of data_adapt
 }
+\keyword{internal}

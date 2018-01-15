@@ -8,27 +8,24 @@ data_adapt(Y, A, W = NULL, n_top, n_fold, absolute, negative,
   parameter_wrapper, SL_lib)
 }
 \arguments{
-\item{Y}{continuous or binary outcome variable}
+\item{Y}{(numeric vector) - continuous or binary outcome variable}
 
-\item{A}{binary treatment indicator: \code{1} = treatment, \code{0} = control}
+\item{A}{(numeric vector) - binary treatment indicator: \code{1} = treatment, \code{0} = control}
 
-\item{W}{vector, matrix, or data.frame containing baseline covariates}
+\item{W}{(numeric vector, numeric matrix, or numeric data.frame) - matrix of baseline covariates where each column corrspond to one baseline covariate. each row correspond to one observation}
 
-\item{n_top}{integer value for the number of candidate covariates to generate
+\item{n_top}{(integer vector) - value for the number of candidate covariates to generate
 using the data-adaptive estimation algorithm}
 
-\item{n_fold}{integer number of folds to be used for cross-validation}
+\item{n_fold}{(integer vector) - number of cross-validation folds.}
 
-\item{absolute}{boolean: \code{TRUE} = test for absolute effect size. This
-\code{FALSE} = test for directional effect. This overrides argument
-\code{negative}.}
+\item{absolute}{(logical) - whether or not to test for absolute effect size. If \code{FALSE}, test for directional effect. This overrides argument \code{negative}.}
 
-\item{negative}{boolean: \code{TRUE} = test for negative effect size,
-\code{FALSE} = test for positive effect size}
+\item{negative}{(logical) - whether or not to test for negative effect size. If \code{FALSE} = test for positive effect size. This is effective only when \code{absolute = FALSE}.}
 
-\item{parameter_wrapper}{user-defined function}
+\item{parameter_wrapper}{(function) - user-defined function that takes input (Y, A, W, absolute, negative) and outputs a (integer vector) containing ranks of outcome variables. For detail, refer to `rank_DE`}
 
-\item{SL_lib}{character of SuperLearner library}
+\item{SL_lib}{(character vector) - library of learning algorithms to be used in fitting the "Q" and "g" step of the standard TMLE procedure.}
 }
 \value{
 \code{S3} object of class "data_adapt" for data-adaptive multiple

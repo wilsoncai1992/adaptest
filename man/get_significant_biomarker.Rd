@@ -12,3 +12,4 @@ get_significant_biomarker(object)
 \description{
 Extract statisticall significant biomarkers
 }
+\keyword{internal}

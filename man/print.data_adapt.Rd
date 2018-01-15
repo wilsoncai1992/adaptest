@@ -15,3 +15,4 @@ returned by \code{adaptest}.}
 \description{
 Customized informative print method for examining data-adaptive statistics
 }
+\keyword{internal}

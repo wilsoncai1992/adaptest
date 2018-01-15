@@ -65,7 +65,7 @@ data_adapt <- function(Y,
 
 ################################################################################
 
-#' Statistical Inference for Data-Adaptive Parameters
+#' Compute p-values based on asymptotic normality
 #'
 #' @param Psi_output vector containing differential expression estimates
 #' @param EIC_est_final matrix where each column is the efficient influence

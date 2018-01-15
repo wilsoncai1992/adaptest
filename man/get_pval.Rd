@@ -2,7 +2,7 @@
 % Please edit documentation in R/adaptest.R
 \name{get_pval}
 \alias{get_pval}
-\title{Statistical Inference for Data-Adaptive Parameters}
+\title{Compute p-values based on asymptotic normality}
 \usage{
 get_pval(Psi_output, EIC_est_final, alpha = 0.05)
 }
@@ -25,5 +25,6 @@ curves of the \code{Psi_output}}
  \code{Psi_output}
 }
 \description{
-Statistical Inference for Data-Adaptive Parameters
+Compute p-values based on asymptotic normality
 }
+\keyword{internal}

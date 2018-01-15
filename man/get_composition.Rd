@@ -17,3 +17,4 @@ data-adaptive parameters}
 \description{
 Customized informative tables for examining data-adaptive statistics
 }
+\keyword{internal}
