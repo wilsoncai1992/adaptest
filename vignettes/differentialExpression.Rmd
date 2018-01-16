@@ -12,27 +12,21 @@ vignette: >
 
 ## Introduction
 
-The `biotmle` R package can be used to isolate biomarkers in two ways: based
-on the associations of genomic objects with an exposure variable of interest.
-In this vignette, we illustrate how to use `biotmle` to isolate and visualize
-genes associated with an __exposure__, using a data set containing microarray
-expression measures from an Illumina platform. In the analysis described below,
-Targeted Minimum Loss-Based Estimation (TMLE) is used to transform the
-microarray expression values based on the influence curve representation of the
-Average Treatment Effect (ATE). Following this transformation, the moderated
-t-statistic of Smyth is used to test for a binary groupwise difference (based
-on the exposure variable), using the tools provided by the R package `limma`.
+The `adaptest` R package can be used to perform data-mining and high-dimensional statistical tests that is common in differential expression studies. The package utilizes a two stage procedure:
+1. data-mining stage: reduce the dimension of biomarkers based on the associations of biomarkers with an exposure variable.
+2. multiple testing stage: adjust for multiple testing to control false positives.
+In this vignette, we illustrate how to use `adaptest` to perform such analysis, using a data set containing microarray expression measures.
 
 ---
 
-## Biomarker Identification
+## Data-mining stage
 
-First, we load the `biotmle` package and the (included) `illuminaData` data set:
+First, we load the `adaptest` package and the (included) `illuminaData` data set:
 
 ```{r setup_data}
 library(dplyr)
-library(biotmle)
-library(biotmleData)
+library(adaptest)
+library(adaptestData)
 data(illuminaData)
 suppressMessages(library(SummarizedExperiment))
 "%ni%" = Negate("%in%")
@@ -41,9 +35,10 @@ suppressMessages(library(SummarizedExperiment))
 In order to perform Targeted Minimum Loss-Based Estimation, we need three
 separate data structures: (1) _W_, baseline covariates that could potentially
 confound the association of biomarkers with the exposure of interest; (2) _A_,
-the exposure of interest; and (3) _Y_, the biomarkers of interest. All values in
-_W_ and _A_ ought to be discretized, in order to avoid practical violations of
-the assumption of positivity. With the `illuminaData` data set below, we
+the point exposure of interest; and (3) _Y_, the biomarkers of interest. All values in _A_ ought to be binarized, in order to avoid practical violations of
+the assumption of positivity.
+
+With the `illuminaData` data set below, we
 discretize the age variable in the phenotype-level data below (this can be
 accessed via the `colData` of the `SummarizedExperiment` object). To invoke the
 biomarker assessment function (`biomarkertmle`), we also need to specify a
@@ -94,9 +89,9 @@ the exposure of interest based on the influence curve representation of the
 Average Treatment Effect parameter.
 
 The output of `biomarkertmle` can be directly fed to `modtest_ic`, a wrapper
-around `limma::lmFit` and `limma::topTable` that outputs a `biotmle` object
+around `limma::lmFit` and `limma::topTable` that outputs a `adaptest` object
 with the slots described above completely filled in. The `modtest_ic` function
-requires as input a `biotmle` object containing a data frame in the `tmleOut`
+requires as input a `adaptest` object containing a data frame in the `tmleOut`
 field as well as a design matrix indicating the groupwise difference to be
 tested. The design matrix should contain an intercept term and a term for the
 exposure of interest (with discretized exposure levels). _Based on the relevant
@@ -104,7 +99,7 @@ statistical theory, it is not appropriate to include any further terms in the
 design matrix (n.b., this differs from standard calls to `limma::lmFit`)_.
 
 ```{r limmaTMLE_eval}
-limmaTMLEout <- modtest_ic(biotmle = biomarkerTMLEout)
+limmaTMLEout <- modtest_ic(adaptest = biomarkerTMLEout)
 ```
 
 After invoking `modtest_ic`, the resultant `bioTMLE` object will contain all
@@ -170,7 +165,7 @@ changes in gene expression). The plot produced is a `ggplot2` object and can
 be modified in place if stored properly. For our analysis:
 
 ```{r volcano_plot_limma_results}
-volcano_ic(biotmle = limmaTMLEout)
+volcano_ic(adaptest = limmaTMLEout)
 ```
 
 ---
