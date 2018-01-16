@@ -53,7 +53,7 @@ shinyprint.data_adapt <- function(x) {
 #' @param x (data_adapt) - object of class \code{data_adapt} as returned by \code{adaptest}
 #' @param plot_type character vector specifying which of the two types of plots
 #'  to generate: "biomarker" for a plot sorted average CV-rank, or "adapt_param"
-#'  for a plot sorted by p-values with labels corresponding to indices
+#'  for a plot sorted by q-values with labels corresponding to indices
 #' @param ... additional arguments passed to \code{plot} as necessary
 #'
 #' @importFrom graphics abline plot
@@ -83,12 +83,12 @@ plot.data_adapt <- function(x, ..., plot_type = c("biomarker", "adapt_param")) {
   }
 
   if ("adapt_param" %in% plot_type) {
-    # plot sorted p-values, labeled with index
+    # plot sorted q-values, labeled with index
     temp.top_index <- c(1:n_top.want)[order(q_value)]
     plot(sort(q_value),
          pch = 20,
-         ylab = 'Adjusted P-value',
-         main = 'Adjusted p-value of selected covariates \n (Smaller the better)'
+         ylab = 'q-value',
+         main = 'q-value of selected covariates \n (Smaller the better)'
          )
     calibrate::textxy((1:n_top.want) - 0.3, sort(q_value), temp.top_index,
                       offset = 1)

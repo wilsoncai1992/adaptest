@@ -13,7 +13,7 @@
 
 \item{plot_type}{character vector specifying which of the two types of plots
 to generate: "biomarker" for a plot sorted average CV-rank, or "adapt_param"
-for a plot sorted by p-values with labels corresponding to indices}
+for a plot sorted by q-values with labels corresponding to indices}
 }
 \description{
 Customized plotting method for easily examining data-adaptive statistics
