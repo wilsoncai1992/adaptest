@@ -3,7 +3,7 @@ title: "Data-mining biomarkers and perform testing"
 author: "[Wilson Cai](www.stat.berkeley.edu/~wcai/), Nima Hejazi, & Alan Hubbard"
 date: "`r Sys.Date()`"
 output:
-  BiocStyle::html_document
+  # BiocStyle::html_document
 vignette: >
   %\VignetteIndexEntry{Data-mining biomarkers and perform testing}
   %\VignetteEngine{knitr::rmarkdown}
@@ -21,14 +21,12 @@ In this vignette, we illustrate how to use `adaptest` to perform such analysis, 
 
 ## Data-mining stage
 
-First, we load the `adaptest` package and the (included) `illuminaData` data set:
+First, we load the `adaptest` package and the (included) `simpleArray` data set:
 
 ```{r setup_data}
-library(dplyr)
+# library(dplyr)
 library(adaptest)
-library(adaptestData)
-data(illuminaData)
-suppressMessages(library(SummarizedExperiment))
+data(simpleArray)
 "%ni%" = Negate("%in%")
 ```
 
@@ -36,79 +34,40 @@ In order to perform Targeted Minimum Loss-Based Estimation, we need three
 separate data structures: (1) _W_, baseline covariates that could potentially
 confound the association of biomarkers with the exposure of interest; (2) _A_,
 the point exposure of interest; and (3) _Y_, the biomarkers of interest. All values in _A_ ought to be binarized, in order to avoid practical violations of
-the assumption of positivity.
-
-With the `illuminaData` data set below, we
-discretize the age variable in the phenotype-level data below (this can be
-accessed via the `colData` of the `SummarizedExperiment` object). To invoke the
-biomarker assessment function (`biomarkertmle`), we also need to specify a
-variable of interest (or the position of said variable in the design matrix). We
-do both in just a few lines below:
-
-```{r clean_data}
-# discretize "age" in the phenotype-level data
-colData(illuminaData) <- colData(illuminaData) %>%
-  data.frame %>%
-  dplyr::mutate(age = as.numeric(age > median(age))) %>%
-  DataFrame
-
-# specify column index of treatment/exposure variable of interest
-varInt_index <- which(names(colData(illuminaData)) %in% "benzene")
-```
+the assumption of positivity. To invoke the data-adaptive testing function (`adaptest`), we also need to specify the number of top biomarkers `n_top` to the data-mining algorithm, and the number of folds `n_fold` for cross-validation. The smaller `n_top` is, the more selective data-mining algorithm we have. The larger `n_fold` is, more folds are carried our in cross validaiton.
 
 The TMLE-based biomarker discovery process can be invoked using the
-`biomarkertmle` function. The procedure is quite resource-intensive because it
+`adaptest` function. The procedure is quite resource-intensive because it
 evaluates the association of each individual potential biomarker (of which there
-are over 20,000 in the included data set) with an exposure of interest, while
+are 1e3 in the included data set) with an exposure of interest, while
 accounting for potential confounding based on all other covariates included in
 the design matrix. We demonstrate the necessary syntax for calling
-`biomarkertmle` below:
+`adaptest` below:
 
 ```{r biomarkerTMLE_eval, eval=FALSE}
-biomarkerTMLEout <- biomarkertmle(se = illuminaData,
-                                  varInt = varInt_index,
-                                  family = "gaussian",
-                                  g_lib = c("SL.glmnet", "SL.randomForest",
-                                            "SL.polymars", "SL.mean"),
-                                  Q_lib = c("SL.glmnet", "SL.randomForest",
-                                            "SL.nnet", "SL.mean")
-                                 )
+adaptestout <- adaptest(Y = Y,
+                       A = A,
+                       W = NULL,
+                       n_top = 10,
+                       n_fold = 3)
 ```
 
-```{r load_biomarkerTMLE_result, echo=FALSE}
-data(biomarkertmleOut)
+```{r load_biomarkerTMLE_result, eval=FALSE}
+data(adaptestOut)
 ```
 
-The output of `biomarkertmle` is an object of class `bioTMLE`, containing four
-objects: (1) `call`, the call to `biomarkertmle`; (2) `topTable`, an empty
-slot meant to hold the output of `limma::topTable`, after a later call to
-`modtest_ic`; (3) `limmaOut`, an empty slot meant to hold the output of
-`limma::lmFit`, after a later call to `modtest_ic`; and (4) `tmleOut`, a data
-frame containing the point estimates of the associations of each biomarker with
-the exposure of interest based on the influence curve representation of the
-Average Treatment Effect parameter.
+The output of `adaptest` is an object of class `adaptest`, containing the following objects:
+(1) top_index: (integer vector) - indices for the data-mining selected biomarkers
+(2) top_colname: (character vector) - names for the data-mining selected biomarkers
+(3) top_colname_significant_q: (character vector) - names for the data-mining selected biomarkers, which are significant after multiple testing stage
+(4) DE: (numeric vector) - differential expression effect sizes for the biomarkers in \code{top_colname}
+(5) p_value: (numeric vector) - p-values for the biomarkers in \code{top_colname}
+(6) q_value: (numeric vector) - q-values for the biomarkers in \code{top_colname}
+(7) significant_q: (integer vector) - indices of \code{top_colname} which is significant after multiple testing stage.
+(8) mean_rank_top: (numeric vector) - average ranking across cross-validation folds for the biomarkers in \code{top_colname}
+(9) folds: (origami::folds class) - cross validation object
 
-The output of `biomarkertmle` can be directly fed to `modtest_ic`, a wrapper
-around `limma::lmFit` and `limma::topTable` that outputs a `adaptest` object
-with the slots described above completely filled in. The `modtest_ic` function
-requires as input a `adaptest` object containing a data frame in the `tmleOut`
-field as well as a design matrix indicating the groupwise difference to be
-tested. The design matrix should contain an intercept term and a term for the
-exposure of interest (with discretized exposure levels). _Based on the relevant
-statistical theory, it is not appropriate to include any further terms in the
-design matrix (n.b., this differs from standard calls to `limma::lmFit`)_.
-
-```{r limmaTMLE_eval}
-limmaTMLEout <- modtest_ic(adaptest = biomarkerTMLEout)
-```
-
-After invoking `modtest_ic`, the resultant `bioTMLE` object will contain all
-information relevant to the analytic procedure for identifying biomarkers: that
-is, it will contain the origin call to `biomarkertmle`, the result of running
-`limma::topTable`, the result of running `limma::lmFit`, and the result of
-running `biomarkertmle`. The statistical results of this procedure can be
-extracted from the `topTable` object in the `bioTMLE` object produced by
-`modtest_ic`.
+After invoking `adaptest`, the resultant `adaptest` object will have the slots described above completely filled in. The statistical results of this procedure can be extracted using `summary` method.
 
 ---
 
@@ -122,7 +81,7 @@ adjusted p-values of each biomarker (based on the Benjamini-Hochberg procedure
 for controlling the False Discovery Rate) as generated by `limma::topTable`:
 
 ```{r pval_hist_limma_adjp}
-plot(x = limmaTMLEout, type = "pvals_adj")
+# plot(x = limmaTMLEout, type = "pvals_adj")
 ```
 
 Setting the argument `type = "pvals_raw"` will instead produce a histogram of
@@ -131,7 +90,7 @@ used for inferential purposes, as the computation producing these p-values
 ignores the multiple testing nature of the biomarker discovery problem)_:
 
 ```{r pval_hist_limma_rawp}
-plot(x = limmaTMLEout, type = "pvals_raw")
+# plot(x = limmaTMLEout, type = "pvals_raw")
 ```
 
 Heatmaps are useful graphics for visualizing the relationship between measures
@@ -146,11 +105,11 @@ produced is a `ggplot2` object and can be modified in place if stored properly.
 For our analysis:
 
 ```{r heatmap_limma_results}
-varInt_index <- which(names(colData(illuminaData)) %in% "benzene")
-designVar <- as.data.frame(colData(illuminaData))[, varInt_index]
-designVar <- as.numeric(designVar == max(designVar))
+# varInt_index <- which(names(colData(simpleArray)) %in% "benzene")
+# designVar <- as.data.frame(colData(simpleArray))[, varInt_index]
+# designVar <- as.numeric(designVar == max(designVar))
 
-heatmap_ic(x = limmaTMLEout, design = designVar, FDRcutoff = 0.05, top = 25)
+# heatmap_ic(x = limmaTMLEout, design = designVar, FDRcutoff = 0.05, top = 25)
 ```
 
 The volcano plot is standard graphical tools for examining how changes in
@@ -165,7 +124,7 @@ changes in gene expression). The plot produced is a `ggplot2` object and can
 be modified in place if stored properly. For our analysis:
 
 ```{r volcano_plot_limma_results}
-volcano_ic(adaptest = limmaTMLEout)
+# volcano_ic(adaptest = limmaTMLEout)
 ```
 
 ---
