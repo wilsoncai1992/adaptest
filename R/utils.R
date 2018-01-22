@@ -5,7 +5,7 @@
 #' @param x (data_adapt) - object of class \code{data_adapt} as returned by \code{adaptest}
 #' @param ... additional arguments passed to \code{print} as necessary
 #'
-#' @keywords internal
+#' @export
 #'
 print.data_adapt <- function(x, ...) {
   print('The top covariates are')
