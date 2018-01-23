@@ -318,8 +318,9 @@ cv_param_est <- function(fold,
                                            W = W_param,
                                            absolute,
                                            negative)
-
-  index_grid <- which(data_adaptive_index <= n_top)
+  # index_grid <- which(data_adaptive_index <= n_top) # sorted after screening
+  df_temp <- data.frame(col_ind = 1:ncol(Y_param), rank = data_adaptive_index) # ranked by rank
+  index_grid <- head(df_temp[order(df_temp$rank, decreasing=FALSE), ], n_top)[,'col_ind']
   # estimate the parameter on estimation sample
   psi_list <- list()
   EIC_list <- list()
