@@ -1,6 +1,5 @@
 library(testthat)
 library(adaptest)
 
-Sys.setenv(R_TESTS = '')
+Sys.setenv(R_TESTS = "")
 test_check("adaptest")
-

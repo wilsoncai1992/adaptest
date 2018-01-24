@@ -1,0 +1,103 @@
+---
+title: "Data-mining biomarkers and perform testing"
+author: "[Wilson Cai](www.stat.berkeley.edu/~wcai/), Nima Hejazi, & Alan Hubbard"
+date: "`r Sys.Date()`"
+output:
+  # BiocStyle::html_document
+vignette: >
+  %\VignetteIndexEntry{Data-mining biomarkers and perform testing}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+## Introduction
+
+The `adaptest` R package can be used to perform data-mining and high-dimensional statistical tests that is common in differential expression studies. The package utilizes a two stage procedure:
+1. data-mining stage: reduce the dimension of biomarkers based on the associations of biomarkers with an exposure variable.
+2. multiple testing stage: adjust for multiple testing to control false positives.
+In this vignette, we illustrate how to use `adaptest` to perform such analysis, using a data set containing microarray expression measures.
+
+---
+
+## Data-mining stage
+
+First, we load the `adaptest` package and the (included) `simpleArray` data set:
+
+```{r setup_data}
+library(adaptest)
+data(simpleArray)
+"%ni%" = Negate("%in%")
+```
+
+In order to perform Targeted Minimum Loss-Based Estimation, we need three
+separate data structures: (1) _W_, baseline covariates that could potentially
+confound the association of biomarkers with the exposure of interest; (2) _A_,
+the point exposure of interest; and (3) _Y_, the biomarkers of interest. All values in _A_ ought to be binarized, in order to avoid practical violations of
+the assumption of positivity. To invoke the data-adaptive testing function (`adaptest`), we also need to specify the number of top biomarkers `n_top` to the data-mining algorithm, and the number of folds `n_fold` for cross-validation. The smaller `n_top` is, the more selective data-mining algorithm we have. The larger `n_fold` is, more folds are carried our in cross validaiton.
+
+The TMLE-based biomarker discovery process can be invoked using the
+`adaptest` function. The procedure is quite resource-intensive because it
+evaluates the association of each individual potential biomarker (of which there
+are 1e3 in the included data set) with an exposure of interest, while
+accounting for potential confounding based on all other covariates included in
+the design matrix. We demonstrate the necessary syntax for calling
+`adaptest` below:
+
+```{r adaptest_eval, eval=TRUE}
+adaptestout <- adaptest(Y = Y,
+                       A = A,
+                       W = NULL,
+                       n_top = 10,
+                       n_fold = 3,
+                       parameter_wrapper = adaptest::rank_DE)
+```
+
+```{r load_adaptest_result, eval=FALSE}
+data(adaptestout)
+```
+
+The output of `adaptest` is an object of class `adaptest`, containing the following objects:
+(1) top_index: (integer vector) - indices for the data-mining selected biomarkers
+(2) top_colname: (character vector) - names for the data-mining selected biomarkers
+(3) top_colname_significant_q: (character vector) - names for the data-mining selected biomarkers, which are significant after multiple testing stage
+(4) DE: (numeric vector) - differential expression effect sizes for the biomarkers in \code{top_colname}
+(5) p_value: (numeric vector) - p-values for the biomarkers in \code{top_colname}
+(6) q_value: (numeric vector) - q-values for the biomarkers in \code{top_colname}
+(7) significant_q: (integer vector) - indices of \code{top_colname} which is significant after multiple testing stage.
+(8) mean_rank_top: (numeric vector) - average ranking across cross-validation folds for the biomarkers in \code{top_colname}
+(9) folds: (origami::folds class) - cross validation object
+
+After invoking `adaptest`, the resultant `adaptest` object will have the slots described above completely filled in. The statistical results of this procedure can be extracted using `summary` method.
+
+---
+
+## Interpret + Visualize the Results
+
+This package provides several interpretation methods that can be used to tabular and visualize the results of the data-adaptive tests.
+
+The `get_composition` method for a `adaptest` object will produce a table of composition of each data-adaptive parameters that is significant after multiple testing stage:
+
+```{r get_comp_small}
+get_composition(object = adaptestout, type = 'small')
+```
+
+Setting the argument `type = "big"` will instead produce a table of composition of each data-adaptive parameters before multiple testing stage, so that there are more columns
+
+```{r get_comp_big}
+get_composition(object = adaptestout, type = 'big')
+```
+
+The `plot` method for a `adaptest` object will produce two plots that help user interpret the results. The first plot is a plot of sorted average CV-rank for all the biomarkers in the original dataset (`Y`). The second plot is a plot of sorted q-values with labels corresponding to the indices of the data-adaptive parameter (as returned in `get_composition`)
+
+```{r plot}
+plot(adaptestout)
+```
+
+---
+
+## Session Information
+
+```{r sessionInfo, echo=FALSE}
+sessionInfo()
+```
+

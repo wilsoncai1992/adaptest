@@ -1,17 +1,16 @@
-#' Ranking for data-adaptive test statistics
+#' Compute ranking of biomarkers by sorting effect sizes
 #'
-#' Performs ranking using Targeted Minimum Loss-Based Estimation. This function
+#' Computes ranking of biomarkers based effect sizes, which are computed by Targeted Minimum Loss-Based Estimation. This function
 #' is designed to be called inside \code{adaptest}; it should not be run by
-#' itself outside of that contex.
+#' itself outside of that context.
 #'
-#' @param Y continuous or binary outcome variable
-#' @param A binary treatment indicator: \code{1} = treatment, \code{0} = control
-#' @param W vector, matrix, or data.frame containing baseline covariates
-#' @param absolute boolean: \code{TRUE} = test for absolute effect size. This
-#'  \code{FALSE} = test for directional effect. This overrides argument
-#'  \code{negative}.
-#' @param negative boolean: \code{TRUE} = test for negative effect size,
-#'  \code{FALSE} = test for positive effect size
+#' @param Y (numeric vector) - continuous or binary biomarkers (outcome variables)
+#' @param A (numeric vector) - binary treatment indicator: \code{1} = treatment, \code{0} = control
+#' @param W (numeric vector, numeric matrix, or numeric data.frame) - matrix of baseline covariates where each column corrspond to one baseline covariate. each row correspond to one observation
+#' @param absolute (logical) - whether or not to test for absolute effect size. If \code{FALSE}, test for directional effect. This overrides argument \code{negative}.
+#' @param negative (logical) - whether or not to test for negative effect size. If \code{FALSE} = test for positive effect size. This is effective only when \code{absolute = FALSE}.
+#'
+#' @return an \code{integer vector} containing ranks of biomarkers.
 #'
 #' @importFrom tmle tmle
 #' @importFrom stats lm
@@ -28,7 +27,7 @@ rank_DE <- function(Y,
 
   B1_fitted <- rep(0, p_all)
 
-  SL_lib <- c("SL.glm", "SL.step", "SL.glm.interaction", 'SL.gam')
+  SL_lib <- c("SL.glm", "SL.step", "SL.glm.interaction", "SL.gam")
 
   for (it in seq_len(p_all)) {
     A_fit <- A
@@ -37,8 +36,10 @@ rank_DE <- function(Y,
     # CASE 1: TMLE for DE effect size
     if (sum(W - as.matrix(rep(1, n_here))) != 0) {
       # if there are W
-      tmle_fit <- tmle(Y = Y_fit, A = A_fit, W = W,
-                          Q.SL.library = SL_lib, g.SL.library = SL_lib)
+      tmle_fit <- tmle(
+        Y = Y_fit, A = A_fit, W = W,
+        Q.SL.library = SL_lib, g.SL.library = SL_lib
+      )
       B1_fitted[it] <- tmle_fit$estimates$ATE$psi
     } else {
       # CASE 2: OLS for faster effect size
@@ -64,4 +65,3 @@ rank_DE <- function(Y,
   # final object to be exported by this function
   return(rank_out)
 }
-

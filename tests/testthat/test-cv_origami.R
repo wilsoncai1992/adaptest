@@ -53,8 +53,8 @@ temp1 <- b1 * A.sample
 Y <- b0 + temp1 + epsilon
 
 # clean up
-rm(list = c('b1', 'A.sample'))
-rm(list = c('b0', 'epsilon', 'temp1'))
+rm(list = c("b1", "A.sample"))
+rm(list = c("b0", "epsilon", "temp1"))
 
 
 ################################################################################
@@ -63,12 +63,13 @@ rm(list = c('b0', 'epsilon', 'temp1'))
 plan(sequential)
 set.seed(48915672)
 time_seq <- system.time(
-    result_seq <- adaptest(Y = Y,
-                           A = A.sample.vec,
-                           n_top = p.true + 5,
-                           n_fold = 4,
-                           SL_lib = c("SL.mean", "SL.glm", "SL.step")
-                          )
+  result_seq <- adaptest(
+    Y = Y,
+    A = A.sample.vec,
+    n_top = p.true + 5,
+    n_fold = 4,
+    SL_lib = c("SL.mean", "SL.glm", "SL.step")
+  )
 )
 
 if (availableCores() > 1) {
@@ -76,12 +77,13 @@ if (availableCores() > 1) {
 }
 set.seed(48915672)
 time_mc <- system.time(
-    result_mc <- adaptest(Y = Y,
-                          A = A.sample.vec,
-                          n_top = p.true + 5,
-                          n_fold = 4,
-                          SL_lib = c("SL.mean", "SL.glm", "SL.step")
-                         )
+  result_mc <- adaptest(
+    Y = Y,
+    A = A.sample.vec,
+    n_top = p.true + 5,
+    n_fold = 4,
+    SL_lib = c("SL.mean", "SL.glm", "SL.step")
+  )
 )
 
 test_that("Multiprocess and sequential evaluation return identical objects", {
@@ -94,4 +96,3 @@ if (availableCores() > 1) {
     expect_lt(time_mc["elapsed"], time_seq["elapsed"])
   })
 }
-

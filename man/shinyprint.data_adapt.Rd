@@ -7,8 +7,7 @@
 shinyprint.data_adapt(x)
 }
 \arguments{
-\item{x}{data-adaptive statistical object of class \code{data_adapt}
-as returned by \code{adaptest}}
+\item{x}{(data_adapt) - object of class \code{data_adapt} as returned by \code{adaptest}}
 }
 \description{
 Provides HTML-based printing utility for examining data-adaptive statistics

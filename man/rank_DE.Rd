@@ -2,26 +2,26 @@
 % Please edit documentation in R/generate_parameter_wrapper.R
 \name{rank_DE}
 \alias{rank_DE}
-\title{Ranking for data-adaptive test statistics}
+\title{Compute ranking of biomarkers by sorting effect sizes}
 \usage{
 rank_DE(Y, A, W, absolute = FALSE, negative = FALSE)
 }
 \arguments{
-\item{Y}{continuous or binary outcome variable}
+\item{Y}{(numeric vector) - continuous or binary biomarkers (outcome variables)}
 
-\item{A}{binary treatment indicator: \code{1} = treatment, \code{0} = control}
+\item{A}{(numeric vector) - binary treatment indicator: \code{1} = treatment, \code{0} = control}
 
-\item{W}{vector, matrix, or data.frame containing baseline covariates}
+\item{W}{(numeric vector, numeric matrix, or numeric data.frame) - matrix of baseline covariates where each column corrspond to one baseline covariate. each row correspond to one observation}
 
-\item{absolute}{boolean: \code{TRUE} = test for absolute effect size. This
-\code{FALSE} = test for directional effect. This overrides argument
-\code{negative}.}
+\item{absolute}{(logical) - whether or not to test for absolute effect size. If \code{FALSE}, test for directional effect. This overrides argument \code{negative}.}
 
-\item{negative}{boolean: \code{TRUE} = test for negative effect size,
-\code{FALSE} = test for positive effect size}
+\item{negative}{(logical) - whether or not to test for negative effect size. If \code{FALSE} = test for positive effect size. This is effective only when \code{absolute = FALSE}.}
+}
+\value{
+an \code{integer vector} containing ranks of biomarkers.
 }
 \description{
-Performs ranking using Targeted Minimum Loss-Based Estimation. This function
+Computes ranking of biomarkers based effect sizes, which are computed by Targeted Minimum Loss-Based Estimation. This function
 is designed to be called inside \code{adaptest}; it should not be run by
-itself outside of that contex.
+itself outside of that context.
 }

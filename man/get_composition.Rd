@@ -2,18 +2,20 @@
 % Please edit documentation in R/get_summary.R
 \name{get_composition}
 \alias{get_composition}
-\title{Generic method of \code{table} for objects of class \code{data_adapt}}
+\title{Decomposition tables of the data-adaptive parameter after data-mining}
 \usage{
 get_composition(object, type = "small")
 }
 \arguments{
-\item{object}{data-adaptive statistical object of class \code{data_adapt}
-as returned by \code{adaptest}}
+\item{object}{(data_adapt) - object of class \code{data_adapt} as returned by \code{adaptest}}
 
-\item{type}{string. 'small' or 'big'. 'small' mode returns composition of
-significant data-adaptive parameters. 'big' mode returns composition of all
-data-adaptive parameters}
+\item{type}{(character) - 'small' or 'big'. 'small' mode returns composition of
+data-adaptive parameters after multiple testing stage. 'big' mode returns composition of
+data-adaptive parameters before multiple testing stage.}
+}
+\value{
+(numeric matrix) containing what fraction of the data-adaptive parameter comes from which biomarker in the original dataset.
 }
 \description{
-Customized informative tables for examining data-adaptive statistics
+Customized informative tables for examining data-adaptive statistics.
 }
