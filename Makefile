@@ -4,6 +4,9 @@ md:
 site:
 	Rscript -e "pkgdown::build_site()"
 
+fastcheck:
+	Rscript -e "devtools::check(build_args = '--no-build-vignettes')"
+
 check:
 	Rscript -e "devtools::check()"
 
@@ -18,6 +21,9 @@ doc:
 
 build:
 	Rscript -e "devtools::build()"
+
+style:
+	Rscript -e "styler::style_pkg()"
 
 cov:
 	Rscript -e "covr::package_coverage(type = 'all', combine_types = FALSE, line_exclusions = list('R/plots.R'))"

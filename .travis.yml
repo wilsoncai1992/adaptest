@@ -1,3 +1,9 @@
+language: r
+dist: trusty
+sudo: required
+cache: packages
+warnings_are_errors: true
+
 branches:
   only:
   - master
@@ -7,14 +13,13 @@ env:
     - R_BUILD_ARGS="--no-build-vignettes --no-manual"
     - R_CHECK_ARGS="--no-build-vignettes --no-manual"
 
-language: r
-sudo: required
-cache: packages
-warnings_are_errors: true
-
 r:
   - release
   - devel
+
+r_packages:
+  - devtools
+  - covr
 
 r_github_packages:
   - jimhester/covr

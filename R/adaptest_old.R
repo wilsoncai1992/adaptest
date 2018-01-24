@@ -113,7 +113,13 @@ adaptest_old <- function(Y,
                                              absolute,
                                              negative)
 
-    index_grid <- which(data_adaptive_index <= n_top)
+    #index_grid <- which(data_adaptive_index <= n_top)
+    # impose order by ranking
+    df_temp <- data.frame(col_ind = seq_len(ncol(Y_param)),
+                          rank = data_adaptive_index)
+    index_grid <- head(df_temp[order(df_temp$rank, decreasing = FALSE), ],
+                       n_top)[, "col_ind"]
+
     # estimate the parameter on estimation sample
     psi_list <- list()
     EIC_list <- list()
