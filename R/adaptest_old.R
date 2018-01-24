@@ -1,6 +1,8 @@
-utils::globalVariables(c("EIC_est_here", "data_adaptive_index",
-                         "index_grid_here", "lower", "p_value", "psi_est_here",
-                         "sd_by_col", "upper"))
+utils::globalVariables(c(
+  "EIC_est_here", "data_adaptive_index",
+  "index_grid_here", "lower", "p_value", "psi_est_here",
+  "sd_by_col", "upper"
+))
 
 #' OLD Data-Adaptive Algorithm Implementation (for reference only)
 #'
@@ -43,19 +45,23 @@ adaptest_old <- function(Y,
                          n_fold,
                          folds_vec = NULL,
                          parameter_wrapper = adaptest::rank_DE,
-                         SL_lib = c("SL.glm", "SL.step", "SL.glm.interaction",
-                                    "SL.gam", "SL.earth"),
+                         SL_lib = c(
+                           "SL.glm", "SL.step", "SL.glm.interaction",
+                           "SL.gam", "SL.earth"
+                         ),
                          absolute = FALSE,
                          negative = FALSE) {
 
   # use constructor function to instantiate "data_adapt" object
-  data_adapt <- data_adapt(Y = Y, A = A, W = W,
-                           n_top = n_top,
-                           n_fold = n_fold,
-                           absolute = absolute,
-                           negative = negative,
-                           parameter_wrapper = parameter_wrapper,
-                           SL_lib = SL_lib)
+  data_adapt <- data_adapt(
+    Y = Y, A = A, W = W,
+    n_top = n_top,
+    n_fold = n_fold,
+    absolute = absolute,
+    negative = negative,
+    parameter_wrapper = parameter_wrapper,
+    SL_lib = SL_lib
+  )
   # ============================================================================
   # preparation
   # ============================================================================
@@ -79,9 +85,13 @@ adaptest_old <- function(Y,
     index_for_folds <- folds_vec
   } else {
     # random index for cross-validation if origami not used
-    index_for_folds <- sample(head(rep(seq_len(n_fold),
-                                       each = sample_each_fold),
-                                   n = n_sim))
+    index_for_folds <- sample(head(
+      rep(
+        seq_len(n_fold),
+        each = sample_each_fold
+      ),
+      n = n_sim
+    ))
   }
 
   # number of observations in each fold
@@ -107,29 +117,37 @@ adaptest_old <- function(Y,
     W_est <- data_adapt$W[index_for_folds == chunk_as_est, , drop = FALSE]
 
     # generate data-adaptive target parameter
-    data_adaptive_index <- parameter_wrapper(Y = Y_param,
-                                             A = A_param,
-                                             W = W_param,
-                                             absolute,
-                                             negative)
+    data_adaptive_index <- parameter_wrapper(
+      Y = Y_param,
+      A = A_param,
+      W = W_param,
+      absolute,
+      negative
+    )
 
-    #index_grid <- which(data_adaptive_index <= n_top)
+    # index_grid <- which(data_adaptive_index <= n_top)
     # impose order by ranking
-    df_temp <- data.frame(col_ind = seq_len(ncol(Y_param)),
-                          rank = data_adaptive_index)
-    index_grid <- head(df_temp[order(df_temp$rank, decreasing = FALSE), ],
-                       n_top)[, "col_ind"]
+    df_temp <- data.frame(
+      col_ind = seq_len(ncol(Y_param)),
+      rank = data_adaptive_index
+    )
+    index_grid <- head(
+      df_temp[order(df_temp$rank, decreasing = FALSE), ],
+      n_top
+    )[, "col_ind"]
 
     # estimate the parameter on estimation sample
     psi_list <- list()
     EIC_list <- list()
     for (it_index in seq_along(index_grid)) {
       # print(index_grid[it_index])
-      tmle_estimation <- tmle(Y = Y_est[, index_grid[it_index]],
-                              A = A_est,
-                              W = W_est,
-                              Q.SL.library = SL_lib,
-                              g.SL.library = SL_lib)
+      tmle_estimation <- tmle(
+        Y = Y_est[, index_grid[it_index]],
+        A = A_est,
+        W = W_est,
+        Q.SL.library = SL_lib,
+        g.SL.library = SL_lib
+      )
       psi_list[[it_index]] <- tmle_estimation$estimates$ATE$psi
       EIC_list[[it_index]] <- tmle_estimation$estimates$IC$IC.ATE
     }
@@ -144,7 +162,7 @@ adaptest_old <- function(Y,
   # ============================================================================
   for (it0 in seq_len(n_fold)) {
     # list[data_adaptive_index, index_grid_here, psi_est_here, EIC_est_here] <-
-      # compute.a.fold(data_adapt, it0)
+    # compute.a.fold(data_adapt, it0)
     fold_out <- compute.a.fold(data_adapt, it0)
     data_adaptive_index <- fold_out[[1]]
     index_grid_here <- fold_out[[2]]
@@ -163,7 +181,7 @@ adaptest_old <- function(Y,
   # ============================================================================
   Psi_output <- colMeans(psi_est_final)
   # list[p_value, upper, lower, sd_by_col] <- get_pval(Psi_output, EIC_est_final,
-                                                     # alpha = 0.05)
+  # alpha = 0.05)
   pval_out <- get_pval(Psi_output, EIC_est_final, alpha = 0.05)
   p_value <- pval_out[[1]]
   upper <- pval_out[[2]]
@@ -172,7 +190,7 @@ adaptest_old <- function(Y,
 
   adaptY_composition <- adapt_param_composition[, seq_len(n_top)]
   adaptY_composition <- apply(adaptY_composition, 2, function(x)
-                              table(x) / sum(table(x)))
+    table(x) / sum(table(x)))
 
   # ============================================================================
   # perform FDR correction
@@ -219,4 +237,3 @@ adaptest_old <- function(Y,
   # export augmented object containing the computed data-adaptive statistics
   return(data_adapt)
 }
-

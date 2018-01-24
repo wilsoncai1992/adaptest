@@ -27,7 +27,7 @@ rank_DE <- function(Y,
 
   B1_fitted <- rep(0, p_all)
 
-  SL_lib <- c("SL.glm", "SL.step", "SL.glm.interaction", 'SL.gam')
+  SL_lib <- c("SL.glm", "SL.step", "SL.glm.interaction", "SL.gam")
 
   for (it in seq_len(p_all)) {
     A_fit <- A
@@ -36,8 +36,10 @@ rank_DE <- function(Y,
     # CASE 1: TMLE for DE effect size
     if (sum(W - as.matrix(rep(1, n_here))) != 0) {
       # if there are W
-      tmle_fit <- tmle(Y = Y_fit, A = A_fit, W = W,
-                          Q.SL.library = SL_lib, g.SL.library = SL_lib)
+      tmle_fit <- tmle(
+        Y = Y_fit, A = A_fit, W = W,
+        Q.SL.library = SL_lib, g.SL.library = SL_lib
+      )
       B1_fitted[it] <- tmle_fit$estimates$ATE$psi
     } else {
       # CASE 2: OLS for faster effect size
@@ -63,4 +65,3 @@ rank_DE <- function(Y,
   # final object to be exported by this function
   return(rank_out)
 }
-

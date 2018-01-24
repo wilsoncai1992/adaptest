@@ -24,13 +24,13 @@ data_adapt <- function(Y,
                        parameter_wrapper,
                        SL_lib) {
   if (!is.data.frame(Y)) {
-    if(!is.matrix(Y)) {
+    if (!is.matrix(Y)) {
       stop("argument Y must be a data.frame or a matrix")
     }
     Y <- as.data.frame(Y)
   }
   if (!is.vector(A)) stop("argument A must be numeric")
-  if (!is.null(W)) if(!is.matrix(W)) stop("argument W must be matrix")
+  if (!is.null(W)) if (!is.matrix(W)) stop("argument W must be matrix")
   if (!is.numeric(n_top)) stop("argument n_top must be numeric")
   if (!is.numeric(n_fold)) stop("argument n_fold must be numeric")
   if (!is.logical(absolute)) stop("argument absolute must be boolean/logical")
@@ -48,16 +48,22 @@ data_adapt <- function(Y,
   prob_in_top <- NULL
   folds <- NULL
 
-  out <- structure(list(Y, A, W, n_top, n_fold, absolute, negative,
-                        parameter_wrapper, SL_lib, top_colname, DE,
-                        p_value, q_value, significant_q,
-                        mean_rank_top, prob_in_top, folds),
-                   class = "data_adapt")
+  out <- structure(
+    list(
+      Y, A, W, n_top, n_fold, absolute, negative,
+      parameter_wrapper, SL_lib, top_colname, DE,
+      p_value, q_value, significant_q,
+      mean_rank_top, prob_in_top, folds
+    ),
+    class = "data_adapt"
+  )
 
-  names(out) <- c("Y", "A", "W", "n_top", "n_fold", "absolute", "negative",
-                  "parameter_wrapper", "SL_lib", "top_colname", "DE", "p_value",
-                  "q_value", "significant_q", "mean_rank_top", "prob_in_top",
-                  "folds")
+  names(out) <- c(
+    "Y", "A", "W", "n_top", "n_fold", "absolute", "negative",
+    "parameter_wrapper", "SL_lib", "top_colname", "DE", "p_value",
+    "q_value", "significant_q", "mean_rank_top", "prob_in_top",
+    "folds"
+  )
 
   # export instance of "data_adapt" for downstream use
   return(out)
@@ -89,8 +95,10 @@ get_pval <- function(Psi_output, EIC_est_final, alpha = 0.05) {
   upper <- Psi_output + abs(stats::qnorm(alpha / 2)) * sd_by_col
   lower <- Psi_output - abs(stats::qnorm(alpha / 2)) * sd_by_col
 
-  pval <- stats::pnorm(abs(Psi_output / sd_by_col), mean = 0, sd = 1,
-                       lower.tail = FALSE) * 2
+  pval <- stats::pnorm(
+    abs(Psi_output / sd_by_col), mean = 0, sd = 1,
+    lower.tail = FALSE
+  ) * 2
 
   return(list(pval, upper, lower, sd_by_col))
 }
@@ -139,21 +147,25 @@ adaptest <- function(Y,
                      n_top,
                      n_fold,
                      parameter_wrapper = adaptest::rank_DE,
-                     SL_lib = c("SL.glm", "SL.step", "SL.glm.interaction",
-                                "SL.gam", "SL.earth"),
+                     SL_lib = c(
+                       "SL.glm", "SL.step", "SL.glm.interaction",
+                       "SL.gam", "SL.earth"
+                     ),
                      absolute = FALSE,
                      negative = FALSE,
                      p_cutoff = 0.05,
                      q_cutoff = 0.05) {
 
   # use constructor function to instantiate "data_adapt" object
-  data_adapt <- data_adapt(Y = Y, A = A, W = W,
-                           n_top = n_top,
-                           n_fold = n_fold,
-                           absolute = absolute,
-                           negative = negative,
-                           parameter_wrapper = parameter_wrapper,
-                           SL_lib = SL_lib)
+  data_adapt <- data_adapt(
+    Y = Y, A = A, W = W,
+    n_top = n_top,
+    n_fold = n_fold,
+    absolute = absolute,
+    negative = negative,
+    parameter_wrapper = parameter_wrapper,
+    SL_lib = SL_lib
+  )
   # ============================================================================
   # preparation
   # ============================================================================
@@ -171,8 +183,10 @@ adaptest <- function(Y,
   # determine number of samples per fold
   sample_each_fold <- ceiling(n_sim / n_fold)
   # random index
-  index_for_folds <- sample(head(rep(seq_len(n_fold), each = sample_each_fold),
-                                 n = n_sim))
+  index_for_folds <- sample(head(
+    rep(seq_len(n_fold), each = sample_each_fold),
+    n = n_sim
+  ))
   # number of observations in each fold
   table_n_per_fold <- table(index_for_folds)
 
@@ -184,25 +198,33 @@ adaptest <- function(Y,
   # origami folds
   folds <- origami::make_folds(n = n_sim, V = n_fold)
   df_all <- data.frame(Y = Y, A = A, W = W)
-  cv_results <- origami::cross_validate(cv_fun = cv_param_est, folds = folds,
-                                        data = df_all,
-                                        parameter_wrapper = parameter_wrapper,
-                                        absolute = absolute,
-                                        negative = negative,
-                                        n_top = n_top,
-                                        SL_lib = SL_lib,
-                                        Y_name = "Y",
-                                        A_name = "A",
-                                        W_name = "W")
+  cv_results <- origami::cross_validate(
+    cv_fun = cv_param_est, folds = folds,
+    data = df_all,
+    parameter_wrapper = parameter_wrapper,
+    absolute = absolute,
+    negative = negative,
+    n_top = n_top,
+    SL_lib = SL_lib,
+    Y_name = "Y",
+    A_name = "A",
+    W_name = "W"
+  )
   # ============================================================================
   # CV
   # ============================================================================
-  rank_in_folds <- matrix(data = cv_results$data_adaptive_index, nrow = n_fold,
-                          ncol = p_all, byrow = TRUE)
-  adapt_param_composition <- matrix(data = cv_results$index_grid, nrow = n_fold,
-                                    ncol = n_top, byrow = TRUE)
-  psi_est_final <- matrix(data = cv_results$psi_est, nrow = n_fold,
-                          ncol = n_top, byrow = TRUE)
+  rank_in_folds <- matrix(
+    data = cv_results$data_adaptive_index, nrow = n_fold,
+    ncol = p_all, byrow = TRUE
+  )
+  adapt_param_composition <- matrix(
+    data = cv_results$index_grid, nrow = n_fold,
+    ncol = n_top, byrow = TRUE
+  )
+  psi_est_final <- matrix(
+    data = cv_results$psi_est, nrow = n_fold,
+    ncol = n_top, byrow = TRUE
+  )
   EIC_est_final <- cv_results$EIC_est
 
   # ============================================================================
@@ -218,8 +240,10 @@ adaptest <- function(Y,
   sd_by_col <- inference_out[[4]]
 
   adaptY_composition <- adapt_param_composition[, seq_len(n_top)]
-  adaptY_composition <- apply(adaptY_composition, 2,
-                              function(x) table(x) / sum(table(x)))
+  adaptY_composition <- apply(
+    adaptY_composition, 2,
+    function(x) table(x) / sum(table(x))
+  )
 
   # ============================================================================
   # perform FDR correction
@@ -313,22 +337,26 @@ cv_param_est <- function(fold,
   W_estim <- as.matrix(estim_data[, grep(W_name, colnames(data))])
 
   # generate data-adaptive target parameter
-  data_adaptive_index <- parameter_wrapper(Y = Y_param,
-                                           A = A_param,
-                                           W = W_param,
-                                           absolute,
-                                           negative)
+  data_adaptive_index <- parameter_wrapper(
+    Y = Y_param,
+    A = A_param,
+    W = W_param,
+    absolute,
+    negative
+  )
   # index_grid <- which(data_adaptive_index <= n_top) # sorted after screening
   df_temp <- data.frame(col_ind = 1:ncol(Y_param), rank = data_adaptive_index) # ranked by rank
-  index_grid <- head(df_temp[order(df_temp$rank, decreasing=FALSE), ], n_top)[,'col_ind']
+  index_grid <- head(df_temp[order(df_temp$rank, decreasing = FALSE), ], n_top)[, "col_ind"]
   # estimate the parameter on estimation sample
   psi_list <- list()
   EIC_list <- list()
   for (it_index in seq_along(index_grid)) {
-    tmle_estimation <- tmle::tmle(Y = Y_estim[, index_grid[it_index]],
-                                  A = A_estim, W = W_estim,
-                                  Q.SL.library = SL_lib,
-                                  g.SL.library = SL_lib)
+    tmle_estimation <- tmle::tmle(
+      Y = Y_estim[, index_grid[it_index]],
+      A = A_estim, W = W_estim,
+      Q.SL.library = SL_lib,
+      g.SL.library = SL_lib
+    )
     psi_list[[it_index]] <- tmle_estimation$estimates$ATE$psi
     EIC_list[[it_index]] <- tmle_estimation$estimates$IC$IC.ATE
   }
@@ -336,10 +364,11 @@ cv_param_est <- function(fold,
   EIC_est <- do.call(cbind, EIC_list)
 
   # define output object to be returned as list (for flexibility)
-  out <- list(data_adaptive_index = data_adaptive_index,
-              index_grid = index_grid,
-              psi_est = psi_est,
-              EIC_est = EIC_est)
+  out <- list(
+    data_adaptive_index = data_adaptive_index,
+    index_grid = index_grid,
+    psi_est = psi_est,
+    EIC_est = EIC_est
+  )
   return(out)
 }
-
