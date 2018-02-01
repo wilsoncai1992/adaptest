@@ -45,3 +45,12 @@ Remotes:
   github::jeremyrcoyle/origami
 VignetteBuilder: knitr
 RoxygenNote: 6.0.1.9000
+biocViews:
+    Genetics,
+    GeneExpression,
+    DifferentialExpression,
+    Sequencing,
+    Microarray,
+    Regression,
+    DimensionReduction,
+    MultipleComparison

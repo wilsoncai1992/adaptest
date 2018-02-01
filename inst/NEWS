@@ -1,0 +1,12 @@
+adaptest 1.0.0:
+- The first release of this package was made as part of Bioconductor 3.7, in
+   April 2018.
+
+The adaptest R package provides routines for the method first described in the
+the technical manuscript [1] and the software paper [2]:
+
+1. Weixin Cai, Nima S. Hejazi, Alan E. Hubbard. Data-adaptive statistics for
+   multiple hypothesis testing in high-dimensional settings.
+
+2. Weixin Cai, Alan E. Hubbard, Nima S. Hejazi. adaptest: Data-Adaptive
+   Statistics for High-Dimensional Testing in R.
