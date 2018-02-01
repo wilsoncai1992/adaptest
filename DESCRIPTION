@@ -30,8 +30,10 @@ Imports:
   calibrate,
   magrittr,
   Matrix,
+  R2HTML,
   future,
-  R2HTML
+  BiocParallel,
+  SummarizedExperiment
 Suggests:
   testthat,
   rmarkdown,
