@@ -24,6 +24,7 @@ In this vignette, we illustrate how to use `adaptest` to perform such analysis, 
 First, we load the `adaptest` package and the (included) `simpleArray` data set:
 
 ```{r setup_data}
+set.seed(1234)
 library(adaptest)
 data(simpleArray)
 "%ni%" = Negate("%in%")

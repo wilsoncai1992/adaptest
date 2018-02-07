@@ -1,6 +1,6 @@
 Package: adaptest
 Title: Data-adaptive test statistics for multiple testing in high dimensions
-Version: 0.8.2
+Version: 0.8.5
 Authors@R: c(
   person("Weixin", "Cai", email = "wcai@berkeley.edu",
          role = c("aut", "cre", "cph"),
@@ -33,7 +33,8 @@ Imports:
   R2HTML,
   future,
   BiocParallel,
-  SummarizedExperiment
+  SummarizedExperiment,
+  methods
 Suggests:
   testthat,
   rmarkdown,
