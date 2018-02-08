@@ -32,6 +32,7 @@ Imports:
   Matrix,
   R2HTML,
   future,
+  data.table,
   BiocParallel,
   SummarizedExperiment
 Suggests:
