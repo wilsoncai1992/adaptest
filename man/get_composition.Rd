@@ -7,14 +7,16 @@
 get_composition(object, type = "small")
 }
 \arguments{
-\item{object}{(data_adapt) - object of class \code{data_adapt} as returned by \code{adaptest}}
+\item{object}{(data_adapt) - object of class \code{data_adapt} as returned by
+\code{adaptest}}
 
-\item{type}{(character) - 'small' or 'big'. 'small' mode returns composition of
-data-adaptive parameters after multiple testing stage. 'big' mode returns composition of
-data-adaptive parameters before multiple testing stage.}
+\item{type}{(character) - 'small' or 'big'. 'small' mode returns composition
+of data-adaptive parameters after multiple testing stage. 'big' mode returns
+composition of data-adaptive parameters before multiple testing stage.}
 }
 \value{
-(numeric matrix) containing what fraction of the data-adaptive parameter comes from which biomarker in the original dataset.
+(numeric matrix) containing what fraction of the data-adaptive
+parameter comes from which biomarker in the original dataset.
 }
 \description{
 Customized informative tables for examining data-adaptive statistics.

@@ -46,18 +46,16 @@ the point exposure of interest; and (3) _Y_, the biomarkers of interest. All
 values in _A_ ought to be binarized, in order to avoid practical violations of
 the assumption of positivity. To invoke the data-adaptive testing function
 (`adaptest`), we also need to specify the number of top biomarkers `n_top` to
-the data-mining algorithm, and the number of folds `n_fold` for
-cross-validation. The smaller `n_top` is, the more selective data-mining
-algorithm we have. The larger `n_fold` is, the more folds are carried out in
-the cross-validation procedure.
+the data-mining algorithm, and the number of folds `n_fold` for cross-
+validation. The smaller `n_top` is, the more selective data-mining algorithm we
+have. The larger `n_fold` is, more folds are carried our in cross validaiton.
 
-The TMLE-based biomarker discovery process can be invoked using the
-`adaptest` function. The procedure is quite resource-intensive because it
-evaluates the association of each individual potential biomarker (of which there
-are `r ncol(Y)` in the included data set) with an exposure of interest, while
-accounting for potential confounding based on all other covariates included in
-the design matrix. We demonstrate the necessary syntax for calling
-`adaptest` below:
+The TMLE-based biomarker discovery process can be invoked using the `adaptest`
+function. The procedure is quite resource-intensive because it evaluates the
+association of each individual potential biomarker (of which there are 1e3 in
+the included data set) with an exposure of interest, while accounting for
+potential confounding based on all other covariates included in the design
+matrix. We demonstrate the necessary syntax for calling `adaptest` below:
 
 ```{r adaptest_eval, message=FALSE}
 adaptest_out <- adaptest(Y = Y,

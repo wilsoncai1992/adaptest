@@ -59,21 +59,20 @@ rank_DE <- function(Y,
     }
   }
 
-  # rank by absolute differential expression
-  if (absolute == TRUE) {
-    B1_fitted_abs <- abs(B1_fitted)
-  } else {
-    B1_fitted_abs <- B1_fitted
-  }
+    # rank by absolute differential expression
+    if (absolute == TRUE) {
+        B1_fitted_abs <- abs(B1_fitted)
+    } else {
+        B1_fitted_abs <- B1_fitted
+    }
 
-  # calculate rank of each covariate
-  if (negative) {
-    rank_out <- rank(B1_fitted_abs)
-  } else {
-    rank_out <- rank(-B1_fitted_abs)
-  }
+    # calculate rank of each covariate
+    if (negative) {
+        rank_out <- rank(B1_fitted_abs)
+    } else {
+        rank_out <- rank(-B1_fitted_abs)
+    }
 
-  # final object to be exported by this function
-  return(rank_out)
+    # final object to be exported by this function
+    return(rank_out)
 }
-

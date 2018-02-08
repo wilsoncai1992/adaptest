@@ -6,18 +6,19 @@
 \usage{
 adaptest(Y, A, W = NULL, n_top, n_fold,
   parameter_wrapper = adaptest::rank_DE, SL_lib = c("SL.glm", "SL.step",
-  "SL.glm.interaction", "SL.gam", "SL.earth"), absolute = FALSE,
+  "SL.glm.interaction", "SL.gam", "SL.earth", "SL.mean"), absolute = FALSE,
   negative = FALSE, p_cutoff = 0.05, q_cutoff = 0.05)
 }
 \arguments{
-\item{Y}{(numeric vector) - continuous or binary biomarkers outcome variables}
+\item{Y}{(numeric vector) - continuous or binary biomarkers
+(outcome variables)}
 
-\item{A}{(numeric vector) - binary treatment indicator: \code{1} = treatment,
-\code{0} = control}
+\item{A}{(numeric vector) - binary treatment indicator:
+\code{1} = treatment, \code{0} = control}
 
-\item{W}{(numeric vector, numeric matrix, or numeric data.frame) - matrix of
-baseline covariates where each column correspond to one baseline covariate.
-Each row correspond to one observation}
+\item{W}{(numeric vector, numeric matrix, or numeric data.frame) -
+matrix of baseline covariates where each column corrspond to one baseline
+covariate. each row correspond to one observation}
 
 \item{n_top}{(integer vector) - value for the number of candidate covariates
 to generate using the data-adaptive estimation algorithm}
@@ -85,4 +86,7 @@ Computes marginal average treatment effects of a binary point treatment on
 multi-dimensional outcomes, adjusting for baseline covariates, using Targeted
 Minimum Loss-Based Estimation. A data-mining algorithm is used to perform
 biomarker selection before multiple testing to increase power.
+}
+\examples{
+
 }
