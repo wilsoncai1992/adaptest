@@ -40,7 +40,7 @@ data_adapt <- function(Y,
     if (!is.matrix(Y)) {
       stop("Argument Y must be a data.frame or a matrix.")
     }
-    Y <- data.table::as.data.table(Y)
+    Y <-  (Y)
   }
   if (!is.vector(A)) stop("Argument A must be numeric.")
   if (!is.null(W)) if (!is.matrix(W)) stop("Argument W must be matrix.")
@@ -192,7 +192,7 @@ adaptest <- function(Y,
                      parameter_wrapper = adaptest::rank_DE,
                      SL_lib = c(
                        "SL.glm", "SL.step", "SL.glm.interaction",
-                       "SL.gam", "SL.earth"
+                       "SL.gam", "SL.earth", "SL.mean"
                      ),
                      absolute = FALSE,
                      negative = FALSE,
@@ -234,14 +234,20 @@ adaptest <- function(Y,
   table_n_per_fold <- table(index_for_folds)
 
   rank_in_folds <- matrix(0, nrow = n_fold, ncol = p_all)
-  adapt_param_composition <- matrix(0, nrow = n_fold, ncol = n_top)
+  adapt_param_composition <- (matrix(0, nrow = n_fold, ncol = n_top))
   psi_est_composition <- list()
   EIC_est_composition <- list()
 
   # origami folds
   folds <- origami::make_folds(n = n_sim, V = n_fold)
   df_all <- data.frame(Y = Y, A = A, W = W)
+  #df_all <- data.table::data.table(Y = Y, A = A, W = W)
+  #data.table::setnames(df_all, c(paste("Y", seq_len(ncol(Y)), sep = "_"), "A",
+                                 #ifelse(ncol(W) > 1,
+                                        #paste("W", seq_len(ncol(W)),
+                                              #sep = "_"), "W")))
 
+  # do this whole cross-validation thing...
   cv_results <- origami::cross_validate(
     cv_fun = cv_param_est, folds = folds,
     data = df_all,
@@ -254,10 +260,11 @@ adaptest <- function(Y,
     A_name = "A",
     W_name = "W"
   )
+
   # ============================================================================
   # CV
   # ============================================================================
-  rank_in_folds <- matrix(
+  rank_in_folds <-  matrix(
     data = cv_results$data_adaptive_index, nrow = n_fold,
     ncol = p_all, byrow = TRUE
   )
@@ -303,7 +310,7 @@ adaptest <- function(Y,
 
   # compute average rank across all folds
   mean_rank <- colMeans(rank_in_folds)
-  top_index <- sort(as.numeric(unique(unlist(sapply(top_colname, names)))))
+  top_index <- sort(as.numeric(unique(unlist(lapply(top_colname, names)))))
 
   mean_rank_top <- mean_rank[top_index]
 
@@ -372,18 +379,14 @@ cv_param_est <- function(fold,
   param_data <- origami::training(data)
   estim_data <- origami::validation(data)
 
-  # get param generating data
+  # get param generating data (NOTE: these are data.table's)
   A_param <- param_data[, grep(A_name, colnames(data))]
-  Y_param <- data.table::as.data.table(param_data[, grep(Y_name,
-                                                         colnames(data))])
-  W_param <- data.table::as.data.table(param_data[, grep(W_name,
-                                                         colnames(data))])
-  # get estimation data
+  Y_param <- param_data[, grep(Y_name, colnames(data))]
+  W_param <- param_data[, grep(W_name, colnames(data))]
+  # get estimation data (NOTE: these are data.table's)
   A_estim <- estim_data[, grep(A_name, colnames(data))]
-  Y_estim <- data.table::as.data.table(estim_data[, grep(Y_name,
-                                                         colnames(data))])
-  W_estim <- data.table::as.data.table(estim_data[, grep(W_name,
-                                                         colnames(data))])
+  Y_estim <- estim_data[, grep(Y_name, colnames(data))]
+  W_estim <- estim_data[, grep(W_name, colnames(data))]
 
   # generate data-adaptive target parameter
   data_adaptive_index <- parameter_wrapper(
@@ -393,8 +396,8 @@ cv_param_est <- function(fold,
     absolute,
     negative
   )
-  df_temp <- data.table::as.data.table(col_ind = seq_len(ncol(Y_param)),
-                                       rank = data_adaptive_index)
+  df_temp <-  data.frame(col_ind = seq_len(ncol(Y_param)),
+                         rank = data_adaptive_index)
   index_grid <- head(df_temp[order(df_temp$rank, decreasing = FALSE), ],
                      n_top)[, "col_ind"]
   # estimate the parameter on estimation sample
@@ -402,7 +405,7 @@ cv_param_est <- function(fold,
   EIC_list <- list()
   for (it_index in seq_along(index_grid)) {
     tmle_estimation <- tmle::tmle(
-      Y = Y_estim[, index_grid[it_index]],
+      Y = as.numeric(Y_estim[, index_grid[it_index]]),
       A = A_estim, W = W_estim,
       Q.SL.library = SL_lib,
       g.SL.library = SL_lib
