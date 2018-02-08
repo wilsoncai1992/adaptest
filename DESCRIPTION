@@ -33,7 +33,6 @@ Imports:
   R2HTML,
   future,
   BiocParallel,
-  SummarizedExperiment,
   methods
 Suggests:
   testthat,
