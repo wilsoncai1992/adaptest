@@ -8,11 +8,11 @@
 #' @export .adaptmle
 #' @exportClass adapTMLE
 #
-.adaptmle <- methods::setClass(
-       Class = "adapTMLE",
-       slots = list(call = "call",
-                    tmle_out = "data.frame",
-                    topTable = "data.frame"),
-       contains = "SummarizedExperiment"
-)
+# .adaptmle <- methods::setClass(
+#        Class = "adapTMLE",
+#        slots = list(call = "call",
+#                     tmle_out = "data.frame",
+#                     topTable = "data.frame"),
+#        contains = "SummarizedExperiment"
+# )
 
