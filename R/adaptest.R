@@ -1,19 +1,30 @@
 #' S3-Style Constructor for Data Adaptive Parameter Class
 #'
-#' @param Y (numeric vector) - continuous or binary biomarkers (outcome variables)
-#' @param A (numeric vector) - binary treatment indicator: \code{1} = treatment, \code{0} = control
-#' @param W (numeric vector, numeric matrix, or numeric data.frame) - matrix of baseline covariates where each column corrspond to one baseline covariate. each row correspond to one observation
-#' @param n_top (integer vector) - value for the number of candidate covariates to generate
-#'  using the data-adaptive estimation algorithm
+#' @param Y (numeric vector) - continuous or binary biomarkers (outcome
+#' variables)
+#' @param A (numeric vector) - binary treatment indicator: \code{1} = treatment,
+#' \code{0} = control
+#' @param W (numeric vector, numeric matrix, or numeric data.frame) - matrix of
+#' baseline covariates where each column corrspond to one baseline covariate. each
+#' row correspond to one observation
+#' @param n_top (integer vector) - value for the number of candidate covariates
+#' to generate using the data-adaptive estimation algorithm
 #' @param n_fold (integer vector) - number of cross-validation folds.
-#' @param absolute (logical) - whether or not to test for absolute effect size. If \code{FALSE}, test for directional effect. This overrides argument \code{negative}.
-#' @param negative (logical) - whether or not to test for negative effect size. If \code{FALSE} = test for positive effect size. This is effective only when \code{absolute = FALSE}.
-#' @param parameter_wrapper (function) - user-defined function that takes input (Y, A, W, absolute, negative) and outputs a (integer vector) containing ranks of biomarkers (outcome variables). For detail, refer to `rank_DE`
-#' @param SL_lib (character vector) - library of learning algorithms to be used in fitting the "Q" and "g" step of the standard TMLE procedure.
+#' ' @param absolute (logical) - whether or not to test for absolute effect size.
+#' If \code{FALSE}, test for directional effect. This overrides argument
+#' \code{negative}.
+#' @param negative (logical) - whether or not to test for negative effect size.
+#' If \code{FALSE} = test for positive effect size. This is effective only when
+#' \code{absolute = FALSE}.
+#' @param parameter_wrapper (function) - user-defined function that takes input
+#' (Y, A, W, absolute, negative) and outputs a (integer vector) containing ranks
+#' of biomarkers (outcome variables). For detail, refer to `rank_DE`
+#' @param SL_lib (character vector) - library of learning algorithms to be used
+#' in fitting the "Q" and "g" step of the standard TMLE procedure.
 #'
 #' @return \code{S3} object of class "data_adapt" for data-adaptive multiple
 #'  testing.
-#
+#'
 data_adapt <- function(Y,
                        A,
                        W = NULL,
@@ -168,22 +179,23 @@ get_pval <- function(Psi_output, EIC_est_final, alpha = 0.05) {
 #' @importFrom origami make_folds cross_validate
 #'
 #' @export adaptest
-#
+#' @example
+#'
 adaptest <- function(Y,
-                                         A,
-                                         W = NULL,
-                                         n_top,
-                                         n_fold,
-                                         parameter_wrapper = adaptest::rank_DE,
-                                         SL_lib = c(
-                                             "SL.glm", "SL.step",
-                                             "SL.glm.interaction",
-                                             "SL.gam", "SL.earth"
-                                         ),
-                                         absolute = FALSE,
-                                         negative = FALSE,
-                                         p_cutoff = 0.05,
-                                         q_cutoff = 0.05) {
+                     A,
+                     W = NULL,
+                     n_top,
+                     n_fold,
+                     parameter_wrapper = adaptest::rank_DE,
+                     SL_lib = c(
+                       "SL.glm", "SL.step",
+                       "SL.glm.interaction",
+                       "SL.gam", "SL.earth"
+                     ),
+                     absolute = FALSE,
+                     negative = FALSE,
+                     p_cutoff = 0.05,
+                     q_cutoff = 0.05) {
 
     # use constructor function to instantiate "data_adapt" object
     data_adapt <- data_adapt(
