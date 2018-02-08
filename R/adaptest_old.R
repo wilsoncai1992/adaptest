@@ -39,19 +39,18 @@ utils::globalVariables(c(
 #'
 #'
 adaptest_old <- function(Y,
-                                                 A,
-                                                 W = NULL,
-                                                 n_top,
-                                                 n_fold,
-                                                 folds_vec = NULL,
-                                                 parameter_wrapper = adaptest::rank_DE,
-                                                 SL_lib = c(
-                                                     "SL.glm", "SL.step", "SL.glm.interaction",
-                                                     "SL.gam", "SL.earth"
-                                                 ),
-                                                 absolute = FALSE,
-                                                 negative = FALSE) {
-
+                         A,
+                         W = NULL,
+                         n_top,
+                         n_fold,
+                         folds_vec = NULL,
+                         parameter_wrapper = adaptest::rank_DE,
+                         SL_lib = c(
+                             "SL.glm", "SL.step", "SL.glm.interaction",
+                             "SL.gam", "SL.earth"
+                         ),
+                         absolute = FALSE,
+                         negative = FALSE) {
     # use constructor function to instantiate "data_adapt" object
     data_adapt <- data_adapt(
         Y = Y, A = A, W = W,
@@ -62,9 +61,9 @@ adaptest_old <- function(Y,
         parameter_wrapper = parameter_wrapper,
         SL_lib = SL_lib
     )
-    # ============================================================================
+    # ==========================================================================
     # preparation
-    # ============================================================================
+    # ==========================================================================
     n_sim <- nrow(data_adapt$Y)
     p_all <- ncol(data_adapt$Y)
 
@@ -74,9 +73,9 @@ adaptest_old <- function(Y,
         data_adapt$W <- W
     }
 
-    # ============================================================================
+    # ==========================================================================
     # create parameter generating sample
-    # ============================================================================
+    # ==========================================================================
     # determine number of samples per fold
     sample_each_fold <- ceiling(n_sim / n_fold)
 
@@ -101,7 +100,7 @@ adaptest_old <- function(Y,
     adapt_param_composition <- matrix(0, nrow = n_fold, ncol = n_top)
     psi_est_composition <- list()
     EIC_est_composition <- list()
-    # ============================================================================
+    # ==========================================================================
     compute.a.fold <- function(data_adapt, it0) {
         print(paste("Fold:", it0))
         chunk_as_est <- it0
@@ -157,12 +156,12 @@ adaptest_old <- function(Y,
         return(list(data_adaptive_index, index_grid, psi_est, EIC_est))
     }
 
-    # ============================================================================
+    # ==========================================================================
     # CV
-    # ============================================================================
+    # ==========================================================================
     for (it0 in seq_len(n_fold)) {
-        # list[data_adaptive_index, index_grid_here, psi_est_here, EIC_est_here] <-
-        # compute.a.fold(data_adapt, it0)
+        # list[data_adaptive_index, index_grid_here, psi_est_here,
+        #   EIC_est_here] <- compute.a.fold(data_adapt, it0)
         fold_out <- compute.a.fold(data_adapt, it0)
         data_adaptive_index <- fold_out[[1]]
         index_grid_here <- fold_out[[2]]
@@ -176,12 +175,12 @@ adaptest_old <- function(Y,
     }
     psi_est_final <- do.call(rbind, psi_est_composition)
     EIC_est_final <- do.call(rbind, EIC_est_composition)
-    # ============================================================================
+    # ==========================================================================
     # statistical inference
-    # ============================================================================
+    # ==========================================================================
     Psi_output <- colMeans(psi_est_final)
-    # list[p_value, upper, lower, sd_by_col] <- get_pval(Psi_output, EIC_est_final,
-    # alpha = 0.05)
+    # list[p_value, upper, lower, sd_by_col] <-
+    #   get_pval(Psi_output, EIC_est_final, alpha = 0.05)
     pval_out <- get_pval(Psi_output, EIC_est_final, alpha = 0.05)
     p_value <- pval_out[[1]]
     upper <- pval_out[[2]]
@@ -192,9 +191,9 @@ adaptest_old <- function(Y,
     adaptY_composition <- apply(adaptY_composition, 2, function(x)
         table(x) / sum(table(x)))
 
-    # ============================================================================
+    # ==========================================================================
     # perform FDR correction
-    # ============================================================================
+    # ==========================================================================
     q_value <- stats::p.adjust(p_value, method = "BH")
 
     is_sig_q_value <- q_value <= 0.05
@@ -203,7 +202,7 @@ adaptest_old <- function(Y,
     # export covariate name for easier interpretation
     top_colname <- adaptY_composition
     top_colname_significant_q <- adaptY_composition[which(is_sig_q_value)]
-    # ============================================================================
+    # ==========================================================================
     # compute average rank across all folds
     mean_rank <- colMeans(rank_in_folds)
     top_index <- sort(as.numeric(unique(unlist(sapply(top_colname, names)))))
@@ -220,9 +219,9 @@ adaptest_old <- function(Y,
     prob_in_top <- colMeans(mean_rank_in_top)
 
     prob_in_top <- prob_in_top[top_index]
-    # ============================================================================
-    # add all newly computed statistical objects to the original data_adapt object
-    # ============================================================================
+    # ==========================================================================
+    # add all newly computed statistical objects to the data_adapt object
+    # ==========================================================================
     data_adapt$top_index <- top_index
     data_adapt$top_colname <- top_colname
     data_adapt$top_colname_significant_q <- top_colname_significant_q

@@ -15,14 +15,14 @@
 #'  testing.
 #
 data_adapt <- function(Y,
-                                             A,
-                                             W = NULL,
-                                             n_top,
-                                             n_fold,
-                                             absolute,
-                                             negative,
-                                             parameter_wrapper,
-                                             SL_lib) {
+                       A,
+                       W = NULL,
+                       n_top,
+                       n_fold,
+                       absolute,
+                       negative,
+                       parameter_wrapper,
+                       SL_lib) {
     if (!is.data.frame(Y)) {
         if (!is.matrix(Y)) {
             stop("argument Y must be a data.frame or a matrix")
@@ -35,10 +35,12 @@ data_adapt <- function(Y,
     if (!is.numeric(n_fold)) stop("argument n_fold must be numeric")
     if (!is.logical(absolute)) stop("argument absolute must be boolean/logical")
     if (!is.logical(negative)) stop("argument negative must be boolean/logical")
-    if (!is.function(parameter_wrapper)) stop("argument parameter_wrapper must be function")
+    if (!is.function(parameter_wrapper)) stop("argument parameter_wrapper
+                                              must be function")
     if (!is.character(SL_lib)) stop("argument SL_lib must be character")
 
-    # placeholders for outputs to be included when returning the data_adapt object
+    # placeholders for outputs to be included when returning the
+    # data_adapt object
     top_colname <- NULL
     DE <- NULL
     p_value <- NULL
@@ -107,31 +109,57 @@ get_pval <- function(Psi_output, EIC_est_final, alpha = 0.05) {
 
 #' Data-adaptive Statistics for High-Dimensional Multiple Testing
 #'
-#' Computes marginal average treatment effects of a binary point treatment on multi-dimensional outcomes, adjusting for baseline covariates, using Targeted Minimum Loss-Based Estimation. A data-mining
-#' algorithm is used to perform biomarker selection before multiple testing to increase power.
+#' Computes marginal average treatment effects of a binary point treatment on
+#' multi-dimensional outcomes, adjusting for baseline covariates, using Targeted
+#' Minimum Loss-Based Estimation. A data-mining ' algorithm is used to perform
+#' biomarker selection before multiple testing to increase power.
 #'
-#' @param Y (numeric vector) - continuous or binary biomarkers (outcome variables)
-#' @param A (numeric vector) - binary treatment indicator: \code{1} = treatment, \code{0} = control
-#' @param W (numeric vector, numeric matrix, or numeric data.frame) - matrix of baseline covariates where each column corrspond to one baseline covariate. each row correspond to one observation
-#' @param n_top (integer vector) - value for the number of candidate covariates to generate
-#'  using the data-adaptive estimation algorithm
+#' @param Y (numeric vector) - continuous or binary biomarkers
+#' (outcome variables)
+#' @param A (numeric vector) - binary treatment indicator:
+#' \code{1} = treatment, \code{0} = control
+#' @param W (numeric vector, numeric matrix, or numeric data.frame) -
+#'  matrix of baseline covariates where each column corrspond to one baseline
+#'  covariate. each row correspond to one observation
+#' @param n_top (integer vector) - value for the number of candidate covariates
+#'  to generate using the data-adaptive estimation algorithm
 #' @param n_fold (integer vector) - number of cross-validation folds.
-#' @param parameter_wrapper (function) - user-defined function that takes input (Y, A, W, absolute, negative) and outputs a (integer vector) containing ranks of biomarkers (outcome variables). For detail, refer to `rank_DE`
-#' @param SL_lib (character vector) - library of learning algorithms to be used in fitting the "Q" and "g" step of the standard TMLE procedure.
-#' @param absolute (logical) - whether or not to test for absolute effect size. If \code{FALSE}, test for directional effect. This overrides argument \code{negative}.
-#' @param negative (logical) - whether or not to test for negative effect size. If \code{FALSE} = test for positive effect size. This is effective only when \code{absolute = FALSE}.
-#' @param p_cutoff (numeric) - p-value cutoff (default as 0.05) at and below which to be considered significant. Used in inference stage.
-#' @param q_cutoff (numeric) - q-value cutoff (default as 0.05) at and below which to be considered significant. Used in multiple testing stage.
+#' @param parameter_wrapper (function) - user-defined function that takes input
+#'  (Y, A, W, absolute, negative) and outputs a (integer vector) containing
+#'  ranks of biomarkers (outcome variables). For detail, refer to `rank_DE`
+#' @param SL_lib (character vector) - library of learning algorithms to be used
+#'  in fitting the "Q" and "g" step of the standard TMLE procedure.
+#' @param absolute (logical) - whether or not to test for absolute effect size.
+#'  If \code{FALSE}, test for directional effect.
+#'  This overrides argument \code{negative}.
+#' @param negative (logical) - whether or not to test for negative effect size.
+#'  If \code{FALSE} = test for positive effect size.
+#'   This is effective only when \code{absolute = FALSE}.
+#' @param p_cutoff (numeric) - p-value cutoff (default as 0.05) at and below
+#'  which to be considered significant. Used in inference stage.
+#' @param q_cutoff (numeric) - q-value cutoff (default as 0.05) at and below
+#'  which to be considered significant. Used in multiple testing stage.
 #'
-#' @return S4 object of class data_adapt, with the following additional slots containing data-mining selected biomarkers and their TMLE-based differential expression and inference, as well as the original call to this function (for user reference), respectively.
-#' @return \code{top_index} (integer vector) - indices for the data-mining selected biomarkers
-#' @return \code{top_colname} (character vector) - names for the data-mining selected biomarkers
-#' @return \code{top_colname_significant_q} (character vector) - names for the data-mining selected biomarkers, which are significant after multiple testing stage
-#' @return \code{DE} (numeric vector) - differential expression effect sizes for the biomarkers in \code{top_colname}
-#' @return \code{p_value} (numeric vector) - p-values for the biomarkers in \code{top_colname}
-#' @return \code{q_value} (numeric vector) - q-values for the biomarkers in \code{top_colname}
-#' @return \code{significant_q} (integer vector) - indices of \code{top_colname} which is significant after multiple testing stage.
-#' @return \code{mean_rank_top} (numeric vector) - average ranking across cross-validation folds for the biomarkers in \code{top_colname}
+#' @return S4 object of class data_adapt, with the following additional slots
+#'  containing data-mining selected biomarkers and their TMLE-based differential
+#'   expression and inference, as well as the original call to this function
+#'    (for user reference), respectively.
+#' @return \code{top_index} (integer vector) - indices for the data-mining
+#' selected biomarkers
+#' @return \code{top_colname} (character vector) - names for the data-mining
+#' selected biomarkers
+#' @return \code{top_colname_significant_q} (character vector) - names for the
+#' data-mining selected biomarkers, which are significant after multiple testing stage
+#' @return \code{DE} (numeric vector) - differential expression effect sizes for
+#'  the biomarkers in \code{top_colname}
+#' @return \code{p_value} (numeric vector) - p-values for the biomarkers in
+#'  \code{top_colname}
+#' @return \code{q_value} (numeric vector) - q-values for the biomarkers in
+#'  \code{top_colname}
+#' @return \code{significant_q} (integer vector) - indices of \code{top_colname}
+#'  which is significant after multiple testing stage.
+#' @return \code{mean_rank_top} (numeric vector) - average ranking across
+#' cross-validation folds for the biomarkers in \code{top_colname}
 #' @return \code{folds} (origami::folds class) - cross validation object
 #'
 #' @importFrom stats p.adjust
@@ -148,7 +176,8 @@ adaptest <- function(Y,
                                          n_fold,
                                          parameter_wrapper = adaptest::rank_DE,
                                          SL_lib = c(
-                                             "SL.glm", "SL.step", "SL.glm.interaction",
+                                             "SL.glm", "SL.step",
+                                             "SL.glm.interaction",
                                              "SL.gam", "SL.earth"
                                          ),
                                          absolute = FALSE,
@@ -166,9 +195,9 @@ adaptest <- function(Y,
         parameter_wrapper = parameter_wrapper,
         SL_lib = SL_lib
     )
-    # ============================================================================
+    # =========================================================================
     # preparation
-    # ============================================================================
+    # =========================================================================
     n_sim <- nrow(data_adapt$Y)
     p_all <- ncol(data_adapt$Y)
 
@@ -177,9 +206,9 @@ adaptest <- function(Y,
         W <- as.matrix(rep(1, n_sim))
         data_adapt$W <- W
     }
-    # ============================================================================
+    # =========================================================================
     # create parameter generating sample
-    # ============================================================================
+    # =========================================================================
     # determine number of samples per fold
     sample_each_fold <- ceiling(n_sim / n_fold)
     # random index
@@ -211,9 +240,9 @@ adaptest <- function(Y,
         A_name = "A",
         W_name = "W"
     )
-    # ============================================================================
+    # =========================================================================
     # CV
-    # ============================================================================
+    # =========================================================================
     rank_in_folds <- matrix(
         data = cv_results$data_adaptive_index, nrow = n_fold,
         ncol = p_all, byrow = TRUE
@@ -228,12 +257,12 @@ adaptest <- function(Y,
     )
     EIC_est_final <- cv_results$EIC_est
 
-    # ============================================================================
+    # =========================================================================
     # statistical inference
-    # ============================================================================
+    # =========================================================================
     Psi_output <- colMeans(psi_est_final)
-    # list[p_value, upper, lower, sd_by_col] <- get_pval(Psi_output, EIC_est_final,
-    #                                                    alpha = 0.05)
+    # list[p_value, upper, lower, sd_by_col] <- get_pval(Psi_output,
+    # EIC_est_final, alpha = 0.05)
     inference_out <- get_pval(Psi_output, EIC_est_final, alpha = p_cutoff)
     p_value <- inference_out[[1]]
     upper <- inference_out[[2]]
@@ -246,9 +275,9 @@ adaptest <- function(Y,
         function(x) table(x) / sum(table(x))
     )
 
-    # ============================================================================
+    # =========================================================================
     # perform FDR correction
-    # ============================================================================
+    # =========================================================================
     q_value <- stats::p.adjust(p_value, method = "BH")
 
     is_sig_q_value <- q_value <= q_cutoff
@@ -274,9 +303,9 @@ adaptest <- function(Y,
     prob_in_top <- colMeans(mean_rank_in_top)
 
     prob_in_top <- prob_in_top[top_index]
-    # ============================================================================
-    # add all newly computed statistical objects to the original data_adapt object
-    # ============================================================================
+    # =========================================================================
+    # add all newly computed statistical objects to the original object
+    # =========================================================================
     data_adapt$top_index <- top_index
     data_adapt$top_colname <- top_colname
     data_adapt$top_colname_significant_q <- top_colname_significant_q
@@ -315,15 +344,15 @@ adaptest <- function(Y,
 #' @importFrom tmle tmle
 #
 cv_param_est <- function(fold,
-                                                 data,
-                                                 parameter_wrapper,
-                                                 absolute,
-                                                 negative,
-                                                 n_top,
-                                                 SL_lib,
-                                                 Y_name,
-                                                 A_name,
-                                                 W_name) {
+                         data,
+                         parameter_wrapper,
+                         absolute,
+                         negative,
+                         n_top,
+                         SL_lib,
+                         Y_name,
+                         A_name,
+                         W_name) {
     # define training and validation sets based on input object of class "folds"
     param_data <- origami::training(data)
     estim_data <- origami::validation(data)
@@ -346,8 +375,10 @@ cv_param_est <- function(fold,
         negative
     )
     # index_grid <- which(data_adaptive_index <= n_top) # sorted after screening
-    df_temp <- data.frame(col_ind = 1:ncol(Y_param), rank = data_adaptive_index) # ranked by rank
-    index_grid <- head(df_temp[order(df_temp$rank, decreasing = FALSE), ], n_top)[, "col_ind"]
+    df_temp <- data.frame(col_ind = 1:ncol(Y_param),
+                          rank = data_adaptive_index) # ranked by rank
+    index_grid <- head(df_temp[order(df_temp$rank, decreasing = FALSE), ],
+                       n_top)[, "col_ind"]
     # estimate the parameter on estimation sample
     psi_list <- list()
     EIC_list <- list()

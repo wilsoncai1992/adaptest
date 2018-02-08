@@ -9,7 +9,7 @@ bioadaptest <- function(se,
                         Q_lib = c("SL.glm", "SL.randomForest", "SL.nnet",
                                   "SL.mean")
                         ) {
-    # ============================================================================
+  # ============================================================================
   # catch input and return in output object for user convenience
   # ============================================================================
   call <- match.call(expand.dots = TRUE)

@@ -2,12 +2,14 @@
 #'
 #' Customized informative tables for examining data-adaptive statistics.
 #'
-#' @param object (data_adapt) - object of class \code{data_adapt} as returned by \code{adaptest}
-#' @param type (character) - 'small' or 'big'. 'small' mode returns composition of
-#'  data-adaptive parameters after multiple testing stage. 'big' mode returns composition of
-#'  data-adaptive parameters before multiple testing stage.
+#' @param object (data_adapt) - object of class \code{data_adapt} as returned by
+#'  \code{adaptest}
+#' @param type (character) - 'small' or 'big'. 'small' mode returns composition
+#' of data-adaptive parameters after multiple testing stage. 'big' mode returns
+#' composition of data-adaptive parameters before multiple testing stage.
 #'
-#' @return (numeric matrix) containing what fraction of the data-adaptive parameter comes from which biomarker in the original dataset.
+#' @return (numeric matrix) containing what fraction of the data-adaptive
+#' parameter comes from which biomarker in the original dataset.
 #' @export
 #'
 get_composition <- function(object, type = "small") {
