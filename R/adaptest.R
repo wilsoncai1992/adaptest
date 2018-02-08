@@ -1,30 +1,32 @@
 #' S3-Style Constructor for Data Adaptive Parameter Class
 #'
-#' @param Y (numeric vector) - continuous or binary biomarkers (outcome
-#' variables)
+#' @param Y (numeric vector) - continuous or binary biomarkers outcome variables
 #' @param A (numeric vector) - binary treatment indicator: \code{1} = treatment,
-#' \code{0} = control
+#'  \code{0} = control
 #' @param W (numeric vector, numeric matrix, or numeric data.frame) - matrix of
-#' baseline covariates where each column corrspond to one baseline covariate. each
-#' row correspond to one observation
+#'  baseline covariates where each column corrspond to one baseline covariate.
+#'  Each row correspond to one observation
 #' @param n_top (integer vector) - value for the number of candidate covariates
-#' to generate using the data-adaptive estimation algorithm
+#'  to generate using the data-adaptive estimation algorithm.
 #' @param n_fold (integer vector) - number of cross-validation folds.
-#' ' @param absolute (logical) - whether or not to test for absolute effect size.
-#' If \code{FALSE}, test for directional effect. This overrides argument
-#' \code{negative}.
+#' @param absolute (logical) - whether or not to test for absolute effect size.
+#'  If \code{FALSE}, test for directional effect. This overrides argument
+#'  \code{negative}.
 #' @param negative (logical) - whether or not to test for negative effect size.
-#' If \code{FALSE} = test for positive effect size. This is effective only when
-#' \code{absolute = FALSE}.
+#'  If \code{FALSE} = test for positive effect size. This is effective only when
+#'  \code{absolute = FALSE}.
 #' @param parameter_wrapper (function) - user-defined function that takes input
-#' (Y, A, W, absolute, negative) and outputs a (integer vector) containing ranks
-#' of biomarkers (outcome variables). For detail, refer to `rank_DE`
+#'  (Y, A, W, absolute, negative) and outputs a (integer vector) containing
+#'  ranks of biomarkers (outcome variables). For detail, please refer to the
+#'  documentation for \code{rank_DE}.
 #' @param SL_lib (character vector) - library of learning algorithms to be used
-#' in fitting the "Q" and "g" step of the standard TMLE procedure.
+#'  in fitting the "Q" and "g" step of the standard TMLE procedure.
 #'
 #' @return \code{S3} object of class "data_adapt" for data-adaptive multiple
 #'  testing.
 #'
+#' @importFrom data.table is.data.table as.data.table
+#
 data_adapt <- function(Y,
                        A,
                        W = NULL,
@@ -34,21 +36,22 @@ data_adapt <- function(Y,
                        negative,
                        parameter_wrapper,
                        SL_lib) {
-    if (!is.data.frame(Y)) {
-        if (!is.matrix(Y)) {
-            stop("argument Y must be a data.frame or a matrix")
-        }
-        Y <- as.data.frame(Y)
+  if (!is.data.frame(Y)) {
+    if (!is.matrix(Y)) {
+      stop("Argument Y must be a data.frame or a matrix.")
     }
-    if (!is.vector(A)) stop("argument A must be numeric")
-    if (!is.null(W)) if (!is.matrix(W)) stop("argument W must be matrix")
-    if (!is.numeric(n_top)) stop("argument n_top must be numeric")
-    if (!is.numeric(n_fold)) stop("argument n_fold must be numeric")
-    if (!is.logical(absolute)) stop("argument absolute must be boolean/logical")
-    if (!is.logical(negative)) stop("argument negative must be boolean/logical")
-    if (!is.function(parameter_wrapper)) stop("argument parameter_wrapper
-                                              must be function")
-    if (!is.character(SL_lib)) stop("argument SL_lib must be character")
+    Y <- as.matrix(Y)
+  }
+  if (!is.vector(A)) stop("Argument A must be numeric.")
+  if (!is.null(W)) if (!is.matrix(W)) stop("Argument W must be matrix.")
+  if (!is.numeric(n_top)) stop("Argument n_top must be numeric.")
+  if (!is.numeric(n_fold)) stop("Argument n_fold must be numeric.")
+  if (!is.logical(absolute)) stop("Argument absolute must be logical.")
+  if (!is.logical(negative)) stop("Argument negative must be logical.")
+  if (!is.function(parameter_wrapper)) {
+    stop("Argument parameter_wrapper must be function.")
+  }
+  if (!is.character(SL_lib)) stop("Argument SL_lib must be character.")
 
     # placeholders for outputs to be included when returning the
     # data_adapt object
@@ -122,13 +125,13 @@ get_pval <- function(Psi_output, EIC_est_final, alpha = 0.05) {
 #'
 #' Computes marginal average treatment effects of a binary point treatment on
 #' multi-dimensional outcomes, adjusting for baseline covariates, using Targeted
-#' Minimum Loss-Based Estimation. A data-mining ' algorithm is used to perform
+#' Minimum Loss-Based Estimation. A data-mining algorithm is used to perform
 #' biomarker selection before multiple testing to increase power.
 #'
 #' @param Y (numeric vector) - continuous or binary biomarkers
-#' (outcome variables)
+#'  (outcome variables)
 #' @param A (numeric vector) - binary treatment indicator:
-#' \code{1} = treatment, \code{0} = control
+#'  \code{1} = treatment, \code{0} = control
 #' @param W (numeric vector, numeric matrix, or numeric data.frame) -
 #'  matrix of baseline covariates where each column corrspond to one baseline
 #'  covariate. each row correspond to one observation
@@ -137,30 +140,33 @@ get_pval <- function(Psi_output, EIC_est_final, alpha = 0.05) {
 #' @param n_fold (integer vector) - number of cross-validation folds.
 #' @param parameter_wrapper (function) - user-defined function that takes input
 #'  (Y, A, W, absolute, negative) and outputs a (integer vector) containing
-#'  ranks of biomarkers (outcome variables). For detail, refer to `rank_DE`
+#'  ranks of biomarkers (outcome variables). For details, please refer to the
+#'  documentation for \code{rank_DE}
 #' @param SL_lib (character vector) - library of learning algorithms to be used
 #'  in fitting the "Q" and "g" step of the standard TMLE procedure.
 #' @param absolute (logical) - whether or not to test for absolute effect size.
-#'  If \code{FALSE}, test for directional effect.
-#'  This overrides argument \code{negative}.
+#'  If \code{FALSE}, test for directional effect. This overrides argument
+#'  \code{negative}.
 #' @param negative (logical) - whether or not to test for negative effect size.
-#'  If \code{FALSE} = test for positive effect size.
-#'   This is effective only when \code{absolute = FALSE}.
+#'  If \code{FALSE} = test for positive effect size. This is effective only when
+#'  \code{absolute = FALSE}.
 #' @param p_cutoff (numeric) - p-value cutoff (default as 0.05) at and below
 #'  which to be considered significant. Used in inference stage.
 #' @param q_cutoff (numeric) - q-value cutoff (default as 0.05) at and below
 #'  which to be considered significant. Used in multiple testing stage.
 #'
-#' @return S4 object of class data_adapt, with the following additional slots
+#' @return S4 object of class \code{data_adapt}, sub-classed from the container
+#'  class \code{SummarizedExperiment}, with the following additional slots
 #'  containing data-mining selected biomarkers and their TMLE-based differential
-#'   expression and inference, as well as the original call to this function
-#'    (for user reference), respectively.
+#'  expression and inference, as well as the original call to this function (for
+#'  user reference), respectively.
 #' @return \code{top_index} (integer vector) - indices for the data-mining
-#' selected biomarkers
+#'  selected biomarkers
 #' @return \code{top_colname} (character vector) - names for the data-mining
-#' selected biomarkers
+#'  selected biomarkers
 #' @return \code{top_colname_significant_q} (character vector) - names for the
-#' data-mining selected biomarkers, which are significant after multiple testing stage
+#'  data-mining selected biomarkers, which are significant after multiple
+#'  testing stage
 #' @return \code{DE} (numeric vector) - differential expression effect sizes for
 #'  the biomarkers in \code{top_colname}
 #' @return \code{p_value} (numeric vector) - p-values for the biomarkers in
@@ -169,8 +175,8 @@ get_pval <- function(Psi_output, EIC_est_final, alpha = 0.05) {
 #'  \code{top_colname}
 #' @return \code{significant_q} (integer vector) - indices of \code{top_colname}
 #'  which is significant after multiple testing stage.
-#' @return \code{mean_rank_top} (numeric vector) - average ranking across
-#' cross-validation folds for the biomarkers in \code{top_colname}
+#' @return \code{mean_rank_top} (numeric vector) - average ranking across folds
+#'  of cross-validation folds for the biomarkers in \code{top_colname}
 #' @return \code{folds} (origami::folds class) - cross validation object
 #'
 #' @importFrom stats p.adjust
@@ -188,9 +194,8 @@ adaptest <- function(Y,
                      n_fold,
                      parameter_wrapper = adaptest::rank_DE,
                      SL_lib = c(
-                       "SL.glm", "SL.step",
-                       "SL.glm.interaction",
-                       "SL.gam", "SL.earth"
+                       "SL.glm", "SL.step", "SL.glm.interaction",
+                       "SL.gam", "SL.earth", "SL.mean"
                      ),
                      absolute = FALSE,
                      negative = FALSE,
@@ -231,43 +236,50 @@ adaptest <- function(Y,
     # number of observations in each fold
     table_n_per_fold <- table(index_for_folds)
 
-    rank_in_folds <- matrix(0, nrow = n_fold, ncol = p_all)
-    adapt_param_composition <- matrix(0, nrow = n_fold, ncol = n_top)
-    psi_est_composition <- list()
-    EIC_est_composition <- list()
+  rank_in_folds <- matrix(0, nrow = n_fold, ncol = p_all)
+  adapt_param_composition <- (matrix(0, nrow = n_fold, ncol = n_top))
+  psi_est_composition <- list()
+  EIC_est_composition <- list()
 
-    # origami folds
-    folds <- origami::make_folds(n = n_sim, V = n_fold)
-    df_all <- data.frame(Y = Y, A = A, W = W)
-    # browser()
-    cv_results <- origami::cross_validate(
-        cv_fun = cv_param_est, folds = folds,
-        data = df_all,
-        parameter_wrapper = parameter_wrapper,
-        absolute = absolute,
-        negative = negative,
-        n_top = n_top,
-        SL_lib = SL_lib,
-        Y_name = "Y",
-        A_name = "A",
-        W_name = "W"
-    )
-    # =========================================================================
-    # CV
-    # =========================================================================
-    rank_in_folds <- matrix(
-        data = cv_results$data_adaptive_index, nrow = n_fold,
-        ncol = p_all, byrow = TRUE
-    )
-    adapt_param_composition <- matrix(
-        data = cv_results$index_grid, nrow = n_fold,
-        ncol = n_top, byrow = TRUE
-    )
-    psi_est_final <- matrix(
-        data = cv_results$psi_est, nrow = n_fold,
-        ncol = n_top, byrow = TRUE
-    )
-    EIC_est_final <- cv_results$EIC_est
+  # origami folds
+  folds <- origami::make_folds(n = n_sim, V = n_fold)
+  df_all <- data.frame(Y = Y, A = A, W = W)
+  #df_all <- data.table::data.table(Y = Y, A = A, W = W)
+  #data.table::setnames(df_all, c(paste("Y", seq_len(ncol(Y)), sep = "_"), "A",
+                                 #ifelse(ncol(W) > 1,
+                                        #paste("W", seq_len(ncol(W)),
+                                              #sep = "_"), "W")))
+
+  # do this whole cross-validation thing...
+  cv_results <- origami::cross_validate(
+    cv_fun = cv_param_est, folds = folds,
+    data = df_all,
+    parameter_wrapper = parameter_wrapper,
+    absolute = absolute,
+    negative = negative,
+    n_top = n_top,
+    SL_lib = SL_lib,
+    Y_name = "Y",
+    A_name = "A",
+    W_name = "W"
+  )
+
+  # ============================================================================
+  # CV
+  # ============================================================================
+  rank_in_folds <-  matrix(
+    data = cv_results$data_adaptive_index, nrow = n_fold,
+    ncol = p_all, byrow = TRUE
+  )
+  adapt_param_composition <- matrix(
+    data = cv_results$index_grid, nrow = n_fold,
+    ncol = n_top, byrow = TRUE
+  )
+  psi_est_final <- matrix(
+    data = cv_results$psi_est, nrow = n_fold,
+    ncol = n_top, byrow = TRUE
+  )
+  EIC_est_final <- cv_results$EIC_est
 
     # =========================================================================
     # statistical inference
@@ -299,9 +311,9 @@ adaptest <- function(Y,
     top_colname <- adaptY_composition
     top_colname_significant_q <- adaptY_composition[which(is_sig_q_value)]
 
-    # compute average rank across all folds
-    mean_rank <- colMeans(rank_in_folds)
-    top_index <- sort(as.numeric(unique(unlist(sapply(top_colname, names)))))
+  # compute average rank across all folds
+  mean_rank <- colMeans(rank_in_folds)
+  top_index <- sort(as.numeric(unique(unlist(lapply(top_colname, names)))))
 
     mean_rank_top <- mean_rank[top_index]
 
@@ -365,54 +377,54 @@ cv_param_est <- function(fold,
                          Y_name,
                          A_name,
                          W_name) {
-    # define training and validation sets based on input object of class "folds"
-    param_data <- origami::training(data)
-    estim_data <- origami::validation(data)
 
-    # get param generating data
-    A_param <- param_data[, grep(A_name, colnames(data))]
-    Y_param <- as.matrix(param_data[, grep(Y_name, colnames(data))])
-    W_param <- as.matrix(param_data[, grep(W_name, colnames(data))])
-    # get estimation data
-    A_estim <- estim_data[, grep(A_name, colnames(data))]
-    Y_estim <- as.matrix(estim_data[, grep(Y_name, colnames(data))])
-    W_estim <- as.matrix(estim_data[, grep(W_name, colnames(data))])
+  # define training and validation sets based on input object of class "folds"
+  param_data <- origami::training(data)
+  estim_data <- origami::validation(data)
 
-    # generate data-adaptive target parameter
-    data_adaptive_index <- parameter_wrapper(
-        Y = Y_param,
-        A = A_param,
-        W = W_param,
-        absolute,
-        negative
+  # get param generating data (NOTE: these are data.table's)
+  A_param <- param_data[, grep(A_name, colnames(data))]
+  Y_param <- param_data[, grep(Y_name, colnames(data))]
+  W_param <- param_data[, grep(W_name, colnames(data)), FALSE]
+  # get estimation data (NOTE: these are data.table's)
+  A_estim <- estim_data[, grep(A_name, colnames(data))]
+  Y_estim <- estim_data[, grep(Y_name, colnames(data))]
+  W_estim <- estim_data[, grep(W_name, colnames(data)), FALSE]
+
+  # generate data-adaptive target parameter
+  data_adaptive_index <- parameter_wrapper(
+    Y = Y_param,
+    A = A_param,
+    W = W_param,
+    absolute,
+    negative
+  )
+  df_temp <-  data.frame(col_ind = seq_len(ncol(Y_param)),
+                         rank = data_adaptive_index)
+  index_grid <- head(df_temp[order(df_temp$rank, decreasing = FALSE), ],
+                     n_top)[, "col_ind"]
+  # estimate the parameter on estimation sample
+  psi_list <- list()
+  EIC_list <- list()
+  for (it_index in seq_along(index_grid)) {
+    tmle_estimation <- tmle::tmle(
+      Y = as.numeric(Y_estim[, index_grid[it_index]]),
+      A = A_estim, W = W_estim,
+      Q.SL.library = SL_lib,
+      g.SL.library = SL_lib
     )
-    # index_grid <- which(data_adaptive_index <= n_top) # sorted after screening
-    df_temp <- data.frame(col_ind = 1:ncol(Y_param),
-                          rank = data_adaptive_index) # ranked by rank
-    index_grid <- head(df_temp[order(df_temp$rank, decreasing = FALSE), ],
-                       n_top)[, "col_ind"]
-    # estimate the parameter on estimation sample
-    psi_list <- list()
-    EIC_list <- list()
-    for (it_index in seq_along(index_grid)) {
-        tmle_estimation <- tmle::tmle(
-            Y = Y_estim[, index_grid[it_index]],
-            A = A_estim, W = W_estim,
-            Q.SL.library = SL_lib,
-            g.SL.library = SL_lib
-        )
-        psi_list[[it_index]] <- tmle_estimation$estimates$ATE$psi
-        EIC_list[[it_index]] <- tmle_estimation$estimates$IC$IC.ATE
-    }
-    psi_est <- do.call(c, psi_list)
-    EIC_est <- do.call(cbind, EIC_list)
+    psi_list[[it_index]] <- tmle_estimation$estimates$ATE$psi
+    EIC_list[[it_index]] <- tmle_estimation$estimates$IC$IC.ATE
+  }
+  psi_est <- do.call(c, psi_list)
+  EIC_est <- do.call(cbind, EIC_list)
 
-    # define output object to be returned as list (for flexibility)
-    out <- list(
-        data_adaptive_index = data_adaptive_index,
-        index_grid = index_grid,
-        psi_est = psi_est,
-        EIC_est = EIC_est
-    )
-    return(out)
+  # define output object to be returned as list (for flexibility)
+  out <- list(
+      data_adaptive_index = data_adaptive_index,
+      index_grid = index_grid,
+      psi_est = psi_est,
+      EIC_est = EIC_est
+  )
+  return(out)
 }

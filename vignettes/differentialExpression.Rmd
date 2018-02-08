@@ -1,11 +1,13 @@
 ---
 title: "Data-mining biomarkers and perform testing"
-author: "[Wilson Cai](www.stat.berkeley.edu/~wcai/), Nima Hejazi, & Alan Hubbard"
+author: "[Wilson Cai](www.stat.berkeley.edu/~wcai/),
+[Nima Hejazi](https://nimahejazi.org), and [Alan
+Hubbard](http://hubbard.berkeley.edu/)"
 date: "`r Sys.Date()`"
 output:
   # BiocStyle::html_document
 vignette: >
-  %\VignetteIndexEntry{Data-mining biomarkers and perform testing}
+  %\VignetteIndexEntry{Data-mining Biomarkers and High-Dimensional Testing}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -14,11 +16,14 @@ vignette: >
 
 The `adaptest` R package can be used to perform data-mining and high-dimensional
 statistical tests that is common in differential expression studies. The package
-utilizes a two stage procedure:
-1. data-mining stage: reduce the dimension of biomarkers based on the
+utilizes a two-stage procedure:
+
+1. The _data-mining_ stage: reduce the dimension of biomarkers based on the
    associations of biomarkers with an exposure variable.
-2. multiple testing stage: adjust for multiple testing to control false
+
+2. The _multiple testing_ stage: adjust for multiple testing to control false
    positives.
+
 In this vignette, we illustrate how to use `adaptest` to perform such analysis,
 using a data set containing microarray expression measures.
 
@@ -28,11 +33,10 @@ using a data set containing microarray expression measures.
 
 First, we load the `adaptest` package and the (included) `simpleArray` data set:
 
-```{r setup_data}
+```{r setup_data, message=FALSE}
 set.seed(1234)
 library(adaptest)
 data(simpleArray)
-"%ni%" = Negate("%in%")
 ```
 
 In order to perform Targeted Minimum Loss-Based Estimation, we need three
@@ -53,38 +57,33 @@ the included data set) with an exposure of interest, while accounting for
 potential confounding based on all other covariates included in the design
 matrix. We demonstrate the necessary syntax for calling `adaptest` below:
 
-```{r adaptest_eval, eval=TRUE}
-adaptestout <- adaptest(Y = Y,
-                       A = A,
-                       W = NULL,
-                       n_top = 10,
-                       n_fold = 3,
-                       parameter_wrapper = adaptest::rank_DE)
-```
-
-```{r load_adaptest_result, eval=FALSE}
-data(adaptestout)
+```{r adaptest_eval, message=FALSE}
+adaptest_out <- adaptest(Y = Y,
+                         A = A,
+                         W = NULL,
+                         n_top = 10,
+                         n_fold = 2,
+                         parameter_wrapper = rank_DE)
 ```
 
 The output of `adaptest` is an object of class `adaptest`, containing the
 following objects:
-(1) top_index: (integer vector) - indices for the data-mining selected
-biomarkers
-(2) top_colname: (character vector) - names for the data-mining selected
-biomarkers
-(3) top_colname_significant_q: (character vector) - names for the data-mining
-selected biomarkers, which are significant after multiple testing stage
-(4) DE: (numeric vector) - differential expression effect sizes for the
-biomarkers in \code{top_colname}
-(5) p_value: (numeric vector) - p-values for the biomarkers in
-\code{top_colname}
-(6) q_value: (numeric vector) - q-values for the biomarkers in
-\code{top_colname}
-(7) significant_q: (integer vector) - indices of \code{top_colname} which is
-significant after multiple testing stage.
-(8) mean_rank_top: (numeric vector) - average ranking across cross-validation
-folds for the biomarkers in \code{top_colname}
-(9) folds: (origami::folds class) - cross validation object
+1. `top_index`: (integer vector) - indices for the biomarkers selected by way of
+   data-mining.
+2. `top_colname`: (character vector) - names for the biomarkers selected by way
+   of data-mining.
+3. `top_colname_significant_q`: (character vector) - names for the biomarkers
+   selected by way of data-mining, which are significant after multiple testing
+   stage.
+4. `DE`: (numeric vector) - differential expression effect sizes for the
+   biomarkers in `top_colname`.
+5. `p_value`: (numeric vector) - p-values for the biomarkers in `top_colname`.
+6. `q_value`: (numeric vector) - q-values for the biomarkers in `top_colname`.
+7. `significant_q`: (integer vector) - indices of `top_colname` which is
+   significant after multiple testing stage.
+8. `mean_rank_top`: (numeric vector) - average ranking across cross-validation
+   folds for the biomarkers in `top_colname`.
+9. `folds`: (origami::folds class) - object of cross-validation folds.
 
 After invoking `adaptest`, the resultant `adaptest` object will have the slots
 described above completely filled in. The statistical results of this procedure
@@ -92,7 +91,7 @@ can be extracted using `summary` method.
 
 ---
 
-## Interpret + Visualize the Results
+## Interpret and Visualize Results
 
 This package provides several interpretation methods that can be used to tabular
 and visualize the results of the data-adaptive tests.
@@ -102,7 +101,7 @@ composition of each data-adaptive parameters that is significant after multiple
 testing stage:
 
 ```{r get_comp_small}
-get_composition(object = adaptestout, type = 'small')
+get_composition(object = adaptest_out, type = "small")
 ```
 
 Setting the argument `type = "big"` will instead produce a table of composition
@@ -110,24 +109,62 @@ of each data-adaptive parameters before multiple testing stage, so that there
 are more columns
 
 ```{r get_comp_big}
-get_composition(object = adaptestout, type = 'big')
+get_composition(object = adaptest_out, type = "big")
 ```
 
 The `plot` method for a `adaptest` object will produce two plots that help user
 interpret the results. The first plot is a plot of sorted average CV-rank for
-all the biomarkers in the original dataset (`Y`). The second plot is a plot of
+all the biomarkers in the original data set (`Y`). The second plot is a plot of
 sorted q-values with labels corresponding to the indices of the data-adaptive
 parameter (as returned in `get_composition`)
 
 ```{r plot}
-plot(adaptestout)
+plot(adaptest_out)
+```
+
+---
+
+## Working with Bioconductor Objects
+
+Now, let's try to acquire a taste for how we would use these algorithmic tools
+with objects common in computational biology -- we'll do this by performing the
+same analysis we did above, but using the core `SummarizedExperiment` container
+object and the popular `airway` data set as an example.
+
+To start, let's load the required packages:
+
+```{r sum_exp, message=FALSE}
+library(SummarizedExperiment)
+library(airway)
+data(airway)
+```
+
+For simplicity, we'll restrict ourselves to just a random subset of the genes or
+transcripts available from the _airway_ data set.
+
+```{r}
+genes_sub <- order(sample(seq_len(1000)))
+simple_airway <- airway[genes_sub, ]
+```
+
+Now, we can perform the same data-adaptive analysis we discussed above on this
+simplified version of the _airway_ data set, simply by calling the `bioadaptest`
+wrapper function:
+
+```{r}
+airway_out <- bioadaptest(data_in = simple_airway,
+                          var_int = as.numeric(colData(simple_airway)[, 3]),
+                          cntrl_set = NULL,
+                          n_top = 10,
+                          n_fold = 2,
+                          parameter_wrapper = rank_DE)
 ```
 
 ---
 
 ## Session Information
 
-```{r sessionInfo, echo=FALSE}
+```{r session_info, echo=FALSE}
 sessionInfo()
 ```
 
