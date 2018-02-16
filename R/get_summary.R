@@ -11,6 +11,7 @@
 #' @export
 #'
 get_composition <- function(object, type = "small") {
+  # browser()
   if (type == "small") col.name <- object$top_colname_significant_q
   if (type == "big") col.name <- object$top_colname
 
@@ -35,7 +36,7 @@ get_composition <- function(object, type = "small") {
       "q-values" = object$q_value[object$significant_q]
     )
   }
-  if (type == "big") out.table <- cbind(decomposition, "q-values" = NA)
+  if (type == "big") out.table <- cbind(decomposition, "q-values" = object$q_value)
   return(list(decomposition, out.table))
 }
 
@@ -43,8 +44,10 @@ get_composition <- function(object, type = "small") {
 #'
 #' @param object \code{data_adapt} object
 #'
-#' @keywords internal
+#' @export
 #
-get_significant_biomarker <- function(object) {
-  return(colnames(get_composition(object, type = "small")[[1]]))
+get_significant_biomarker <- function(object, cutoff = .5) {
+  component_table <- colSums(get_composition(object, type = "small")[[1]])
+  component_table <- component_table[component_table >= cutoff]
+  return(as.integer(colnames(component_table)))
 }

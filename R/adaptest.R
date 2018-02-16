@@ -249,10 +249,10 @@ adaptest <- function(Y,
   # ============================================================================
   # perform FDR correction
   # ============================================================================
-  # q_value <- stats::p.adjust(p_value, method = "BH")
+  q_value <- stats::p.adjust(p_value, method = "BH")
   # strict control
-  q_value <- stats::p.adjust(c(p_value, rep(1, p_all - n_top)), method = "BH")
-  q_value <- head(q_value, n_top)
+  # q_value <- stats::p.adjust(c(p_value, rep(1, p_all - n_top)), method = "BH")
+  # q_value <- head(q_value, n_top)
 
   is_sig_q_value <- q_value <= q_cutoff
   significant_q <- which(is_sig_q_value)

@@ -109,11 +109,11 @@ plot.data_adapt <- function(x, ..., plot_type = c("biomarker", "adapt_param")) {
 #' Summary tables of the `adaptest` object
 #'
 #' @param object (data_adapt) object as returned by \code{adaptest}
-#' @param ... not implemented
 #' @param type (character) - `adapt_param` or `biomarker`.
 #'  `adapt_param` mode summarizes the data-adaptive target
 #'  parameter. `biomarker` mode summarizes chracteristics of the biomarkers from
 #'  the original data
+#' @param ... not implemented
 #'
 #' @return (data.frame) of the summary statistics
 #' @return \code{type = 'adapt_param'} wtih columns: 'data-adaptive parameters', 'Differential expression', 'p-values', 'q-values'
@@ -122,7 +122,7 @@ plot.data_adapt <- function(x, ..., plot_type = c("biomarker", "adapt_param")) {
 #' @export
 #' @method summary data_adapt
 #'
-summary.data_adapt <- function(object, ..., type = "adapt_param") {
+summary.data_adapt <- function(object, type = "adapt_param", ...) {
   data_adapt_param <- 1:length(object$DE)
   DE <- object$DE
   p_value <- object$p_value
@@ -142,10 +142,10 @@ summary.data_adapt <- function(object, ..., type = "adapt_param") {
   }
 
   if (type == "biomarker") {
-    # len <- length(top_biomarker)
-    # table_out <- data.frame(top_biomarker, mean_rank_top, prob_in_top)
-    # colnames(table_out) <- c('biomakers', 'mean rank',
-    #                          paste('% appear in top ', len))
-    # print(table_out)
+    len <- length(top_biomarker)
+    table_out <- data.frame(top_biomarker, mean_rank_top, prob_in_top)
+    colnames(table_out) <- c('biomakers', 'mean rank',
+                             paste('% appear in top ', len))
+    print(table_out)
   }
 }

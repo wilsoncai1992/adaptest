@@ -22,6 +22,7 @@ rank_DE <- function(Y,
                     W,
                     absolute = FALSE,
                     negative = FALSE) {
+  # browser()
   n_here <- nrow(Y)
   p_all <- ncol(Y)
 
