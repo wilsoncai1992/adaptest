@@ -49,5 +49,5 @@ get_composition <- function(object, type = "small") {
 get_significant_biomarker <- function(object, cutoff = .5) {
   component_table <- colSums(get_composition(object, type = "small")[[1]])
   component_table <- component_table[component_table >= cutoff]
-  return(as.integer(colnames(component_table)))
+  return(as.integer(names(component_table)))
 }

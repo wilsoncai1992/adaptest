@@ -1,6 +1,6 @@
 Package: adaptest
 Title: Data-adaptive test statistics for multiple testing in high dimensions
-Version: 0.8.5
+Version: 0.9
 Authors@R: c(
   person("Weixin", "Cai", email = "wcai@berkeley.edu",
          role = c("aut", "cre", "cph"),
