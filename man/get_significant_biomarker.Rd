@@ -4,7 +4,7 @@
 \alias{get_significant_biomarker}
 \title{Extract statistically significant biomarkers}
 \usage{
-get_significant_biomarker(object)
+get_significant_biomarker(object, cutoff = 0.5)
 }
 \arguments{
 \item{object}{\code{data_adapt} object}
@@ -12,4 +12,3 @@ get_significant_biomarker(object)
 \description{
 Extract statistically significant biomarkers
 }
-\keyword{internal}
