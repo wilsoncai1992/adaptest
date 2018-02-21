@@ -66,3 +66,32 @@ rank_DE <- function(Y,
   # final object to be exported by this function
   return(rank_out)
 }
+
+#' Compute ranking of biomarkers by sorting t-test p-values
+#'
+#' @param Y (numeric vector) - continuous or binary biomarkers (outcome variables)
+#' @param A (numeric vector) - binary treatment indicator: \code{1} = treatment, \code{0} = control
+#' @param W (numeric vector, numeric matrix, or numeric data.frame) - matrix of baseline covariates where each column corrspond to one baseline covariate. each row correspond to one observation
+#'
+#' @return an \code{integer vector} containing ranks of biomarkers.
+#'
+#' @importFrom stats lm
+#'
+#' @export
+#
+rank_ttest <- function(Y,
+                    A,
+                    W,
+                    absolute = FALSE, #useless
+                    negative = FALSE) {
+  n_here <- nrow(Y)
+  p_all <- ncol(Y)
+
+  lm_out <- stats::lm(Y ~ A)
+  lm_summary <- summary(lm_out)
+  pval_lm <- sapply(lm_summary, function(x) x$coefficients[2,4])
+
+  rank_out <- rank(pval_lm)
+  # final object to be exported by this function
+  return(rank_out)
+}
