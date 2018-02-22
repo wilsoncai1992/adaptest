@@ -4,17 +4,17 @@
 \alias{summary.data_adapt}
 \title{Summary tables of the `adaptest` object}
 \usage{
-\method{summary}{data_adapt}(object, ..., type = "adapt_param")
+\method{summary}{data_adapt}(object, type = "adapt_param", ...)
 }
 \arguments{
 \item{object}{(data_adapt) object as returned by \code{adaptest}}
-
-\item{...}{not implemented}
 
 \item{type}{(character) - `adapt_param` or `biomarker`.
 `adapt_param` mode summarizes the data-adaptive target
 parameter. `biomarker` mode summarizes chracteristics of the biomarkers from
 the original data}
+
+\item{...}{not implemented}
 }
 \value{
 (data.frame) of the summary statistics

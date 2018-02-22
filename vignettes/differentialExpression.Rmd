@@ -37,6 +37,8 @@ First, we load the `adaptest` package and the (included) `simpleArray` data set:
 library(adaptest)
 data(simpleArray)
 set.seed(1234)
+Y <- Y
+A <- A
 ```
 
 In order to perform Targeted Minimum Loss-Based Estimation, we need three
@@ -61,9 +63,13 @@ matrix. We demonstrate the necessary syntax for calling `adaptest` below:
 adaptest_out <- adaptest(Y = Y,
                          A = A,
                          W = NULL,
-                         n_top = 10,
-                         n_fold = 2,
-                         parameter_wrapper = rank_DE)
+                         n_top = 5,
+                         n_fold = 3,
+                         SL_lib = 'SL.glm',
+                         parameter_wrapper = adaptest::rank_DE,
+                         absolute = FALSE,
+                         negative = FALSE)
+
 ```
 
 The output of `adaptest` is an object of class `adaptest`, containing the
@@ -134,9 +140,9 @@ object and the popular `airway` data set as an example.
 To start, let's load the required packages:
 
 ```{r sum_exp, message=FALSE}
-library(SummarizedExperiment)
-library(airway)
-data(airway)
+# library(SummarizedExperiment)
+# library(airway)
+# data(airway)
 ```
 
 For simplicity, we'll restrict ourselves to just a random subset of the genes or
@@ -152,8 +158,8 @@ simplified version of the _airway_ data set, simply by calling the `bioadaptest`
 wrapper function:
 
 ```{r}
-airway_out <- bioadaptest(data_in = simple_geu,
-                          var_int = as.matrix(colData(simple_geu))[, 3],
+airway_out <- bioadaptest(data_in = simple_air,
+                          var_int = as.matrix(colData(simple_air))[, 3],
                           cntrl_set = NULL,
                           n_top = 10,
                           n_fold = 2,

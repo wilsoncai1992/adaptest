@@ -4,12 +4,33 @@
 \alias{get_significant_biomarker}
 \title{Extract statistically significant biomarkers}
 \usage{
-get_significant_biomarker(object)
+get_significant_biomarker(object, cutoff = 0.5)
 }
 \arguments{
 \item{object}{\code{data_adapt} object}
+
+\item{cutoff}{cut-off value for composition percentage}
+}
+\value{
+(integer vector) of significant gene index
 }
 \description{
 Extract statistically significant biomarkers
 }
-\keyword{internal}
+\examples{
+set.seed(1234)
+data(simpleArray)
+Y <- Y
+A <- A
+
+adaptest_out <- adaptest(Y = Y,
+                         A = A,
+                         W = NULL,
+                         n_top = 5,
+                         n_fold = 3,
+                         SL_lib = 'SL.glm',
+                         parameter_wrapper = adaptest::rank_DE,
+                         absolute = FALSE,
+                         negative = FALSE)
+get_significant_biomarker(adaptest_out)
+}

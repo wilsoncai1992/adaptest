@@ -11,8 +11,24 @@
 #' @return (numeric matrix) containing what fraction of the data-adaptive
 #' parameter comes from which biomarker in the original dataset.
 #' @export
+#' @examples
+#' set.seed(1234)
+#' data(simpleArray)
+#' Y <- Y
+#' A <- A
 #'
+#' adaptest_out <- adaptest(Y = Y,
+#'                          A = A,
+#'                          W = NULL,
+#'                          n_top = 5,
+#'                          n_fold = 3,
+#'                          SL_lib = 'SL.glm',
+#'                          parameter_wrapper = adaptest::rank_DE,
+#'                          absolute = FALSE,
+#'                          negative = FALSE)
+#' get_composition(adaptest_out, type = 'small')
 get_composition <- function(object, type = "small") {
+  # browser()
   if (type == "small") col.name <- object$top_colname_significant_q
   if (type == "big") col.name <- object$top_colname
 
@@ -37,16 +53,37 @@ get_composition <- function(object, type = "small") {
       "q-values" = object$q_value[object$significant_q]
     )
   }
-  if (type == "big") out.table <- cbind(decomposition, "q-values" = NA)
+  if (type == "big") out.table <- cbind(decomposition, "q-values" = object$q_value)
   return(list(decomposition, out.table))
 }
 
 #' Extract statistically significant biomarkers
-#'
 #' @param object \code{data_adapt} object
+#' @param cutoff cut-off value for composition percentage
 #'
-#' @keywords internal
-#
-get_significant_biomarker <- function(object) {
-  return(colnames(get_composition(object, type = "small")[[1]]))
+#' @return (integer vector) of significant gene index
+#'
+#' @export
+#'
+#' @examples
+#' set.seed(1234)
+#' data(simpleArray)
+#' Y <- Y
+#' A <- A
+#'
+#' adaptest_out <- adaptest(Y = Y,
+#'                          A = A,
+#'                          W = NULL,
+#'                          n_top = 5,
+#'                          n_fold = 3,
+#'                          SL_lib = 'SL.glm',
+#'                          parameter_wrapper = adaptest::rank_DE,
+#'                          absolute = FALSE,
+#'                          negative = FALSE)
+#' get_significant_biomarker(adaptest_out)
+get_significant_biomarker <- function(object, cutoff = .5) {
+  if(is.null(get_composition(object, type = "small"))) return(integer()) # catch when nothing is significant
+  component_table <- colSums(get_composition(object, type = "small")[[1]])
+  component_table <- component_table[component_table >= cutoff]
+  return(as.integer(names(component_table)))
 }

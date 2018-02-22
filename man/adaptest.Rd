@@ -6,7 +6,7 @@
 \usage{
 adaptest(Y, A, W = NULL, n_top, n_fold,
   parameter_wrapper = adaptest::rank_DE, SL_lib = c("SL.glm", "SL.step",
-  "SL.glm.interaction", "SL.gam", "SL.earth", "SL.mean"), absolute = FALSE,
+  "SL.glm.interaction", "SL.gam", "SL.earth"), absolute = FALSE,
   negative = FALSE, p_cutoff = 0.05, q_cutoff = 0.05)
 }
 \arguments{
@@ -88,5 +88,18 @@ Minimum Loss-Based Estimation. A data-mining algorithm is used to perform
 biomarker selection before multiple testing to increase power.
 }
 \examples{
+set.seed(1234)
+data(simpleArray)
+Y <- Y
+A <- A
 
+adaptest(Y = Y,
+         A = A,
+         W = NULL,
+         n_top = 5,
+         n_fold = 3,
+         SL_lib = 'SL.glm',
+         parameter_wrapper = adaptest::rank_DE,
+         absolute = FALSE,
+         negative = FALSE)
 }

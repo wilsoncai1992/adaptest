@@ -6,6 +6,8 @@
 #' \code{adaptest}
 #' @param ... additional arguments passed to \code{print} as necessary
 #'
+#' @return strings into stdout; containing information of the fitted model
+#'
 #' @export
 #'
 print.data_adapt <- function(x, ...) {
@@ -37,6 +39,25 @@ print.data_adapt <- function(x, ...) {
 #' @param x (data_adapt) - object of class \code{data_adapt} as returned by
 #' \code{adaptest}
 #'
+#' @return strings of HTML; containing information of the fitted model
+#'
+#' @examples
+#' set.seed(1234)
+#' data(simpleArray)
+#' Y <- Y
+#' A <- A
+#'
+#' adaptest_out <- adaptest(Y = Y,
+#'                          A = A,
+#'                          W = NULL,
+#'                          n_top = 5,
+#'                          n_fold = 3,
+#'                          SL_lib = 'SL.glm',
+#'                          parameter_wrapper = adaptest::rank_DE,
+#'                          absolute = FALSE,
+#'                          negative = FALSE)
+#' # shinyprint.data_adapt(adaptest_out)
+#'
 #' @importFrom R2HTML HTML
 #'
 #' @export shinyprint.data_adapt
@@ -61,6 +82,8 @@ shinyprint.data_adapt <- function(x) {
 #'  to generate: "biomarker" for a plot sorted average CV-rank, or "adapt_param"
 #'  for a plot sorted by q-values with labels corresponding to indices
 #' @param ... additional arguments passed to \code{plot} as necessary
+#'
+#' @return plot of model statistics
 #'
 #' @importFrom graphics abline plot
 #' @importFrom calibrate textxy
@@ -127,7 +150,7 @@ plot.data_adapt <- function(x, ..., plot_type = c("biomarker", "adapt_param")) {
 #' @export
 #' @method summary data_adapt
 #'
-summary.data_adapt <- function(object, ..., type = "adapt_param") {
+summary.data_adapt <- function(object, type = "adapt_param", ...) {
   data_adapt_param <- 1:length(object$DE)
   DE <- object$DE
   p_value <- object$p_value
@@ -147,10 +170,10 @@ summary.data_adapt <- function(object, ..., type = "adapt_param") {
   }
 
   if (type == "biomarker") {
-    # len <- length(top_biomarker)
-    # table_out <- data.frame(top_biomarker, mean_rank_top, prob_in_top)
-    # colnames(table_out) <- c('biomakers', 'mean rank',
-    #                          paste('% appear in top ', len))
-    # print(table_out)
+    len <- length(top_biomarker)
+    table_out <- data.frame(top_biomarker, mean_rank_top, prob_in_top)
+    colnames(table_out) <- c('biomakers', 'mean rank',
+                             paste('% appear in top ', len))
+    print(table_out)
   }
 }
