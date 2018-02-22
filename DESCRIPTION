@@ -34,7 +34,8 @@ Imports:
   future,
   data.table,
   BiocParallel,
-  SummarizedExperiment
+  SummarizedExperiment,
+  methods
 Suggests:
   testthat,
   rmarkdown,

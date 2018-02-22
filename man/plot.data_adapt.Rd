@@ -7,8 +7,7 @@
 \method{plot}{data_adapt}(x, ..., plot_type = c("biomarker", "adapt_param"))
 }
 \arguments{
-\item{x}{(data_adapt) - object of class \code{data_adapt} as returned by
-\code{adaptest}}
+\item{x}{(data_adapt) - object of class \code{data_adapt} as returned by \code{adaptest}}
 
 \item{...}{additional arguments passed to \code{plot} as necessary}
 
