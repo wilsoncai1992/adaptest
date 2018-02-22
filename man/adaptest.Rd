@@ -6,7 +6,7 @@
 \usage{
 adaptest(Y, A, W = NULL, n_top, n_fold,
   parameter_wrapper = adaptest::rank_DE, SL_lib = c("SL.glm", "SL.step",
-  "SL.glm.interaction", "SL.gam", "SL.earth", "SL.mean"), absolute = FALSE,
+  "SL.glm.interaction", "SL.gam", "SL.earth"), absolute = FALSE,
   negative = FALSE, p_cutoff = 0.05, q_cutoff = 0.05)
 }
 \arguments{
