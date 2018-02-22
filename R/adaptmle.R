@@ -12,7 +12,7 @@
        Class = "adapTMLE",
        slots = list(call = "call",
                     tmle_out = "data.frame",
-                    topTable = "data.frame"),
+                    top_sites = "data.frame"),
        contains = "SummarizedExperiment"
 )
 

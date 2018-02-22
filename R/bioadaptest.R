@@ -34,7 +34,7 @@ bioadaptest <- function(data_in,
                         q_cutoff = 0.05
                        ) {
   # ============================================================================
-  # catch input and return in output object for user convenience
+  # catch input and return in output object for udata_inr convenience
   # ============================================================================
   call <- match.call(expand.dots = TRUE)
 
@@ -44,12 +44,12 @@ bioadaptest <- function(data_in,
   adaptmle <- .adaptmle(
        SummarizedExperiment::SummarizedExperiment(
           assays = list(expMeasures = assay(data_in)),
-          rowData = rowData(se),
-          colData = colData(se)
+          rowData = rowData(data_in),
+          colData = colData(data_in)
        ),
        call = call,
-       adaptest_out = as.data.frame(matrix(NA, 10, 10)),
-       top_table = as.data.frame(matrix(NA, 10, 10))
+       tmle_out = as.data.frame(matrix(NA, 10, 10)),
+       top_sites = as.data.frame(matrix(NA, 10, 10))
   )
 
   # ============================================================================

@@ -34,9 +34,9 @@ using a data set containing microarray expression measures.
 First, we load the `adaptest` package and the (included) `simpleArray` data set:
 
 ```{r setup_data, message=FALSE}
-set.seed(1234)
 library(adaptest)
 data(simpleArray)
+set.seed(1234)
 ```
 
 In order to perform Targeted Minimum Loss-Based Estimation, we need three
@@ -144,7 +144,7 @@ transcripts available from the _airway_ data set.
 
 ```{r}
 genes_sub <- order(sample(seq_len(1000)))
-simple_airway <- airway[genes_sub, ]
+simple_air <- airway[genes_sub, ]
 ```
 
 Now, we can perform the same data-adaptive analysis we discussed above on this
@@ -152,8 +152,8 @@ simplified version of the _airway_ data set, simply by calling the `bioadaptest`
 wrapper function:
 
 ```{r}
-airway_out <- bioadaptest(data_in = simple_airway,
-                          var_int = as.numeric(colData(simple_airway)[, 3]),
+airway_out <- bioadaptest(data_in = simple_geu,
+                          var_int = as.matrix(colData(simple_geu))[, 3],
                           cntrl_set = NULL,
                           n_top = 10,
                           n_fold = 2,
