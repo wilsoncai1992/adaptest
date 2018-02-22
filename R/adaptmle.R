@@ -2,7 +2,7 @@
 #'
 #' @return class \code{adaptmle} object, sub-classed from SummarizedExperiment.
 #'
-#' @importFrom methods setClass
+#' @importFrom methods setClass new
 #' @importClassesFrom SummarizedExperiment SummarizedExperiment
 #'
 #' @export .adaptmle

@@ -16,6 +16,8 @@
 #' @param p_cutoff ...
 #' @param q_cutoff ...
 #'
+#' @importFrom SummarizedExperiment SummarizedExperiment assay colData rowData
+#'
 #' @return ...
 #'
 #' @export
@@ -42,9 +44,9 @@ bioadaptest <- function(data_in,
   # ============================================================================
   adaptmle <- .adaptmle(
        SummarizedExperiment::SummarizedExperiment(
-          assays = assay(data_in),
-          rowData = rowData(data_in),
-          colData = colData(data_in)
+          assays = SummarizedExperiment::assay(data_in),
+          rowData = SummarizedExperiment::rowData(data_in),
+          colData = SummarizedExperiment::colData(data_in)
        ),
        call = call,
        folds = list(),  # folds (from origami)
