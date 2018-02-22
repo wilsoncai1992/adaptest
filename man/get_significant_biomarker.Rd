@@ -19,7 +19,6 @@ Extract statistically significant biomarkers
 }
 \examples{
 set.seed(1234)
-library(adaptest)
 data(simpleArray)
 Y <- Y
 A <- A

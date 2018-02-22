@@ -11,9 +11,8 @@
 #' @return (numeric matrix) containing what fraction of the data-adaptive
 #' parameter comes from which biomarker in the original dataset.
 #' @export
-#' @example
+#' @examples
 #' set.seed(1234)
-#' library(adaptest)
 #' data(simpleArray)
 #' Y <- Y
 #' A <- A
@@ -68,7 +67,6 @@ get_composition <- function(object, type = "small") {
 #'
 #' @examples
 #' set.seed(1234)
-#' library(adaptest)
 #' data(simpleArray)
 #' Y <- Y
 #' A <- A

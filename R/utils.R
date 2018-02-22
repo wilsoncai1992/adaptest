@@ -41,6 +41,23 @@ print.data_adapt <- function(x, ...) {
 #'
 #' @return strings of HTML; containing information of the fitted model
 #'
+#' @examples
+#' set.seed(1234)
+#' data(simpleArray)
+#' Y <- Y
+#' A <- A
+#'
+#' adaptest_out <- adaptest(Y = Y,
+#'                          A = A,
+#'                          W = NULL,
+#'                          n_top = 5,
+#'                          n_fold = 3,
+#'                          SL_lib = 'SL.glm',
+#'                          parameter_wrapper = adaptest::rank_DE,
+#'                          absolute = FALSE,
+#'                          negative = FALSE)
+#' shinyprint.data_adapt(adaptest_out)
+#'
 #' @importFrom R2HTML HTML
 #'
 #' @export shinyprint.data_adapt

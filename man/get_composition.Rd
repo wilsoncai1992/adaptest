@@ -21,3 +21,20 @@ parameter comes from which biomarker in the original dataset.
 \description{
 Customized informative tables for examining data-adaptive statistics.
 }
+\examples{
+set.seed(1234)
+data(simpleArray)
+Y <- Y
+A <- A
+
+adaptest_out <- adaptest(Y = Y,
+                         A = A,
+                         W = NULL,
+                         n_top = 5,
+                         n_fold = 3,
+                         SL_lib = 'SL.glm',
+                         parameter_wrapper = adaptest::rank_DE,
+                         absolute = FALSE,
+                         negative = FALSE)
+get_composition(adaptest_out, type = 'small')
+}

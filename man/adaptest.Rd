@@ -87,3 +87,19 @@ multi-dimensional outcomes, adjusting for baseline covariates, using Targeted
 Minimum Loss-Based Estimation. A data-mining algorithm is used to perform
 biomarker selection before multiple testing to increase power.
 }
+\examples{
+set.seed(1234)
+data(simpleArray)
+Y <- Y
+A <- A
+
+adaptest(Y = Y,
+         A = A,
+         W = NULL,
+         n_top = 5,
+         n_fold = 3,
+         SL_lib = 'SL.glm',
+         parameter_wrapper = adaptest::rank_DE,
+         absolute = FALSE,
+         negative = FALSE)
+}

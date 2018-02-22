@@ -30,3 +30,10 @@ an \code{integer vector} containing ranks of biomarkers.
 \description{
 Compute ranking of biomarkers by sorting t-test p-values
 }
+\examples{
+set.seed(1234)
+data(simpleArray)
+Y <- Y
+A <- A
+rank_ttest(Y = Y, A = A, W = rep(1, length(A)), absolute = FALSE, negative = FALSE)
+}

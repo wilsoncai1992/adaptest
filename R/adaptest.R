@@ -182,9 +182,8 @@ get_pval <- function(Psi_output, EIC_est_final, alpha = 0.05) {
 #' @importFrom origami make_folds cross_validate
 #'
 #' @export adaptest
-#' @example
+#' @examples
 #' set.seed(1234)
-#' library(adaptest)
 #' data(simpleArray)
 #' Y <- Y
 #' A <- A

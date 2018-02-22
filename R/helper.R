@@ -8,7 +8,7 @@
 # #' @return
 # #' @export
 # #'
-# #' @examples
+# #' @exampless
 # #' #NA
 # "[<-.result" <- function(x,...,value) {
 #    args <- as.list(match.call())

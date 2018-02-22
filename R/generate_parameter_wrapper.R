@@ -24,13 +24,12 @@
 #' @importFrom stats lm as.formula coef
 #'
 #' @export
-#' @example
+#' @examples
 #' set.seed(1234)
-#' library(adaptest)
 #' data(simpleArray)
 #' Y <- Y
 #' A <- A
-#' rank_DE(Y = Y, A = A, W = NULL, absolute = FALSE, negative = FALSE)
+#' rank_DE(Y = Y, A = A, W = rep(1, length(A)), absolute = FALSE, negative = FALSE)
 rank_DE <- function(Y,
                     A,
                     W,
@@ -101,13 +100,12 @@ rank_DE <- function(Y,
 #' @importFrom stats lm
 #'
 #' @export
-#' @example
+#' @examples
 #' set.seed(1234)
-#' library(adaptest)
 #' data(simpleArray)
 #' Y <- Y
 #' A <- A
-#' rank_ttest(Y = Y, A = A, W = NULL, absolute = FALSE, negative = FALSE)
+#' rank_ttest(Y = Y, A = A, W = rep(1, length(A)), absolute = FALSE, negative = FALSE)
 rank_ttest <- function(Y,
                     A,
                     W,

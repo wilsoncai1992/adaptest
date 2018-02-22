@@ -16,3 +16,21 @@ strings of HTML; containing information of the fitted model
 \description{
 Provides HTML-based printing utility for examining data-adaptive statistics
 }
+\examples{
+set.seed(1234)
+data(simpleArray)
+Y <- Y
+A <- A
+
+adaptest_out <- adaptest(Y = Y,
+                         A = A,
+                         W = NULL,
+                         n_top = 5,
+                         n_fold = 3,
+                         SL_lib = 'SL.glm',
+                         parameter_wrapper = adaptest::rank_DE,
+                         absolute = FALSE,
+                         negative = FALSE)
+shinyprint.data_adapt(adaptest_out)
+
+}
