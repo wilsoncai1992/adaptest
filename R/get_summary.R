@@ -2,17 +2,16 @@
 #'
 #' Customized informative tables for examining data-adaptive statistics.
 #'
-#' @param object (data_adapt) - object of class \code{data_adapt} as returned by
-#'  \code{adaptest}
-#' @param type (character) - 'small' or 'big'. 'small' mode returns composition
-#' of data-adaptive parameters after multiple testing stage. 'big' mode returns
-#' composition of data-adaptive parameters before multiple testing stage.
+#' @param object (data_adapt) - object of class \code{data_adapt} as returned by \code{adaptest}
+#' @param type (character) - 'small' or 'big'. 'small' mode returns composition of
+#'  data-adaptive parameters after multiple testing stage. 'big' mode returns composition of
+#'  data-adaptive parameters before multiple testing stage.
 #'
-#' @return (numeric matrix) containing what fraction of the data-adaptive
-#' parameter comes from which biomarker in the original dataset.
+#' @return (numeric matrix) containing what fraction of the data-adaptive parameter comes from which biomarker in the original dataset.
 #' @export
 #'
 get_composition <- function(object, type = "small") {
+  # browser()
   if (type == "small") col.name <- object$top_colname_significant_q
   if (type == "big") col.name <- object$top_colname
 
@@ -37,7 +36,7 @@ get_composition <- function(object, type = "small") {
       "q-values" = object$q_value[object$significant_q]
     )
   }
-  if (type == "big") out.table <- cbind(decomposition, "q-values" = NA)
+  if (type == "big") out.table <- cbind(decomposition, "q-values" = object$q_value)
   return(list(decomposition, out.table))
 }
 
@@ -45,8 +44,11 @@ get_composition <- function(object, type = "small") {
 #'
 #' @param object \code{data_adapt} object
 #'
-#' @keywords internal
+#' @export
 #
-get_significant_biomarker <- function(object) {
-  return(colnames(get_composition(object, type = "small")[[1]]))
+get_significant_biomarker <- function(object, cutoff = .5) {
+  if(is.null(get_composition(object, type = "small"))) return(integer()) # catch when nothing is significant
+  component_table <- colSums(get_composition(object, type = "small")[[1]])
+  component_table <- component_table[component_table >= cutoff]
+  return(as.integer(names(component_table)))
 }
