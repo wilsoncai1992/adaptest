@@ -12,6 +12,9 @@
 
 \item{...}{additional arguments passed to \code{print} as necessary}
 }
+\value{
+strings into stdout; containing information of the fitted model
+}
 \description{
 Customized informative print method for examining data-adaptive statistics
 }

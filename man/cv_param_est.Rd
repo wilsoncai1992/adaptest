@@ -32,6 +32,15 @@ using the data-adaptive estimation algorithm}
 
 \item{W_name}{string of \code{colnames} that all baeline covariates share}
 }
+\value{
+\code{data_adaptive_index} (integer vector) rank for each gene
+
+\code{index_grid} (integer matrix) gene index from rank 1 to rank K
+
+\code{psi_est} estimand of DE for rank 1 to rank K genes
+
+\code{EIC_est} estimand of EIC for rank 1 to rank K genes
+}
 \description{
 Compute data-adaptive parameter estimate for a single cross-validation fold
 }

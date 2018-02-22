@@ -62,6 +62,8 @@ get_composition <- function(object, type = "small") {
 #' @param object \code{data_adapt} object
 #' @param cutoff cut-off value for composition percentage
 #'
+#' @return (integer vector) of significant gene index
+#'
 #' @export
 #'
 #' @examples

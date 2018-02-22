@@ -29,6 +29,9 @@ utils::globalVariables(c(
 #' @param parameter_wrapper function
 #' @param SL_lib character
 #'
+#' @return \code{S3} object of class "data_adapt" for data-adaptive multiple
+#'  testing.
+#'
 #' @importFrom tmle tmle
 #' @importFrom stats lm p.adjust
 #' @importFrom utils head

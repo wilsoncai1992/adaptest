@@ -11,6 +11,9 @@ get_significant_biomarker(object, cutoff = 0.5)
 
 \item{cutoff}{cut-off value for composition percentage}
 }
+\value{
+(integer vector) of significant gene index
+}
 \description{
 Extract statistically significant biomarkers
 }

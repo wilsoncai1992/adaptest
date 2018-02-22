@@ -198,7 +198,6 @@ get_pval <- function(Psi_output, EIC_est_final, alpha = 0.05) {
 #'          parameter_wrapper = adaptest::rank_DE,
 #'          absolute = FALSE,
 #'          negative = FALSE)
-
 adaptest <- function(Y,
                      A,
                      W = NULL,
@@ -372,6 +371,11 @@ adaptest <- function(Y,
 #'  using the data-adaptive estimation algorithm
 #' @param SL_lib character of \code{SuperLearner} library
 #'
+#' @return \code{data_adaptive_index} (integer vector) rank for each gene
+#' @return \code{index_grid} (integer matrix) gene index from rank 1 to rank K
+#' @return \code{psi_est} estimand of DE for rank 1 to rank K genes
+#' @return \code{EIC_est} estimand of EIC for rank 1 to rank K genes
+
 #' @importFrom origami training validation
 #' @importFrom tmle tmle
 #'

@@ -37,6 +37,10 @@ procedure is used.}
 \item{negative}{boolean: \code{TRUE} = test for negative effect size,
 \code{FALSE} = test for positive effect size}
 }
+\value{
+\code{S3} object of class "data_adapt" for data-adaptive multiple
+ testing.
+}
 \description{
 Performs targeted minimum loss-based estimation (TMLE )of a marginal additive
 treatment effect of a binary point treatment on an outcome. The data-adaptive

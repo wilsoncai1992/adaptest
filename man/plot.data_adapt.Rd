@@ -16,6 +16,9 @@
 to generate: "biomarker" for a plot sorted average CV-rank, or "adapt_param"
 for a plot sorted by q-values with labels corresponding to indices}
 }
+\value{
+plot of model statistics
+}
 \description{
 Customized plotting method for easily examining data-adaptive statistics
 }

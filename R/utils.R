@@ -6,6 +6,8 @@
 #' \code{adaptest}
 #' @param ... additional arguments passed to \code{print} as necessary
 #'
+#' @return strings into stdout; containing information of the fitted model
+#'
 #' @export
 #'
 print.data_adapt <- function(x, ...) {
@@ -37,6 +39,8 @@ print.data_adapt <- function(x, ...) {
 #' @param x (data_adapt) - object of class \code{data_adapt} as returned by
 #' \code{adaptest}
 #'
+#' @return strings of HTML; containing information of the fitted model
+#'
 #' @importFrom R2HTML HTML
 #'
 #' @export shinyprint.data_adapt
@@ -61,6 +65,8 @@ shinyprint.data_adapt <- function(x) {
 #'  to generate: "biomarker" for a plot sorted average CV-rank, or "adapt_param"
 #'  for a plot sorted by q-values with labels corresponding to indices
 #' @param ... additional arguments passed to \code{plot} as necessary
+#'
+#' @return plot of model statistics
 #'
 #' @importFrom graphics abline plot
 #' @importFrom calibrate textxy
