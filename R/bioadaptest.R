@@ -26,8 +26,7 @@ bioadaptest <- function(data_in,
                         n_top = 25,
                         n_fold = 10,
                         parameter_wrapper = rank_DE,
-                        SL_lib = c("SL.glm", "SL.step", "SL.glm.interaction",
-                                   "SL.gam", "SL.earth", "SL.mean"),
+                        SL_lib = c("SL.glm", "SL.mean"),
                         absolute = FALSE,
                         negative = FALSE,
                         p_cutoff = 0.05,
@@ -43,13 +42,21 @@ bioadaptest <- function(data_in,
   # ============================================================================
   adaptmle <- .adaptmle(
        SummarizedExperiment::SummarizedExperiment(
-          assays = list(expMeasures = assay(data_in)),
+          assays = assay(data_in),
           rowData = rowData(data_in),
           colData = colData(data_in)
        ),
        call = call,
-       tmle_out = as.data.frame(matrix(NA, 10, 10)),
-       top_sites = as.data.frame(matrix(NA, 10, 10))
+       folds = list(),  # folds (from origami)
+       plot_ingredients = list(),  # top_colname
+       diff_exp = as.numeric(rep(NaN, n_top)),  # DE
+       p_value = as.numeric(rep(NaN, n_top)),  # p_value
+       q_value = as.numeric(rep(NaN, n_top)),  # q_value
+       q_sig = as.numeric(rep(NaN, n_top)),  # significant_q
+       q_sig_names = list(),  # top_colname_significant_q
+       rank_mean = as.numeric(rep(NaN, n_top * n_fold)),  # mean_rank_top
+       prob_top = as.numeric(rep(NaN, n_top * n_fold)),  # prob_in_top
+       top_index = as.numeric(rep(NaN, n_top * n_fold))  # top_index
   )
 
   # ============================================================================
@@ -57,7 +64,8 @@ bioadaptest <- function(data_in,
   # ============================================================================
   W <- cntrl_set
   A <- var_int
-  Y <- data.table::as.data.table(t(SummarizedExperiment::assay(data_in)))
+  Y <- t(SummarizedExperiment::assay(data_in))
+  rownames(Y) <- colnames(Y) <- NULL
 
   # ============================================================================
   # TMLE procedure for data-adaptive testing
