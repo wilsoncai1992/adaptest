@@ -42,37 +42,67 @@ rank_DE <- function(Y,
   W_fit <- as.matrix(W)
 
   for (it in seq_len(p_all)) {
-    # NOTE: Y is a data.table
-    Y_fit <- as.numeric(Y[, it])
-    # CASE 1: TMLE for DE effect size
-    if (!all(W == 1)) {
-      # if there are W, then use them to adjust
-      tmle_fit <- tmle::tmle(
-        Y = Y_fit, A = A_fit, W = W_fit,
-        Q.SL.library = SL_lib, g.SL.library = SL_lib
-      )
-      B1_fitted[it] <- tmle_fit$estimates$ATE$psi
-    } else {
-      # CASE 2: OLS for faster effect size
-      lm_fit <- stats::lm(stats::as.formula("Y_fit ~ A_fit"))
-      B1_fitted[it] <- stats::coef(lm_fit)[2]
-    }
+      A_fit <- A
+      Y_fit <- Y[, it]
+      W_fit <- as.matrix(W)
+      # CASE 1: TMLE for DE effect size
+      if (sum(W - as.matrix(rep(1, n_here))) != 0) {
+          # if there are W
+          tmle_fit <- tmle(
+              Y = Y_fit, A = A_fit, W = W,
+              Q.SL.library = SL_lib, g.SL.library = SL_lib
+          )
+          B1_fitted[it] <- tmle_fit$estimates$ATE$psi
+      } else {
+          # CASE 2: OLS for faster effect size
+          lm_fit <- stats::lm(Y_fit ~ A_fit)
+          B1_fitted[it] <- lm_fit$coefficients[2]
+      }
   }
 
   # rank by absolute differential expression
   if (absolute == TRUE) {
-    B1_fitted_abs <- abs(B1_fitted)
+      B1_fitted_abs <- abs(B1_fitted)
   } else {
-    B1_fitted_abs <- B1_fitted
+      B1_fitted_abs <- B1_fitted
   }
 
   # calculate rank of each covariate
   if (negative) {
-    rank_out <- rank(B1_fitted_abs)
+      rank_out <- rank(B1_fitted_abs)
   } else {
-    rank_out <- rank(-B1_fitted_abs)
+      rank_out <- rank(-B1_fitted_abs)
   }
 
   # final object to be exported by this function
   return(rank_out)
+}
+
+#' Compute ranking of biomarkers by sorting t-test p-values
+#'
+#' @param Y (numeric vector) - continuous or binary biomarkers (outcome variables)
+#' @param A (numeric vector) - binary treatment indicator: \code{1} = treatment, \code{0} = control
+#' @param W (numeric vector, numeric matrix, or numeric data.frame) - matrix of baseline covariates where each column corrspond to one baseline covariate. each row correspond to one observation
+#'
+#' @return an \code{integer vector} containing ranks of biomarkers.
+#'
+#' @importFrom stats lm
+#'
+#' @export
+#
+rank_ttest <- function(Y,
+                       A,
+                       W,
+                       absolute = FALSE, #useless
+                       negative = FALSE) {
+    n_here <- nrow(Y)
+    p_all <- ncol(Y)
+
+    lm_out <- stats::lm(Y ~ A)
+    lm_summary <- summary(lm_out)
+    pval_lm <- sapply(lm_summary, function(x) x$coefficients[2,4])
+
+    rank_out <- rank(pval_lm)
+    # final object to be exported by this function
+    return(rank_out)
 }
