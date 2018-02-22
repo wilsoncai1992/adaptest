@@ -53,36 +53,36 @@ data_adapt <- function(Y,
   }
   if (!is.character(SL_lib)) stop("Argument SL_lib must be character.")
 
-    # placeholders for outputs to be included when returning the
-    # data_adapt object
-    top_colname <- NULL
-    DE <- NULL
-    p_value <- NULL
-    q_value <- NULL
-    significant_q <- NULL
-    mean_rank_top <- NULL
-    prob_in_top <- NULL
-    folds <- NULL
+  # placeholders for outputs to be included when returning the
+  # data_adapt object
+  top_colname <- NULL
+  DE <- NULL
+  p_value <- NULL
+  q_value <- NULL
+  significant_q <- NULL
+  mean_rank_top <- NULL
+  prob_in_top <- NULL
+  folds <- NULL
 
-    out <- structure(
-        list(
-            Y, A, W, n_top, n_fold, absolute, negative,
-            parameter_wrapper, SL_lib, top_colname, DE,
-            p_value, q_value, significant_q,
-            mean_rank_top, prob_in_top, folds
-        ),
-        class = "data_adapt"
-    )
+  out <- structure(
+    list(
+      Y, A, W, n_top, n_fold, absolute, negative,
+      parameter_wrapper, SL_lib, top_colname, DE,
+      p_value, q_value, significant_q,
+      mean_rank_top, prob_in_top, folds
+    ),
+    class = "data_adapt"
+  )
 
-    names(out) <- c(
-        "Y", "A", "W", "n_top", "n_fold", "absolute", "negative",
-        "parameter_wrapper", "SL_lib", "top_colname", "DE", "p_value",
-        "q_value", "significant_q", "mean_rank_top", "prob_in_top",
-        "folds"
-    )
+  names(out) <- c(
+    "Y", "A", "W", "n_top", "n_fold", "absolute", "negative",
+    "parameter_wrapper", "SL_lib", "top_colname", "DE", "p_value",
+    "q_value", "significant_q", "mean_rank_top", "prob_in_top",
+    "folds"
+  )
 
-    # export instance of "data_adapt" for downstream use
-    return(out)
+  # export instance of "data_adapt" for downstream use
+  return(out)
 }
 
 ################################################################################
@@ -202,39 +202,39 @@ adaptest <- function(Y,
                      p_cutoff = 0.05,
                      q_cutoff = 0.05) {
 
-    # use constructor function to instantiate "data_adapt" object
-    data_adapt <- data_adapt(
-        Y = Y, A = A, W = W,
-        n_top = n_top,
-        n_fold = n_fold,
-        absolute = absolute,
-        negative = negative,
-        parameter_wrapper = parameter_wrapper,
-        SL_lib = SL_lib
-    )
-    # =========================================================================
-    # preparation
-    # =========================================================================
-    n_sim <- nrow(data_adapt$Y)
-    p_all <- ncol(data_adapt$Y)
+  # use constructor function to instantiate "data_adapt" object
+  data_adapt <- data_adapt(
+    Y = Y, A = A, W = W,
+    n_top = n_top,
+    n_fold = n_fold,
+    absolute = absolute,
+    negative = negative,
+    parameter_wrapper = parameter_wrapper,
+    SL_lib = SL_lib
+  )
+  # =========================================================================
+  # preparation
+  # =========================================================================
+  n_sim <- nrow(data_adapt$Y)
+  p_all <- ncol(data_adapt$Y)
 
-    # if there is no W input, use intercept as W
-    if (is.null(data_adapt$W)) {
-        W <- as.matrix(rep(1, n_sim))
-        data_adapt$W <- W
-    }
-    # =========================================================================
-    # create parameter generating sample
-    # =========================================================================
-    # determine number of samples per fold
-    sample_each_fold <- ceiling(n_sim / n_fold)
-    # random index
-    index_for_folds <- sample(head(
-        rep(seq_len(n_fold), each = sample_each_fold),
-        n = n_sim
-    ))
-    # number of observations in each fold
-    table_n_per_fold <- table(index_for_folds)
+  # if there is no W input, use intercept as W
+  if (is.null(data_adapt$W)) {
+    W <- as.matrix(rep(1, n_sim))
+    data_adapt$W <- W
+  }
+  # =========================================================================
+  # create parameter generating sample
+  # =========================================================================
+  # determine number of samples per fold
+  sample_each_fold <- ceiling(n_sim / n_fold)
+  # random index
+  index_for_folds <- sample(head(
+    rep(seq_len(n_fold), each = sample_each_fold),
+    n = n_sim
+  ))
+  # number of observations in each fold
+  table_n_per_fold <- table(index_for_folds)
 
   rank_in_folds <- matrix(0, nrow = n_fold, ncol = p_all)
   adapt_param_composition <- (matrix(0, nrow = n_fold, ncol = n_top))
@@ -246,9 +246,9 @@ adaptest <- function(Y,
   df_all <- data.frame(Y = Y, A = A, W = W)
   #df_all <- data.table::data.table(Y = Y, A = A, W = W)
   #data.table::setnames(df_all, c(paste("Y", seq_len(ncol(Y)), sep = "_"), "A",
-                                 #ifelse(ncol(W) > 1,
-                                        #paste("W", seq_len(ncol(W)),
-                                              #sep = "_"), "W")))
+  #ifelse(ncol(W) > 1,
+  #paste("W", seq_len(ncol(W)),
+  #sep = "_"), "W")))
 
   # do this whole cross-validation thing...
   cv_results <- origami::cross_validate(
@@ -281,68 +281,68 @@ adaptest <- function(Y,
   )
   EIC_est_final <- cv_results$EIC_est
 
-    # =========================================================================
-    # statistical inference
-    # =========================================================================
-    Psi_output <- colMeans(psi_est_final)
-    # list[p_value, upper, lower, sd_by_col] <- get_pval(Psi_output,
-    # EIC_est_final, alpha = 0.05)
-    inference_out <- get_pval(Psi_output, EIC_est_final, alpha = p_cutoff)
-    p_value <- inference_out[[1]]
-    upper <- inference_out[[2]]
-    lower <- inference_out[[3]]
-    sd_by_col <- inference_out[[4]]
+  # =========================================================================
+  # statistical inference
+  # =========================================================================
+  Psi_output <- colMeans(psi_est_final)
+  # list[p_value, upper, lower, sd_by_col] <- get_pval(Psi_output,
+  # EIC_est_final, alpha = 0.05)
+  inference_out <- get_pval(Psi_output, EIC_est_final, alpha = p_cutoff)
+  p_value <- inference_out[[1]]
+  upper <- inference_out[[2]]
+  lower <- inference_out[[3]]
+  sd_by_col <- inference_out[[4]]
 
-    adaptY_composition <- adapt_param_composition[, seq_len(n_top)]
-    adaptY_composition <- apply(
-        adaptY_composition, 2,
-        function(x) table(x) / sum(table(x))
-    )
+  adaptY_composition <- adapt_param_composition[, seq_len(n_top)]
+  adaptY_composition <- apply(
+    adaptY_composition, 2,
+    function(x) table(x) / sum(table(x))
+  )
 
-    # =========================================================================
-    # perform FDR correction
-    # =========================================================================
-    q_value <- stats::p.adjust(p_value, method = "BH")
+  # =========================================================================
+  # perform FDR correction
+  # =========================================================================
+  q_value <- stats::p.adjust(p_value, method = "BH")
 
-    is_sig_q_value <- q_value <= q_cutoff
-    significant_q <- which(is_sig_q_value)
+  is_sig_q_value <- q_value <= q_cutoff
+  significant_q <- which(is_sig_q_value)
 
-    # export covariate name for easier interpretation
-    top_colname <- adaptY_composition
-    top_colname_significant_q <- adaptY_composition[which(is_sig_q_value)]
+  # export covariate name for easier interpretation
+  top_colname <- adaptY_composition
+  top_colname_significant_q <- adaptY_composition[which(is_sig_q_value)]
 
   # compute average rank across all folds
   mean_rank <- colMeans(rank_in_folds)
   top_index <- sort(as.numeric(unique(unlist(lapply(top_colname, names)))))
 
-    mean_rank_top <- mean_rank[top_index]
+  mean_rank_top <- mean_rank[top_index]
 
-    # sort the top_index from the highest CV-rank to lowest
-    top_index <- top_index[order(mean_rank_top)]
-    mean_rank_top <- mean_rank[top_index]
-    not_top_index <- setdiff(seq_len(p_all), top_index)
+  # sort the top_index from the highest CV-rank to lowest
+  top_index <- top_index[order(mean_rank_top)]
+  mean_rank_top <- mean_rank[top_index]
+  not_top_index <- setdiff(seq_len(p_all), top_index)
 
-    # compute proportion of existence in all folds
-    mean_rank_in_top <- (rank_in_folds <= data_adapt$n_top) + 0
-    prob_in_top <- colMeans(mean_rank_in_top)
+  # compute proportion of existence in all folds
+  mean_rank_in_top <- (rank_in_folds <= data_adapt$n_top) + 0
+  prob_in_top <- colMeans(mean_rank_in_top)
 
-    prob_in_top <- prob_in_top[top_index]
-    # =========================================================================
-    # add all newly computed statistical objects to the original object
-    # =========================================================================
-    data_adapt$top_index <- top_index
-    data_adapt$top_colname <- top_colname
-    data_adapt$top_colname_significant_q <- top_colname_significant_q
-    data_adapt$DE <- Psi_output
-    data_adapt$p_value <- p_value
-    data_adapt$q_value <- q_value
-    data_adapt$significant_q <- significant_q
-    data_adapt$mean_rank_top <- mean_rank_top
-    data_adapt$prob_in_top <- prob_in_top
-    data_adapt$folds <- folds
+  prob_in_top <- prob_in_top[top_index]
+  # =========================================================================
+  # add all newly computed statistical objects to the original object
+  # =========================================================================
+  data_adapt$top_index <- top_index
+  data_adapt$top_colname <- top_colname
+  data_adapt$top_colname_significant_q <- top_colname_significant_q
+  data_adapt$DE <- Psi_output
+  data_adapt$p_value <- p_value
+  data_adapt$q_value <- q_value
+  data_adapt$significant_q <- significant_q
+  data_adapt$mean_rank_top <- mean_rank_top
+  data_adapt$prob_in_top <- prob_in_top
+  data_adapt$folds <- folds
 
-    # export augmented object containing the computed data-adaptive statistics
-    return(data_adapt)
+  # export augmented object containing the computed data-adaptive statistics
+  return(data_adapt)
 }
 
 ################################################################################
@@ -421,10 +421,10 @@ cv_param_est <- function(fold,
 
   # define output object to be returned as list (for flexibility)
   out <- list(
-      data_adaptive_index = data_adaptive_index,
-      index_grid = index_grid,
-      psi_est = psi_est,
-      EIC_est = EIC_est
+    data_adaptive_index = data_adaptive_index,
+    index_grid = index_grid,
+    psi_est = psi_est,
+    EIC_est = EIC_est
   )
   return(out)
 }
