@@ -47,7 +47,7 @@ get_composition <- function(object, type = "small") {
 #' @export
 #
 get_significant_biomarker <- function(object, cutoff = .5) {
-  if(is.null(get_composition(object, type = "small"))) return(integer())
+  if(is.null(get_composition(object, type = "small"))) return(integer()) # catch when nothing is significant
   component_table <- colSums(get_composition(object, type = "small")[[1]])
   component_table <- component_table[component_table >= cutoff]
   return(as.integer(names(component_table)))

@@ -16,7 +16,7 @@
 #   return(rank_out)
 # }
 # # =============================================================================
-# N_SIMULATION = 1e3
+# N_SIMULATION = 1e2
 # # N_SIMULATION = 8
 # library(foreach)
 # # library(Rmpi)
@@ -43,8 +43,13 @@
 #                   }
 # head(all_CI)
 
-# # boxplot.matrix(all_CI[,1:30])
-# # plot(colMeans(all_CI))
+# boxplot.matrix(all_CI[,1:30])
+# plot(colMeans(all_CI))
+
+# head(rank(apply(all_CI, 2, median)), 20)
+# boxplot.matrix(all_CI[,1:100])
+
+# which(rank(apply(all_CI, 2, mean)) <= 10)
 
 # # create df
 # alpha = 0.5
