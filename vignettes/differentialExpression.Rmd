@@ -34,9 +34,9 @@ using a data set containing microarray expression measures.
 First, we load the `adaptest` package and the (included) `simpleArray` data set:
 
 ```{r setup_data, message=FALSE}
-set.seed(1234)
 library(adaptest)
 data(simpleArray)
+set.seed(1234)
 Y <- Y
 A <- A
 ```
@@ -140,17 +140,26 @@ object and the popular `airway` data set as an example.
 To start, let's load the required packages:
 
 ```{r sum_exp, message=FALSE}
-# library(SummarizedExperiment)
-# library(airway)
-# data(airway)
+library(SummarizedExperiment)
+library(airway)
+data(airway)
 ```
 
 For simplicity, we'll restrict ourselves to just a random subset of the genes or
 transcripts available from the _airway_ data set.
 
 ```{r}
-# genes_sub <- order(sample(seq_len(1000)))
-# simple_airway <- airway[genes_sub, ]
+genes_sub <- order(sample(seq_len(1000)))
+air_reduced <- airway[genes_sub, ]
+```
+
+Generally, finding data-adaptive target parameters is a computationally and
+data-intensive procedure, requiring a fairly large sample size. To work with the
+relatively small `airway` data set, we'll simply augment the data by doubling it
+in size in a naive manner:
+
+```{r augment_airway}
+simple_air <- cbind(air_reduced, air_reduced)
 ```
 
 Now, we can perform the same data-adaptive analysis we discussed above on this
@@ -158,12 +167,12 @@ simplified version of the _airway_ data set, simply by calling the `bioadaptest`
 wrapper function:
 
 ```{r}
-# airway_out <- bioadaptest(data_in = simple_airway,
-#                           var_int = as.numeric(colData(simple_airway)[, 3]),
-#                           cntrl_set = NULL,
-#                           n_top = 10,
-#                           n_fold = 2,
-#                           parameter_wrapper = rank_DE)
+airway_out <- bioadaptest(data_in = simple_air,
+                          var_int = as.matrix(colData(simple_air))[, 3],
+                          cntrl_set = NULL,
+                          n_top = 5,
+                          n_fold = 2,
+                          parameter_wrapper = rank_DE)
 ```
 
 ---
