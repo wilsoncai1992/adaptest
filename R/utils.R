@@ -56,7 +56,7 @@ print.data_adapt <- function(x, ...) {
 #'                          parameter_wrapper = adaptest::rank_DE,
 #'                          absolute = FALSE,
 #'                          negative = FALSE)
-#' shinyprint.data_adapt(adaptest_out)
+#' # shinyprint.data_adapt(adaptest_out)
 #'
 #' @importFrom R2HTML HTML
 #'

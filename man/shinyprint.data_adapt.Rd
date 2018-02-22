@@ -31,6 +31,6 @@ adaptest_out <- adaptest(Y = Y,
                          parameter_wrapper = adaptest::rank_DE,
                          absolute = FALSE,
                          negative = FALSE)
-shinyprint.data_adapt(adaptest_out)
+# shinyprint.data_adapt(adaptest_out)
 
 }
