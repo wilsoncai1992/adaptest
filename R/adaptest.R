@@ -1,18 +1,31 @@
 #' S3-Style Constructor for Data Adaptive Parameter Class
 #'
-#' @param Y (numeric vector) - continuous or binary biomarkers (outcome variables)
-#' @param A (numeric vector) - binary treatment indicator: \code{1} = treatment, \code{0} = control
-#' @param W (numeric vector, numeric matrix, or numeric data.frame) - matrix of baseline covariates where each column corrspond to one baseline covariate. each row correspond to one observation
-#' @param n_top (integer vector) - value for the number of candidate covariates to generate
-#'  using the data-adaptive estimation algorithm
+#' @param Y (numeric vector) - continuous or binary biomarkers outcome variables
+#' @param A (numeric vector) - binary treatment indicator: \code{1} = treatment,
+#'  \code{0} = control
+#' @param W (numeric vector, numeric matrix, or numeric data.frame) - matrix of
+#'  baseline covariates where each column corrspond to one baseline covariate.
+#'  Each row correspond to one observation
+#' @param n_top (integer vector) - value for the number of candidate covariates
+#'  to generate using the data-adaptive estimation algorithm.
 #' @param n_fold (integer vector) - number of cross-validation folds.
-#' @param absolute (logical) - whether or not to test for absolute effect size. If \code{FALSE}, test for directional effect. This overrides argument \code{negative}.
-#' @param negative (logical) - whether or not to test for negative effect size. If \code{FALSE} = test for positive effect size. This is effective only when \code{absolute = FALSE}.
-#' @param parameter_wrapper (function) - user-defined function that takes input (Y, A, W, absolute, negative) and outputs a (integer vector) containing ranks of biomarkers (outcome variables). For detail, refer to `rank_DE`
-#' @param SL_lib (character vector) - library of learning algorithms to be used in fitting the "Q" and "g" step of the standard TMLE procedure.
+#' @param absolute (logical) - whether or not to test for absolute effect size.
+#'  If \code{FALSE}, test for directional effect. This overrides argument
+#'  \code{negative}.
+#' @param negative (logical) - whether or not to test for negative effect size.
+#'  If \code{FALSE} = test for positive effect size. This is effective only when
+#'  \code{absolute = FALSE}.
+#' @param parameter_wrapper (function) - user-defined function that takes input
+#'  (Y, A, W, absolute, negative) and outputs a (integer vector) containing
+#'  ranks of biomarkers (outcome variables). For detail, please refer to the
+#'  documentation for \code{rank_DE}.
+#' @param SL_lib (character vector) - library of learning algorithms to be used
+#'  in fitting the "Q" and "g" step of the standard TMLE procedure.
 #'
 #' @return \code{S3} object of class "data_adapt" for data-adaptive multiple
 #'  testing.
+#'
+#' @importFrom data.table is.data.table as.data.table
 #
 data_adapt <- function(Y,
                        A,
@@ -107,31 +120,60 @@ get_pval <- function(Psi_output, EIC_est_final, alpha = 0.05) {
 
 #' Data-adaptive Statistics for High-Dimensional Multiple Testing
 #'
-#' Computes marginal average treatment effects of a binary point treatment on multi-dimensional outcomes, adjusting for baseline covariates, using Targeted Minimum Loss-Based Estimation. A data-mining
-#' algorithm is used to perform biomarker selection before multiple testing to increase power.
+#' Computes marginal average treatment effects of a binary point treatment on
+#' multi-dimensional outcomes, adjusting for baseline covariates, using Targeted
+#' Minimum Loss-Based Estimation. A data-mining algorithm is used to perform
+#' biomarker selection before multiple testing to increase power.
 #'
-#' @param Y (numeric vector) - continuous or binary biomarkers (outcome variables)
-#' @param A (numeric vector) - binary treatment indicator: \code{1} = treatment, \code{0} = control
-#' @param W (numeric vector, numeric matrix, or numeric data.frame) - matrix of baseline covariates where each column corrspond to one baseline covariate. each row correspond to one observation
-#' @param n_top (integer vector) - value for the number of candidate covariates to generate
-#'  using the data-adaptive estimation algorithm
+#' @param Y (numeric vector) - continuous or binary biomarkers
+#'  (outcome variables)
+#' @param A (numeric vector) - binary treatment indicator:
+#'  \code{1} = treatment, \code{0} = control
+#' @param W (numeric vector, numeric matrix, or numeric data.frame) -
+#'  matrix of baseline covariates where each column corrspond to one baseline
+#'  covariate. each row correspond to one observation
+#' @param n_top (integer vector) - value for the number of candidate covariates
+#'  to generate using the data-adaptive estimation algorithm
 #' @param n_fold (integer vector) - number of cross-validation folds.
-#' @param parameter_wrapper (function) - user-defined function that takes input (Y, A, W, absolute, negative) and outputs a (integer vector) containing ranks of biomarkers (outcome variables). For detail, refer to `rank_DE`
-#' @param SL_lib (character vector) - library of learning algorithms to be used in fitting the "Q" and "g" step of the standard TMLE procedure.
-#' @param absolute (logical) - whether or not to test for absolute effect size. If \code{FALSE}, test for directional effect. This overrides argument \code{negative}.
-#' @param negative (logical) - whether or not to test for negative effect size. If \code{FALSE} = test for positive effect size. This is effective only when \code{absolute = FALSE}.
-#' @param p_cutoff (numeric) - p-value cutoff (default as 0.05) at and below which to be considered significant. Used in inference stage.
-#' @param q_cutoff (numeric) - q-value cutoff (default as 0.05) at and below which to be considered significant. Used in multiple testing stage.
+#' @param parameter_wrapper (function) - user-defined function that takes input
+#'  (Y, A, W, absolute, negative) and outputs a (integer vector) containing
+#'  ranks of biomarkers (outcome variables). For details, please refer to the
+#'  documentation for \code{rank_DE}
+#' @param SL_lib (character vector) - library of learning algorithms to be used
+#'  in fitting the "Q" and "g" step of the standard TMLE procedure.
+#' @param absolute (logical) - whether or not to test for absolute effect size.
+#'  If \code{FALSE}, test for directional effect. This overrides argument
+#'  \code{negative}.
+#' @param negative (logical) - whether or not to test for negative effect size.
+#'  If \code{FALSE} = test for positive effect size. This is effective only when
+#'  \code{absolute = FALSE}.
+#' @param p_cutoff (numeric) - p-value cutoff (default as 0.05) at and below
+#'  which to be considered significant. Used in inference stage.
+#' @param q_cutoff (numeric) - q-value cutoff (default as 0.05) at and below
+#'  which to be considered significant. Used in multiple testing stage.
 #'
-#' @return S4 object of class data_adapt, with the following additional slots containing data-mining selected biomarkers and their TMLE-based differential expression and inference, as well as the original call to this function (for user reference), respectively.
-#' @return \code{top_index} (integer vector) - indices for the data-mining selected biomarkers
-#' @return \code{top_colname} (character vector) - names for the data-mining selected biomarkers
-#' @return \code{top_colname_significant_q} (character vector) - names for the data-mining selected biomarkers, which are significant after multiple testing stage
-#' @return \code{DE} (numeric vector) - differential expression effect sizes for the biomarkers in \code{top_colname}
-#' @return \code{p_value} (numeric vector) - p-values for the biomarkers in \code{top_colname}
-#' @return \code{q_value} (numeric vector) - q-values for the biomarkers in \code{top_colname}
-#' @return \code{significant_q} (integer vector) - indices of \code{top_colname} which is significant after multiple testing stage.
-#' @return \code{mean_rank_top} (numeric vector) - average ranking across cross-validation folds for the biomarkers in \code{top_colname}
+#' @return S4 object of class \code{data_adapt}, sub-classed from the container
+#'  class \code{SummarizedExperiment}, with the following additional slots
+#'  containing data-mining selected biomarkers and their TMLE-based differential
+#'  expression and inference, as well as the original call to this function (for
+#'  user reference), respectively.
+#' @return \code{top_index} (integer vector) - indices for the data-mining
+#'  selected biomarkers
+#' @return \code{top_colname} (character vector) - names for the data-mining
+#'  selected biomarkers
+#' @return \code{top_colname_significant_q} (character vector) - names for the
+#'  data-mining selected biomarkers, which are significant after multiple
+#'  testing stage
+#' @return \code{DE} (numeric vector) - differential expression effect sizes for
+#'  the biomarkers in \code{top_colname}
+#' @return \code{p_value} (numeric vector) - p-values for the biomarkers in
+#'  \code{top_colname}
+#' @return \code{q_value} (numeric vector) - q-values for the biomarkers in
+#'  \code{top_colname}
+#' @return \code{significant_q} (integer vector) - indices of \code{top_colname}
+#'  which is significant after multiple testing stage.
+#' @return \code{mean_rank_top} (numeric vector) - average ranking across folds
+#'  of cross-validation folds for the biomarkers in \code{top_colname}
 #' @return \code{folds} (origami::folds class) - cross validation object
 #'
 #' @importFrom stats p.adjust
@@ -140,7 +182,23 @@ get_pval <- function(Psi_output, EIC_est_final, alpha = 0.05) {
 #' @importFrom origami make_folds cross_validate
 #'
 #' @export adaptest
-#
+#' @example
+#' set.seed(1234)
+#' library(adaptest)
+#' data(simpleArray)
+#' Y <- Y
+#' A <- A
+#'
+#' adaptest(Y = Y,
+#'          A = A,
+#'          W = NULL,
+#'          n_top = 5,
+#'          n_fold = 3,
+#'          SL_lib = 'SL.glm',
+#'          parameter_wrapper = adaptest::rank_DE,
+#'          absolute = FALSE,
+#'          negative = FALSE)
+
 adaptest <- function(Y,
                      A,
                      W = NULL,
@@ -316,7 +374,7 @@ adaptest <- function(Y,
 #'
 #' @importFrom origami training validation
 #' @importFrom tmle tmle
-#
+#'
 cv_param_est <- function(fold,
                          data,
                          parameter_wrapper,

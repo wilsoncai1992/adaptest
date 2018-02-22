@@ -7,11 +7,22 @@
 rank_ttest(Y, A, W, absolute = FALSE, negative = FALSE)
 }
 \arguments{
-\item{Y}{(numeric vector) - continuous or binary biomarkers (outcome variables)}
+\item{Y}{(numeric vector) - continuous or binary biomarkers outcome variables}
 
-\item{A}{(numeric vector) - binary treatment indicator: \code{1} = treatment, \code{0} = control}
+\item{A}{(numeric vector) - binary treatment indicator: \code{1} = treatment,
+\code{0} = control}
 
-\item{W}{(numeric vector, numeric matrix, or numeric data.frame) - matrix of baseline covariates where each column corrspond to one baseline covariate. each row correspond to one observation}
+\item{W}{(numeric vector, numeric matrix, or numeric data.frame) - matrix of
+baseline covariates where each column corrspond to one baseline covariate.
+Each row correspond to one observation}
+
+\item{absolute}{(logical) - whether or not to test for absolute effect size.
+If \code{FALSE}, test for directional effect. This overrides argument
+\code{negative}.}
+
+\item{negative}{(logical) - whether or not to test for negative effect size.
+If \code{FALSE} = test for positive effect size. This is effective only when
+\code{absolute = FALSE}.}
 }
 \value{
 an \code{integer vector} containing ranks of biomarkers.

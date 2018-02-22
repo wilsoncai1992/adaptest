@@ -19,9 +19,11 @@ the original data}
 \value{
 (data.frame) of the summary statistics
 
-\code{type = 'adapt_param'} wtih columns: 'data-adaptive parameters', 'Differential expression', 'p-values', 'q-values'
+\code{type = 'adapt_param'} wtih columns: 'data-adaptive parameters',
+'Differential expression', 'p-values', 'q-values'
 
-\code{type = 'biomarker'} wtih columns: 'biomakers', 'mean rank', '% appear in top'
+\code{type = 'biomarker'} wtih columns: 'biomakers', 'mean rank', '%
+appear in top'
 }
 \description{
 Summary tables of the `adaptest` object

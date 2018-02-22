@@ -8,7 +8,27 @@ get_significant_biomarker(object, cutoff = 0.5)
 }
 \arguments{
 \item{object}{\code{data_adapt} object}
+
+\item{cutoff}{cut-off value for composition percentage}
 }
 \description{
 Extract statistically significant biomarkers
+}
+\examples{
+set.seed(1234)
+library(adaptest)
+data(simpleArray)
+Y <- Y
+A <- A
+
+adaptest_out <- adaptest(Y = Y,
+                         A = A,
+                         W = NULL,
+                         n_top = 5,
+                         n_fold = 3,
+                         SL_lib = 'SL.glm',
+                         parameter_wrapper = adaptest::rank_DE,
+                         absolute = FALSE,
+                         negative = FALSE)
+get_significant_biomarker(adaptest_out)
 }
