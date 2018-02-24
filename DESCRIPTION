@@ -17,7 +17,7 @@ Description: Data-adaptive test statistics represent a general methodology for
   using the approach of data-adaptive statistical target parameters and
   inference.
 Depends:
-  R (>= 3.3.0)
+  R (>= 3.2.0)
 License: GPL-2
 URL: https://github.com/wilsoncai1992/adaptest
 BugReports: https://github.com/wilsoncai1992/adaptest/issues
