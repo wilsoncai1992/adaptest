@@ -1,8 +1,7 @@
 ---
 title: "Data-mining biomarkers and perform testing"
-author: "[Wilson Cai](www.stat.berkeley.edu/~wcai/),
-[Nima Hejazi](https://nimahejazi.org), and [Alan
-Hubbard](http://hubbard.berkeley.edu/)"
+author: "[Wilson Cai](www.stat.berkeley.edu/~wcai/) and
+[Nima Hejazi](https://nimahejazi.org)"
 date: "`r Sys.Date()`"
 output:
   # BiocStyle::html_document
@@ -63,13 +62,12 @@ matrix. We demonstrate the necessary syntax for calling `adaptest` below:
 adaptest_out <- adaptest(Y = Y,
                          A = A,
                          W = NULL,
-                         n_top = 5,
-                         n_fold = 3,
-                         SL_lib = 'SL.glm',
+                         n_top = 35,
+                         n_fold = 5,
+                         SL_lib = c("SL.glm", "SL.mean"),
                          parameter_wrapper = adaptest::rank_DE,
                          absolute = FALSE,
                          negative = FALSE)
-
 ```
 
 The output of `adaptest` is an object of class `adaptest`, containing the
@@ -130,7 +128,7 @@ plot(adaptest_out)
 
 ---
 
-## Working with Bioconductor Objects
+## Bioconductor Integration with `SummarizedExperiment`
 
 Now, let's try to acquire a taste for how we would use these algorithmic tools
 with objects common in computational biology -- we'll do this by performing the
@@ -148,7 +146,7 @@ data(airway)
 For simplicity, we'll restrict ourselves to just a random subset of the genes or
 transcripts available from the _airway_ data set.
 
-```{r}
+```{r augment_se}
 genes_sub <- order(sample(seq_len(1000)))
 air_reduced <- airway[genes_sub, ]
 ```
@@ -160,15 +158,18 @@ in size in a naive manner:
 
 ```{r augment_airway}
 simple_air <- cbind(air_reduced, air_reduced)
+
+# use a binary treatment variable (must be 0/1 only)
+dex_var = as.numeric(as.matrix(colData(simple_air))[, 3] - 1)
 ```
 
 Now, we can perform the same data-adaptive analysis we discussed above on this
 simplified version of the _airway_ data set, simply by calling the `bioadaptest`
 wrapper function:
 
-```{r}
+```{r bioadaptest}
 airway_out <- bioadaptest(data_in = simple_air,
-                          var_int = as.matrix(colData(simple_air))[, 3],
+                          var_int = dex_var,
                           cntrl_set = NULL,
                           n_top = 5,
                           n_fold = 2,

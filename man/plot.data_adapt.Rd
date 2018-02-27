@@ -2,7 +2,7 @@
 % Please edit documentation in R/utils.R
 \name{plot.data_adapt}
 \alias{plot.data_adapt}
-\title{Generic plot method for data_adapt class}
+\title{Plot method for data_adapt objects}
 \usage{
 \method{plot}{data_adapt}(x, ..., plot_type = c("biomarker", "adapt_param"))
 }

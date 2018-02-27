@@ -2,7 +2,7 @@
 % Please edit documentation in R/utils.R
 \name{summary.data_adapt}
 \alias{summary.data_adapt}
-\title{Summary tables of the `adaptest` object}
+\title{Summary tables for data_adapt objects}
 \usage{
 \method{summary}{data_adapt}(object, type = "adapt_param", ...)
 }
@@ -26,5 +26,5 @@ the original data}
 appear in top'
 }
 \description{
-Summary tables of the `adaptest` object
+Summary tables for data_adapt objects
 }

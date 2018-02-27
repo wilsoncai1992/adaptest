@@ -1,4 +1,4 @@
-#' Generic print method for data_adapt class
+#' Print method for data_adapt objects
 #'
 #' Customized informative print method for examining data-adaptive statistics
 #'
@@ -31,6 +31,8 @@ print.data_adapt <- function(x, ...) {
   print("Their compositions are")
   print(get_composition(x, type = "small")[[1]])
 }
+
+################################################################################
 
 #' Method of \code{shinyprint} for objects of class \code{data_adapt}
 #'
@@ -71,8 +73,9 @@ shinyprint.data_adapt <- function(x) {
   ))
 }
 
+################################################################################
 
-#' Generic plot method for data_adapt class
+#' Plot method for data_adapt objects
 #'
 #' Customized plotting method for easily examining data-adaptive statistics
 #'
@@ -99,40 +102,43 @@ plot.data_adapt <- function(x, ..., plot_type = c("biomarker", "adapt_param")) {
 
   mean_rank_top <- x$mean_rank_top
   prob_in_top <- x$prob_in_top
+
   n_top.want <- length(top_index)
 
   if ("biomarker" %in% plot_type) {
     # Plot sorted average CV-rank
     plot(
       mean_rank_top, ylab = "Mean CV-rank", pch = 20,
-      main = "Mean CV-rank of selected covariates \n (Smaller the better)"
+      main = "Mean CV-rank of selected covariates \n (smaller is better)"
     )
-
     calibrate::textxy(
-      (1:n_top.want) - 0.3, mean_rank_top + 0.5, top_index,
-      offset = .6
+      (seq_len(n_top.want)) - 0.3, mean_rank_top + 0.5, top_index,
+      offset = 0.6
     )
     abline(a = 0, b = 1, lty = 3)
   }
 
   if ("adapt_param" %in% plot_type) {
     # plot sorted q-values, labeled with index
-    temp.top_index <- c(1:n_top.want)[order(q_value)]
+    temp.top_index <- c(seq_len(n_top.want))[order(q_value)]
     plot(
       sort(q_value),
       pch = 20,
       ylab = "q-value",
-      main = "q-value of selected covariates \n (Smaller the better)"
+      main = "q-value of selected covariates \n (smaller is better)"
     )
     calibrate::textxy(
-      (1:n_top.want) - 0.3, sort(q_value), temp.top_index,
+      (seq_len(n_top.want))[seq_len(x$n_top)] - 0.3, sort(q_value),
+      temp.top_index,
       offset = 1
     )
     abline(h = 0.05, lty = 2)
   }
 }
 
-#' Summary tables of the `adaptest` object
+################################################################################
+
+#' Summary tables for data_adapt objects
 #'
 #' @param object (data_adapt) object as returned by \code{adaptest}
 #' @param ... not implemented
