@@ -25,6 +25,12 @@ environment:
 build_script:
   - travis-tool.sh install_deps
   - travis-tool.sh install_github jeremyrcoyle/origami
+  - travis-tool.sh install_bioc SummarizedExperiment
+  - travis-tool.sh install_bioc BiocParallel
+  - travis-tool.sh install_bioc BiocStyle
+  - travis-tool.sh install_bioc BiocCheck
+  - travis-tool.sh install_bioc airway
+  - travis-tool.sh install_bioc_deps
 
 test_script:
   - travis-tool.sh run_tests
