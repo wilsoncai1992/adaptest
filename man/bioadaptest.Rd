@@ -5,37 +5,76 @@
 \title{Data Adaptive Multiple Testing for Computational Biology}
 \usage{
 bioadaptest(data_in, var_int, cntrl_set = NULL, n_top = 25, n_fold = 10,
-  parameter_wrapper = rank_DE, SL_lib = c("SL.glm", "SL.mean"),
+  parameter_wrapper = rank_DE, SL_lib = c("SL.mean", "SL.glm"),
   absolute = FALSE, negative = FALSE, p_cutoff = 0.05, q_cutoff = 0.05)
 }
 \arguments{
-\item{data_in}{...}
+\item{data_in}{An object of class \code{SummarizedExperiment}, a common
+container class for computational biology and bioinformatics. This object is
+used to construct the output object of class \code{adaptmle}.}
 
-\item{var_int}{...}
+\item{var_int}{A \code{numeric} vector of binary treatment assignment whose
+effect on the biological units is to be assessed. The data-adpative target
+parameter approach finds any biological sites strongly impacted by this
+quantity across the observed experimental units (subjects).}
 
-\item{cntrl_set}{...}
+\item{cntrl_set}{A \code{matrix} of discrete variables representing baseline
+covariates that are controlled for in the estimation of the data-adaptive
+target parameter via targeted maximum likelihood estimation. If \code{NULL},
+an identity vector is generated internally.}
 
-\item{n_top}{...}
+\item{n_top}{(integer vector) - value for the number of candidate covariates
+to generate using the data-adaptive estimation algorithm.}
 
-\item{n_fold}{...}
+\item{n_fold}{(integer vector) - number of cross-validation folds.}
 
-\item{parameter_wrapper}{...}
+\item{parameter_wrapper}{(function) - user-defined function that takes input
+(Y, A, W, absolute, negative) and outputs a (integer vector) containing
+ranks of biomarkers (outcome variables). For detail, please refer to the
+documentation for \code{rank_DE}.}
 
-\item{SL_lib}{...}
+\item{SL_lib}{(character vector) - library of learning algorithms to be used
+in fitting the "Q" and "g" step of the standard TMLE procedure.}
 
-\item{absolute}{...}
+\item{absolute}{(logical) - whether or not to test for absolute effect size.
+If \code{FALSE}, test for directional effect. This overrides argument
+\code{negative}.}
 
-\item{negative}{...}
+\item{negative}{(logical) - whether or not to test for negative effect size.
+If \code{FALSE} = test for positive effect size. This is effective only when
+\code{absolute = FALSE}.}
 
-\item{p_cutoff}{...}
+\item{p_cutoff}{The minimum p-value required to evaluate a given biological
+unit (e.g., gene) as statistically significant.}
 
-\item{q_cutoff}{...}
+\item{q_cutoff}{The minimum p-value required to evaluate a given biological
+unit (e.g., gene) as statistically significant after applying a correction
+for multiple hypothesis testing.}
 }
 \value{
-...
+An object of class \code{adaptmle}, sub-classed from the popular
+ container class \code{SummarizedExperiment}, containing information about
+ the experiment being analyzed as well as results from applying the TMLE for
+ the data-adaptive target parameter as produced by \code{adpatest}.
 }
 \description{
 A thin wrapper that implements the main data-adaptive multiple hypothesis
 testing strategy for data structures commonly found in computational biology
 experiments, using the popular SummarizedExperiment container class.
+}
+\examples{
+library(SummarizedExperiment)
+library(airway)
+set.seed(5678)
+data(airway)
+genes_sub <- order(sample(seq_len(100)))
+air_reduced <- airway[genes_sub, ]
+simple_air <- cbind(air_reduced, air_reduced)
+dex_var = as.numeric(as.matrix(colData(simple_air))[, 3] - 1)
+airway_out <- bioadaptest(data_in = simple_air,
+                          var_int = dex_var,
+                          cntrl_set = NULL,
+                          n_top = 5,
+                          n_fold = 2,
+                          parameter_wrapper = rank_DE)
 }

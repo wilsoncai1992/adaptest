@@ -1,7 +1,7 @@
 utils::globalVariables(c(
-  "EIC_est_here", "data_adaptive_index",
-  "index_grid_here", "lower", "p_value", "psi_est_here",
-  "sd_by_col", "upper"
+    "EIC_est_here", "data_adaptive_index",
+    "index_grid_here", "lower", "p_value", "psi_est_here",
+    "sd_by_col", "upper"
 ))
 
 #' OLD Data-Adaptive Algorithm Implementation (for reference only)
@@ -183,8 +183,8 @@ adaptest_old <- function(Y,
   # statistical inference
   # ============================================================================
   Psi_output <- colMeans(psi_est_final)
-  # list[p_value, upper, lower, sd_by_col] <- get_pval(Psi_output, EIC_est_final,
-  # alpha = 0.05)
+  #list[p_value, upper, lower, sd_by_col] <- get_pval(Psi_output, EIC_est_final,
+  #alpha = 0.05)
   pval_out <- get_pval(Psi_output, EIC_est_final, alpha = 0.05)
   p_value <- pval_out[[1]]
   upper <- pval_out[[2]]

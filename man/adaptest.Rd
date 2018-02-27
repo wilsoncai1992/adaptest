@@ -4,10 +4,9 @@
 \alias{adaptest}
 \title{Data-adaptive Statistics for High-Dimensional Multiple Testing}
 \usage{
-adaptest(Y, A, W = NULL, n_top, n_fold,
-  parameter_wrapper = adaptest::rank_DE, SL_lib = c("SL.glm", "SL.step",
-  "SL.glm.interaction", "SL.gam", "SL.earth"), absolute = FALSE,
-  negative = FALSE, p_cutoff = 0.05, q_cutoff = 0.05)
+adaptest(Y, A, W = NULL, n_top, n_fold, parameter_wrapper = rank_DE,
+  SL_lib = c("SL.glm", "SL.step", "SL.glm.interaction", "SL.gam", "SL.earth"),
+  absolute = FALSE, negative = FALSE, p_cutoff = 0.05, q_cutoff = 0.05)
 }
 \arguments{
 \item{Y}{(numeric vector) - continuous or binary biomarkers
