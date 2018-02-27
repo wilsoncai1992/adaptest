@@ -2,7 +2,7 @@
 % Please edit documentation in R/utils.R
 \name{print.data_adapt}
 \alias{print.data_adapt}
-\title{Generic print method for data_adapt class}
+\title{Print method for data_adapt objects}
 \usage{
 \method{print}{data_adapt}(x, ...)
 }

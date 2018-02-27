@@ -24,8 +24,6 @@
 #'
 #' @return \code{S3} object of class "data_adapt" for data-adaptive multiple
 #'  testing.
-#'
-#' @importFrom data.table is.data.table as.data.table
 #
 data_adapt <- function(Y,
                        A,
@@ -48,7 +46,9 @@ data_adapt <- function(Y,
   if (!is.numeric(n_fold)) stop("argument n_fold must be numeric")
   if (!is.logical(absolute)) stop("argument absolute must be boolean/logical")
   if (!is.logical(negative)) stop("argument negative must be boolean/logical")
-  if (!is.function(parameter_wrapper)) stop("argument parameter_wrapper must be function")
+  if (!is.function(parameter_wrapper)) {
+    stop("argument parameter_wrapper must be function")
+  }
   if (!is.character(SL_lib)) stop("argument SL_lib must be character")
 
   # placeholders for outputs to be included when returning the data_adapt object
@@ -182,6 +182,7 @@ get_pval <- function(Psi_output, EIC_est_final, alpha = 0.05) {
 #' @importFrom origami make_folds cross_validate
 #'
 #' @export adaptest
+#'
 #' @examples
 #' set.seed(1234)
 #' data(simpleArray)
@@ -197,12 +198,13 @@ get_pval <- function(Psi_output, EIC_est_final, alpha = 0.05) {
 #'          parameter_wrapper = adaptest::rank_DE,
 #'          absolute = FALSE,
 #'          negative = FALSE)
+#
 adaptest <- function(Y,
                      A,
                      W = NULL,
                      n_top,
                      n_fold,
-                     parameter_wrapper = adaptest::rank_DE,
+                     parameter_wrapper = rank_DE,
                      SL_lib = c(
                        "SL.glm", "SL.step", "SL.glm.interaction",
                        "SL.gam", "SL.earth"
@@ -410,8 +412,10 @@ cv_param_est <- function(fold,
     negative
   )
   # index_grid <- which(data_adaptive_index <= n_top) # sorted after screening
-  df_temp <- data.frame(col_ind = 1:ncol(Y_param), rank = data_adaptive_index) # ranked by rank
-  index_grid <- head(df_temp[order(df_temp$rank, decreasing = FALSE), ], n_top)[, "col_ind"]
+  df_temp <- data.frame(col_ind = seq_len(ncol(Y_param)),
+                        rank = data_adaptive_index) # ranked by rank
+  index_grid <- head(df_temp[order(df_temp$rank, decreasing = FALSE), ],
+                     n_top)[, "col_ind"]
   # estimate the parameter on estimation sample
   psi_list <- list()
   EIC_list <- list()

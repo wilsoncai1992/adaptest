@@ -1,4 +1,4 @@
-#' Generic print method for data_adapt class
+#' Print method for data_adapt objects
 #'
 #' Customized informative print method for examining data-adaptive statistics
 #'
@@ -75,7 +75,7 @@ shinyprint.data_adapt <- function(x) {
 
 ################################################################################
 
-#' Generic plot method for data_adapt class
+#' Plot method for data_adapt objects
 #'
 #' Customized plotting method for easily examining data-adaptive statistics
 #'
@@ -138,7 +138,7 @@ plot.data_adapt <- function(x, ..., plot_type = c("biomarker", "adapt_param")) {
 
 ################################################################################
 
-#' Summary tables of the `adaptest` object
+#' Summary tables for data_adapt objects
 #'
 #' @param object (data_adapt) object as returned by \code{adaptest}
 #' @param ... not implemented
