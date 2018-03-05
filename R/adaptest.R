@@ -298,6 +298,7 @@ adaptest <- function(Y,
   sd_by_col <- inference_out[[4]]
 
   adaptY_composition <- adapt_param_composition[, seq_len(n_top)]
+  if(class(adaptY_composition) == 'integer') adaptY_composition <- matrix(adaptY_composition, nrow = 1)# catch when n_top == 1; user only want top 1 gene
   adaptY_composition <- apply(
     adaptY_composition, 2,
     function(x) table(x) / sum(table(x))
