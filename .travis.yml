@@ -27,12 +27,14 @@ r_github_packages:
 
 bioc_packages:
   - SummarizedExperiment
+  - BiocParallel
   - BiocStyle
   - BiocCheck
+  - airway
 
 ## coverage
 after_success:
-  - Rscript -e "covr::codecov(line_exclusions = list('R/plots.R'))"
+  - Rscript -e "covr::codecov(line_exclusions = list('R/utils.R', 'R/get_summary.R', 'data.R'))"
 
 notifications:
   email:
