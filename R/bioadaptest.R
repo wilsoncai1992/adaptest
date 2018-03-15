@@ -99,7 +99,6 @@ bioadaptest <- function(data_in,
        prob_top = as.numeric(rep(NaN, n_top * n_fold)),  # prob_in_top
        top_index = as.numeric(rep(NaN, n_top * n_fold))  # top_index
   )
-
   # ============================================================================
   # wrangle input data structures such that we can feed them to main function
   # ============================================================================
@@ -136,7 +135,7 @@ bioadaptest <- function(data_in,
   adaptmle@q_sig_names <- adaptest_out$top_colname_significant_q
   adaptmle@rank_mean <- adaptest_out$mean_rank_top
   adaptmle@prob_top <- adaptest_out$prob_in_top
-  adaptmle@top_index <- adaptest_out$top_index 
+  adaptmle@top_index <- adaptest_out$top_index
   return(adaptmle)
 }
 

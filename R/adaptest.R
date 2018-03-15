@@ -113,7 +113,7 @@ get_pval <- function(Psi_output, EIC_est_final, alpha = 0.05) {
     lower.tail = FALSE
   ) * 2
 
-  return(list(pval, upper, lower, sd_by_col))
+  return(list(pval = pval, upper = upper, lower = lower, sd_by_col = sd_by_col))
 }
 
 ################################################################################
@@ -303,10 +303,12 @@ adaptest <- function(Y,
     adaptY_composition <- matrix(adaptY_composition, ncol = 1)
     adaptY_composition <- list(table(adaptY_composition) / sum(table(adaptY_composition)))
   }else{
-    adaptY_composition <- apply(
-      adaptY_composition, 2,
-      function(x) table(x) / sum(table(x))
-    )
+    ls <- list()
+    for (i in 1:ncol(adaptY_composition)) {
+        x = adaptY_composition[,i]
+        ls[[i]] <- table(x) / sum(table(x))
+    }
+    adaptY_composition <- ls
   }
   # ============================================================================
   # perform FDR correction
