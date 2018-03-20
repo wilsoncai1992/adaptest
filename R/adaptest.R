@@ -373,9 +373,9 @@ adaptest <- function(Y,
 #'
 #' @param fold fold output from \code{origami}
 #' @param data entire training data
-#' @param Y_name string of \code{colnames} that all biomarkers share
-#' @param A_name string of \code{colnames} of treatment
-#' @param W_name string of \code{colnames} that all baeline covariates share
+#' @param Y_name (character) \code{colnames} of all biomarkers
+#' @param A_name (character) \code{colnames} of treatment
+#' @param W_name (character) \code{colnames} of all baseline covariates
 #' @param parameter_wrapper user-defined function
 #' @param absolute boolean: \code{TRUE} = test for absolute effect size. This
 #'  \code{FALSE} = test for directional effect. This overrides argument
