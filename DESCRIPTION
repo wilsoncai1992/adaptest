@@ -24,7 +24,7 @@ BugReports: https://github.com/wilsoncai1992/adaptest/issues
 Encoding: UTF-8
 LazyData: true
 Imports:
-    origami (>= 0.8.2),
+    origami (>= 1.0),
     tmle,
     calibrate,
     magrittr,
@@ -36,14 +36,15 @@ Imports:
     SummarizedExperiment
 Suggests:
     testthat,
-    rmarkdown,
-    knitr,
     Matrix,
     SuperLearner,
     earth,
     gam,
     nnls,
-    airway
+    airway,
+    rmarkdown,
+    knitr,
+    BiocStyle
 VignetteBuilder: knitr
 RoxygenNote: 6.0.1.9000
 biocViews:

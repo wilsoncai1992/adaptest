@@ -4,7 +4,7 @@ author: "[Wilson Cai](www.stat.berkeley.edu/~wcai/) and
 [Nima Hejazi](https://nimahejazi.org)"
 date: "`r Sys.Date()`"
 output:
-  # BiocStyle::html_document
+  BiocStyle::html_document
 vignette: >
   %\VignetteIndexEntry{Data-mining Biomarkers and High-Dimensional Testing}
   %\VignetteEngine{knitr::rmarkdown}
@@ -33,6 +33,7 @@ using a data set containing microarray expression measures.
 First, we load the `adaptest` package and the (included) `simpleArray` data set:
 
 ```{r setup_data, message=FALSE}
+# devtools::install_github('wilsoncai1992/adaptest')
 library(adaptest)
 data(simpleArray)
 set.seed(1234)
