@@ -29,7 +29,11 @@
 #' data(simpleArray)
 #' simulated_array <- simulated_array
 #' simulated_treatment <- simulated_treatment
-#' rank_DE(Y = simulated_array, A = simulated_treatment, W = rep(1, length(A)), absolute = FALSE, negative = FALSE)
+#' rank_DE(Y = simulated_array,
+#'         A = simulated_treatment,
+#'         W = rep(1, length(simulated_treatment)),
+#'         absolute = FALSE,
+#'         negative = FALSE)
 rank_DE <- function(Y,
                     A,
                     W,
