@@ -212,7 +212,11 @@ adaptest <- function(Y,
                      absolute = FALSE,
                      negative = FALSE,
                      p_cutoff = 0.05,
-                     q_cutoff = 0.05) {
+                     q_cutoff = 0.05
+                     # Y_name = grep('Y', colnames(data)),
+                     # A_name = grep('A', colnames(data)),
+                     # W_name = grep('W', colnames(data))
+                     ) {
 
   # use constructor function to instantiate "data_adapt" object
   data_adapt <- data_adapt(
@@ -256,6 +260,10 @@ adaptest <- function(Y,
   # origami folds
   folds <- origami::make_folds(n = n_sim, V = n_fold)
   df_all <- data.frame(Y = Y, A = A, W = W)
+
+  Y_name = grep('Y', colnames(df_all))
+  A_name = grep('A', colnames(df_all))
+  W_name = grep('W', colnames(df_all))
   cv_results <- origami::cross_validate(
     cv_fun = cv_param_est, folds = folds,
     data = df_all,
@@ -264,9 +272,9 @@ adaptest <- function(Y,
     negative = negative,
     n_top = n_top,
     SL_lib = SL_lib,
-    Y_name = "Y",
-    A_name = "A",
-    W_name = "W"
+    Y_name = Y_name,
+    A_name = A_name,
+    W_name = W_name
   )
   # ============================================================================
   # CV
@@ -402,13 +410,19 @@ cv_param_est <- function(fold,
   estim_data <- origami::validation(data)
 
   # get param generating data
-  A_param <- param_data[, grep(A_name, colnames(data))]
-  Y_param <- as.matrix(param_data[, grep(Y_name, colnames(data))])
-  W_param <- as.matrix(param_data[, grep(W_name, colnames(data))])
+  A_param <- param_data[, A_name]
+  Y_param <- as.matrix(param_data[, Y_name])
+  W_param <- as.matrix(param_data[, W_name])
+  # A_param <- param_data[, grep(A_name, colnames(data))]
+  # Y_param <- as.matrix(param_data[, grep(Y_name, colnames(data))])
+  # W_param <- as.matrix(param_data[, grep(W_name, colnames(data))])
   # get estimation data
-  A_estim <- estim_data[, grep(A_name, colnames(data))]
-  Y_estim <- as.matrix(estim_data[, grep(Y_name, colnames(data))])
-  W_estim <- as.matrix(estim_data[, grep(W_name, colnames(data))])
+  A_estim <- estim_data[, A_name]
+  Y_estim <- as.matrix(estim_data[, Y_name])
+  W_estim <- as.matrix(estim_data[, W_name])
+  # A_estim <- estim_data[, grep(A_name, colnames(data))]
+  # Y_estim <- as.matrix(estim_data[, grep(Y_name, colnames(data))])
+  # W_estim <- as.matrix(estim_data[, grep(W_name, colnames(data))])
 
   # generate data-adaptive target parameter
   data_adaptive_index <- parameter_wrapper(
