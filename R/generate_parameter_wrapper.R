@@ -27,9 +27,9 @@
 #' @examples
 #' set.seed(1234)
 #' data(simpleArray)
-#' Y <- Y
-#' A <- A
-#' rank_DE(Y = Y, A = A, W = rep(1, length(A)), absolute = FALSE, negative = FALSE)
+#' simulated_array <- simulated_array
+#' simulated_treatment <- simulated_treatment
+#' rank_DE(Y = simulated_array, A = simulated_treatment, W = rep(1, length(A)), absolute = FALSE, negative = FALSE)
 rank_DE <- function(Y,
                     A,
                     W,
@@ -103,9 +103,9 @@ rank_DE <- function(Y,
 #' @examples
 #' set.seed(1234)
 #' data(simpleArray)
-#' Y <- Y
-#' A <- A
-#' rank_ttest(Y = Y, A = A, W = rep(1, length(A)), absolute = FALSE, negative = FALSE)
+#' simulated_array <- simulated_array
+#' simulated_treatment <- simulated_treatment
+#' rank_ttest(Y = simulated_array, A = simulated_treatment, W = rep(1, length(A)), absolute = FALSE, negative = FALSE)
 rank_ttest <- function(Y,
                     A,
                     W,

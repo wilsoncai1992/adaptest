@@ -37,8 +37,8 @@ First, we load the `adaptest` package and the (included) `simpleArray` data set:
 library(adaptest)
 data(simpleArray)
 set.seed(1234)
-Y <- Y
-A <- A
+Y <- simulated_array
+A <- simulated_treatment
 ```
 
 In order to perform Targeted Minimum Loss-Based Estimation, we need three

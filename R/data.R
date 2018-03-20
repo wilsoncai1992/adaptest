@@ -8,9 +8,9 @@
 #'   This is example data to be used in testing the \code{adaptest}
 #'   procedure. Consult the vignettes for how to use this data.
 #' }
-#' @return A matrix \code{Y}
+#' @return A matrix \code{simulated_array}
 #'
-"Y"
+"simulated_array"
 
 #' Simulated differential expression data with one exposure
 #'
@@ -21,6 +21,6 @@
 #'   This is example data to be used in testing the \code{adaptest}
 #'   procedure. Consult the vignettes for how to use this data.
 #' }
-#' @return A numeric vector \code{A}.
+#' @return A numeric vector \code{simulated_treatment}.
 #'
-"A"
+"simulated_treatment"
