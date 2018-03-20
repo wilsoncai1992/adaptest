@@ -89,11 +89,11 @@ biomarker selection before multiple testing to increase power.
 \examples{
 set.seed(1234)
 data(simpleArray)
-Y <- Y
-A <- A
+simulated_array <- simulated_array
+simulated_treatment <- simulated_treatment
 
-adaptest(Y = Y,
-         A = A,
+adaptest(Y = simulated_array,
+         A = simulated_treatment,
          W = NULL,
          n_top = 5,
          n_fold = 3,

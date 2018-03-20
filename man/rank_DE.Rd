@@ -36,7 +36,7 @@ context.
 \examples{
 set.seed(1234)
 data(simpleArray)
-Y <- Y
-A <- A
-rank_DE(Y = Y, A = A, W = rep(1, length(A)), absolute = FALSE, negative = FALSE)
+simulated_array <- simulated_array
+simulated_treatment <- simulated_treatment
+rank_DE(Y = simulated_array, A = simulated_treatment, W = rep(1, length(A)), absolute = FALSE, negative = FALSE)
 }
