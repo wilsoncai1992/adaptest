@@ -116,7 +116,7 @@ plot.data_adapt <- function(x, ..., plot_type = c("biomarker", "adapt_param")) {
 #' @method summary data_adapt
 #'
 summary.data_adapt <- function(object, type = "adapt_param", ...) {
-  data_adapt_param <- 1:length(object$DE)
+  data_adapt_param <- seq_len(length(object$DE)) # 1:length(object$DE)
   DE <- object$DE
   p_value <- object$p_value
   q_value <- object$q_value

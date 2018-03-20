@@ -304,7 +304,7 @@ adaptest <- function(Y,
     adaptY_composition <- list(table(adaptY_composition) / sum(table(adaptY_composition)))
   }else{
     ls <- list()
-    for (i in 1:ncol(adaptY_composition)) {
+    for (i in seq_len(ncol(adaptY_composition))) {
         x = adaptY_composition[,i]
         ls[[i]] <- table(x) / sum(table(x))
     }

@@ -42,7 +42,7 @@ get_composition <- function(object, type = "small") {
   )
   decomposition <- as.data.frame(decomposition)
   names(decomposition) <- col_id_sig_final
-  for (it in 1:nrow(decomposition)) {
+  for (it in seq_len(nrow(decomposition))) {
     decomposition[it, names(col.name[[it]])] <- col.name[[it]]
   }
   if (type == "small") rownames(decomposition) <- object$significant_q
