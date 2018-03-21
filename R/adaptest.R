@@ -19,7 +19,7 @@
 #'  (Y, A, W, absolute, negative) and outputs a (integer vector) containing
 #'  ranks of biomarkers (outcome variables). For detail, please refer to the
 #'  documentation for \code{rank_DE}.
-#' @param SL_lib (character vector) - library of learning algorithms to be used
+#' @param learning_library (character vector) - library of learning algorithms to be used
 #'  in fitting the "Q" and "g" step of the standard TMLE procedure.
 #'
 #' @return \code{S3} object of class "data_adapt" for data-adaptive multiple
@@ -33,7 +33,7 @@ data_adapt <- function(Y,
                        absolute,
                        negative,
                        parameter_wrapper,
-                       SL_lib) {
+                       learning_library) {
   if (!is.data.frame(Y)) {
     if (!is.matrix(Y)) {
       stop("argument Y must be a data.frame or a matrix")
@@ -49,7 +49,7 @@ data_adapt <- function(Y,
   if (!is.function(parameter_wrapper)) {
     stop("argument parameter_wrapper must be function")
   }
-  if (!is.character(SL_lib)) stop("argument SL_lib must be character")
+  if (!is.character(learning_library)) stop("argument learning_library must be character")
 
   # placeholders for outputs to be included when returning the data_adapt object
   top_colname <- NULL
@@ -64,7 +64,7 @@ data_adapt <- function(Y,
   out <- structure(
     list(
       Y, A, W, n_top, n_fold, absolute, negative,
-      parameter_wrapper, SL_lib, top_colname, DE,
+      parameter_wrapper, learning_library, top_colname, DE,
       p_value, q_value, significant_q,
       mean_rank_top, prob_in_top, folds
     ),
@@ -73,7 +73,7 @@ data_adapt <- function(Y,
 
   names(out) <- c(
     "Y", "A", "W", "n_top", "n_fold", "absolute", "negative",
-    "parameter_wrapper", "SL_lib", "top_colname", "DE", "p_value",
+    "parameter_wrapper", "learning_library", "top_colname", "DE", "p_value",
     "q_value", "significant_q", "mean_rank_top", "prob_in_top",
     "folds"
   )
@@ -139,7 +139,7 @@ get_pval <- function(Psi_output, EIC_est_final, alpha = 0.05) {
 #'  (Y, A, W, absolute, negative) and outputs a (integer vector) containing
 #'  ranks of biomarkers (outcome variables). For details, please refer to the
 #'  documentation for \code{rank_DE}
-#' @param SL_lib (character vector) - library of learning algorithms to be used
+#' @param learning_library (character vector) - library of learning algorithms to be used
 #'  in fitting the "Q" and "g" step of the standard TMLE procedure.
 #' @param absolute (logical) - whether or not to test for absolute effect size.
 #'  If \code{FALSE}, test for directional effect. This overrides argument
@@ -194,7 +194,7 @@ get_pval <- function(Psi_output, EIC_est_final, alpha = 0.05) {
 #'          W = NULL,
 #'          n_top = 5,
 #'          n_fold = 3,
-#'          SL_lib = 'SL.glm',
+#'          learning_library = 'SL.glm',
 #'          parameter_wrapper = adaptest::rank_DE,
 #'          absolute = FALSE,
 #'          negative = FALSE)
@@ -205,7 +205,7 @@ adaptest <- function(Y,
                      n_top,
                      n_fold,
                      parameter_wrapper = rank_DE,
-                     SL_lib = c(
+                     learning_library = c(
                        "SL.glm", "SL.step", "SL.glm.interaction",
                        "SL.gam", "SL.earth"
                      ),
@@ -226,7 +226,7 @@ adaptest <- function(Y,
     absolute = absolute,
     negative = negative,
     parameter_wrapper = parameter_wrapper,
-    SL_lib = SL_lib
+    learning_library = learning_library
   )
   # ============================================================================
   # preparation
@@ -271,7 +271,7 @@ adaptest <- function(Y,
     absolute = absolute,
     negative = negative,
     n_top = n_top,
-    SL_lib = SL_lib,
+    learning_library = learning_library,
     Y_name = Y_name,
     A_name = A_name,
     W_name = W_name
@@ -384,7 +384,7 @@ adaptest <- function(Y,
 #'  \code{FALSE} = test for positive effect size
 #' @param n_top integer value for the number of candidate covariates to generate
 #'  using the data-adaptive estimation algorithm
-#' @param SL_lib character of \code{SuperLearner} library
+#' @param learning_library character of \code{SuperLearner} library
 #'
 #' @return \code{data_adaptive_index} (integer vector) rank for each gene
 #' @return \code{index_grid} (integer matrix) gene index from rank 1 to rank K
@@ -400,7 +400,7 @@ cv_param_est <- function(fold,
                          absolute,
                          negative,
                          n_top,
-                         SL_lib,
+                         learning_library,
                          Y_name,
                          A_name,
                          W_name) {
@@ -444,8 +444,8 @@ cv_param_est <- function(fold,
     tmle_estimation <- tmle::tmle(
       Y = Y_estim[, index_grid[it_index]],
       A = A_estim, W = W_estim,
-      Q.SL.library = SL_lib,
-      g.SL.library = SL_lib
+      Q.SL.library = learning_library,
+      g.SL.library = learning_library
     )
     psi_list[[it_index]] <- tmle_estimation$estimates$ATE$psi
     EIC_list[[it_index]] <- tmle_estimation$estimates$IC$IC.ATE

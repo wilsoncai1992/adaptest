@@ -4,8 +4,8 @@
 \alias{cv_param_est}
 \title{Compute data-adaptive parameter estimate for a single cross-validation fold}
 \usage{
-cv_param_est(fold, data, parameter_wrapper, absolute, negative, n_top, SL_lib,
-  Y_name, A_name, W_name)
+cv_param_est(fold, data, parameter_wrapper, absolute, negative, n_top,
+  learning_library, Y_name, A_name, W_name)
 }
 \arguments{
 \item{fold}{fold output from \code{origami}}
@@ -24,13 +24,13 @@ cv_param_est(fold, data, parameter_wrapper, absolute, negative, n_top, SL_lib,
 \item{n_top}{integer value for the number of candidate covariates to generate
 using the data-adaptive estimation algorithm}
 
-\item{SL_lib}{character of \code{SuperLearner} library}
+\item{learning_library}{character of \code{SuperLearner} library}
 
-\item{Y_name}{string of \code{colnames} that all biomarkers share}
+\item{Y_name}{(character) \code{colnames} of all biomarkers}
 
-\item{A_name}{string of \code{colnames} of treatment}
+\item{A_name}{(character) \code{colnames} of treatment}
 
-\item{W_name}{string of \code{colnames} that all baeline covariates share}
+\item{W_name}{(character) \code{colnames} of all baseline covariates}
 }
 \value{
 \code{data_adaptive_index} (integer vector) rank for each gene

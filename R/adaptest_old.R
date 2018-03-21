@@ -27,7 +27,7 @@ utils::globalVariables(c(
 #'  \code{FALSE} = test for directional effect. This overrides argument
 #'  \code{negative}.
 #' @param parameter_wrapper function
-#' @param SL_lib character
+#' @param learning_library character
 #'
 #' @return \code{S3} object of class "data_adapt" for data-adaptive multiple
 #'  testing.
@@ -48,7 +48,7 @@ adaptest_old <- function(Y,
                          n_fold,
                          folds_vec = NULL,
                          parameter_wrapper = adaptest::rank_DE,
-                         SL_lib = c(
+                         learning_library = c(
                            "SL.glm", "SL.step", "SL.glm.interaction",
                            "SL.gam", "SL.earth"
                          ),
@@ -63,7 +63,7 @@ adaptest_old <- function(Y,
     absolute = absolute,
     negative = negative,
     parameter_wrapper = parameter_wrapper,
-    SL_lib = SL_lib
+    learning_library = learning_library
   )
   # ============================================================================
   # preparation
@@ -148,8 +148,8 @@ adaptest_old <- function(Y,
         Y = Y_est[, index_grid[it_index]],
         A = A_est,
         W = W_est,
-        Q.SL.library = SL_lib,
-        g.SL.library = SL_lib
+        Q.SL.library = learning_library,
+        g.SL.library = learning_library
       )
       psi_list[[it_index]] <- tmle_estimation$estimates$ATE$psi
       EIC_list[[it_index]] <- tmle_estimation$estimates$IC$IC.ATE

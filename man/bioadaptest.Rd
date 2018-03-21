@@ -5,7 +5,7 @@
 \title{Data Adaptive Multiple Testing for Computational Biology}
 \usage{
 bioadaptest(data_in, var_int, cntrl_set = NULL, n_top = 25, n_fold = 10,
-  parameter_wrapper = rank_DE, SL_lib = c("SL.mean", "SL.glm"),
+  parameter_wrapper = rank_DE, learning_library = c("SL.mean", "SL.glm"),
   absolute = FALSE, negative = FALSE, p_cutoff = 0.05, q_cutoff = 0.05)
 }
 \arguments{
@@ -33,7 +33,7 @@ to generate using the data-adaptive estimation algorithm.}
 ranks of biomarkers (outcome variables). For detail, please refer to the
 documentation for \code{rank_DE}.}
 
-\item{SL_lib}{(character vector) - library of learning algorithms to be used
+\item{learning_library}{(character vector) - library of learning algorithms to be used
 in fitting the "Q" and "g" step of the standard TMLE procedure.}
 
 \item{absolute}{(logical) - whether or not to test for absolute effect size.

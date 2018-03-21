@@ -22,7 +22,7 @@
 #'                          W = NULL,
 #'                          n_top = 5,
 #'                          n_fold = 3,
-#'                          SL_lib = 'SL.glm',
+#'                          learning_library = 'SL.glm',
 #'                          parameter_wrapper = adaptest::rank_DE,
 #'                          absolute = FALSE,
 #'                          negative = FALSE)
@@ -76,7 +76,7 @@ get_composition <- function(object, type = "small") {
 #'                          W = NULL,
 #'                          n_top = 5,
 #'                          n_fold = 3,
-#'                          SL_lib = 'SL.glm',
+#'                          learning_library = 'SL.glm',
 #'                          parameter_wrapper = adaptest::rank_DE,
 #'                          absolute = FALSE,
 #'                          negative = FALSE)

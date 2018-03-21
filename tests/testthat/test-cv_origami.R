@@ -68,7 +68,7 @@ time_seq <- system.time(
     A = A.sample.vec,
     n_top = p.true + 5,
     n_fold = 4,
-    SL_lib = c("SL.mean", "SL.glm", "SL.step")
+    learning_library = c("SL.mean", "SL.glm", "SL.step")
   )
 )
 
@@ -82,7 +82,7 @@ time_mc <- system.time(
     A = A.sample.vec,
     n_top = p.true + 5,
     n_fold = 4,
-    SL_lib = c("SL.mean", "SL.glm", "SL.step")
+    learning_library = c("SL.mean", "SL.glm", "SL.step")
   )
 )
 

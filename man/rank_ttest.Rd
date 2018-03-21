@@ -35,5 +35,9 @@ set.seed(1234)
 data(simpleArray)
 simulated_array <- simulated_array
 simulated_treatment <- simulated_treatment
-rank_ttest(Y = simulated_array, A = simulated_treatment, W = rep(1, length(A)), absolute = FALSE, negative = FALSE)
+rank_ttest(Y = simulated_array,
+           A = simulated_treatment,
+           W = rep(1, length(simulated_treatment)),
+           absolute = FALSE,
+           negative = FALSE)
 }

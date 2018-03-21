@@ -45,7 +45,7 @@ rank_DE <- function(Y,
 
   B1_fitted <- rep(0, p_all)
 
-  SL_lib <- c("SL.glm", "SL.step", "SL.glm.interaction", "SL.gam")
+  learning_library <- c("SL.glm", "SL.step", "SL.glm.interaction", "SL.gam")
 
   for (it in seq_len(p_all)) {
     A_fit <- A
@@ -56,7 +56,7 @@ rank_DE <- function(Y,
       # if there are W
       tmle_fit <- tmle(
         Y = Y_fit, A = A_fit, W = W,
-        Q.SL.library = SL_lib, g.SL.library = SL_lib
+        Q.SL.library = learning_library, g.SL.library = learning_library
       )
       B1_fitted[it] <- tmle_fit$estimates$ATE$psi
     } else {
