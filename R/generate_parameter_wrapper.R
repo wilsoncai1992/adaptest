@@ -17,6 +17,8 @@
 #' @param negative (logical) - whether or not to test for negative effect size.
 #'  If \code{FALSE} = test for positive effect size. This is effective only when
 #'  \code{absolute = FALSE}.
+#' @param learning_library (character vector) - library of learning algorithms
+#'  to be used in fitting the "Q" and "g" step of the standard TMLE procedure.
 #'
 #' @return an \code{integer vector} containing ranks of biomarkers.
 #'
@@ -38,14 +40,14 @@ rank_DE <- function(Y,
                     A,
                     W,
                     absolute = FALSE,
-                    negative = FALSE) {
-  # browser()
+                    negative = FALSE,
+                    learning_library = c("SL.glm", "SL.step",
+                                         "SL.glm.interaction", "SL.gam")
+                   ) {
   n_here <- nrow(Y)
   p_all <- ncol(Y)
 
   B1_fitted <- rep(0, p_all)
-
-  learning_library <- c("SL.glm", "SL.step", "SL.glm.interaction", "SL.gam")
 
   for (it in seq_len(p_all)) {
     A_fit <- A
@@ -101,7 +103,7 @@ rank_DE <- function(Y,
 #'
 #' @return an \code{integer vector} containing ranks of biomarkers.
 #'
-#' @importFrom stats lm
+#' @importFrom stats lm coef
 #'
 #' @export
 #' @examples
@@ -115,16 +117,16 @@ rank_DE <- function(Y,
 #'            absolute = FALSE,
 #'            negative = FALSE)
 rank_ttest <- function(Y,
-                    A,
-                    W,
-                    absolute = FALSE, #useless
-                    negative = FALSE) {
+                       A,
+                       W,
+                       absolute = FALSE,  # useless
+                       negative = FALSE) {
   n_here <- nrow(Y)
   p_all <- ncol(Y)
 
   lm_out <- stats::lm(Y ~ A)
   lm_summary <- summary(lm_out)
-  pval_lm <- sapply(lm_summary, function(x) x$coefficients[2,4])
+  pval_lm <- stats::coef(lm_summary)[2, 4]
 
   rank_out <- rank(pval_lm)
   # final object to be exported by this function

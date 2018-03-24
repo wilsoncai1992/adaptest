@@ -14,7 +14,7 @@ data_adapt(Y, A, W = NULL, n_top, n_fold, absolute, negative,
 \code{0} = control}
 
 \item{W}{(numeric vector, numeric matrix, or numeric data.frame) - matrix of
-baseline covariates where each column corrspond to one baseline covariate.
+baseline covariates where each column correspond to one baseline covariate.
 Each row correspond to one observation}
 
 \item{n_top}{(integer vector) - value for the number of candidate covariates
@@ -35,8 +35,8 @@ If \code{FALSE} = test for positive effect size. This is effective only when
 ranks of biomarkers (outcome variables). For detail, please refer to the
 documentation for \code{rank_DE}.}
 
-\item{learning_library}{(character vector) - library of learning algorithms to be used
-in fitting the "Q" and "g" step of the standard TMLE procedure.}
+\item{learning_library}{(character vector) - library of learning algorithms
+to be used in fitting the "Q" and "g" step of the standard TMLE procedure.}
 }
 \value{
 \code{S3} object of class "data_adapt" for data-adaptive multiple

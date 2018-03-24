@@ -1,17 +1,19 @@
 Package: adaptest
 Title: Data-adaptive test statistics for multiple testing in high dimensions
-Version: 0.99.1
+Version: 0.99.2
 Authors@R: c(
     person("Weixin", "Cai", email = "wcai@berkeley.edu",
            role = c("aut", "cre", "cph"),
            comment = c(ORCID = "0000-0003-2680-3066")),
-    person("Nima", "Hejazi", email = "nhejazi@berkeley.edu",
+    person("Nima", "Hejazi", email = "nh@nimahejazi.org",
            role = "aut",
            comment = c(ORCID = "0000-0002-7127-2789")),
     person("Alan", "Hubbard", email = "hubbard@berkeley",
            role = c("ctb", "ths"),
            comment = c(ORCID = "0000-0002-3769-0127"))
     )
+Author: Weixin Cai [aut, cre, cph], Nima Hejazi [aut], Alan Hubbard [ctb, ths]
+Maintainer: Weixin Cai <wcai@berkeley.edu>
 Description: Data-adaptive test statistics represent a general methodology for
     performing multiple testing on effects sizes under high-dimensional settings,
     using the approach of data-adaptive statistical target parameters and
@@ -24,7 +26,7 @@ BugReports: https://github.com/wilsoncai1992/adaptest/issues
 Encoding: UTF-8
 LazyData: true
 Imports:
-    origami (>= 1.0),
+    origami (>= 1.0.0),
     tmle,
     calibrate,
     magrittr,
