@@ -14,15 +14,15 @@
 #' @examples
 #' set.seed(1234)
 #' data(simpleArray)
-#' Y <- Y
-#' A <- A
+#' simulated_array <- simulated_array
+#' simulated_treatment <- simulated_treatment
 #'
-#' adaptest_out <- adaptest(Y = Y,
-#'                          A = A,
+#' adaptest_out <- adaptest(Y = simulated_array,
+#'                          A = simulated_treatment,
 #'                          W = NULL,
 #'                          n_top = 5,
 #'                          n_fold = 3,
-#'                          SL_lib = 'SL.glm',
+#'                          learning_library = 'SL.glm',
 #'                          parameter_wrapper = adaptest::rank_DE,
 #'                          absolute = FALSE,
 #'                          negative = FALSE)
@@ -42,7 +42,7 @@ get_composition <- function(object, type = "small") {
   )
   decomposition <- as.data.frame(decomposition)
   names(decomposition) <- col_id_sig_final
-  for (it in 1:nrow(decomposition)) {
+  for (it in seq_len(nrow(decomposition))) {
     decomposition[it, names(col.name[[it]])] <- col.name[[it]]
   }
   if (type == "small") rownames(decomposition) <- object$significant_q
@@ -68,15 +68,15 @@ get_composition <- function(object, type = "small") {
 #' @examples
 #' set.seed(1234)
 #' data(simpleArray)
-#' Y <- Y
-#' A <- A
+#' simulated_array <- simulated_array
+#' simulated_treatment <- simulated_treatment
 #'
-#' adaptest_out <- adaptest(Y = Y,
-#'                          A = A,
+#' adaptest_out <- adaptest(Y = simulated_array,
+#'                          A = simulated_treatment,
 #'                          W = NULL,
 #'                          n_top = 5,
 #'                          n_fold = 3,
-#'                          SL_lib = 'SL.glm',
+#'                          learning_library = 'SL.glm',
 #'                          parameter_wrapper = adaptest::rank_DE,
 #'                          absolute = FALSE,
 #'                          negative = FALSE)

@@ -34,47 +34,6 @@ print.data_adapt <- function(x, ...) {
 
 ################################################################################
 
-#' Method of \code{shinyprint} for objects of class \code{data_adapt}
-#'
-#' Provides HTML-based printing utility for examining data-adaptive statistics
-#'
-#' @param x (data_adapt) - object of class \code{data_adapt} as returned by
-#' \code{adaptest}
-#'
-#' @return strings of HTML; containing information of the fitted model
-#'
-#' @examples
-#' set.seed(1234)
-#' data(simpleArray)
-#' Y <- Y
-#' A <- A
-#'
-#' adaptest_out <- adaptest(Y = Y,
-#'                          A = A,
-#'                          W = NULL,
-#'                          n_top = 5,
-#'                          n_fold = 3,
-#'                          SL_lib = 'SL.glm',
-#'                          parameter_wrapper = adaptest::rank_DE,
-#'                          absolute = FALSE,
-#'                          negative = FALSE)
-#' # shinyprint.data_adapt(adaptest_out)
-#'
-#' @importFrom R2HTML HTML
-#'
-#' @export shinyprint.data_adapt
-#'
-shinyprint.data_adapt <- function(x) {
-  print.data_adapt(x)
-  HTML(paste(
-    "<b> The covariates still significant are </b>",
-    paste(x[[5]], collapse = " "),
-    sep = "<br/>"
-  ))
-}
-
-################################################################################
-
 #' Plot method for data_adapt objects
 #'
 #' Customized plotting method for easily examining data-adaptive statistics
@@ -157,7 +116,7 @@ plot.data_adapt <- function(x, ..., plot_type = c("biomarker", "adapt_param")) {
 #' @method summary data_adapt
 #'
 summary.data_adapt <- function(object, type = "adapt_param", ...) {
-  data_adapt_param <- 1:length(object$DE)
+  data_adapt_param <- seq_len(length(object$DE)) # 1:length(object$DE)
   DE <- object$DE
   p_value <- object$p_value
   q_value <- object$q_value

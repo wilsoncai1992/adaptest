@@ -5,8 +5,9 @@
 \title{Data-adaptive Statistics for High-Dimensional Multiple Testing}
 \usage{
 adaptest(Y, A, W = NULL, n_top, n_fold, parameter_wrapper = rank_DE,
-  SL_lib = c("SL.glm", "SL.step", "SL.glm.interaction", "SL.gam", "SL.earth"),
-  absolute = FALSE, negative = FALSE, p_cutoff = 0.05, q_cutoff = 0.05)
+  learning_library = c("SL.glm", "SL.step", "SL.glm.interaction", "SL.gam",
+  "SL.earth"), absolute = FALSE, negative = FALSE, p_cutoff = 0.05,
+  q_cutoff = 0.05)
 }
 \arguments{
 \item{Y}{(numeric vector) - continuous or binary biomarkers
@@ -29,7 +30,7 @@ to generate using the data-adaptive estimation algorithm}
 ranks of biomarkers (outcome variables). For details, please refer to the
 documentation for \code{rank_DE}}
 
-\item{SL_lib}{(character vector) - library of learning algorithms to be used
+\item{learning_library}{(character vector) - library of learning algorithms to be used
 in fitting the "Q" and "g" step of the standard TMLE procedure.}
 
 \item{absolute}{(logical) - whether or not to test for absolute effect size.
@@ -89,15 +90,15 @@ biomarker selection before multiple testing to increase power.
 \examples{
 set.seed(1234)
 data(simpleArray)
-Y <- Y
-A <- A
+simulated_array <- simulated_array
+simulated_treatment <- simulated_treatment
 
-adaptest(Y = Y,
-         A = A,
+adaptest(Y = simulated_array,
+         A = simulated_treatment,
          W = NULL,
          n_top = 5,
          n_fold = 3,
-         SL_lib = 'SL.glm',
+         learning_library = 'SL.glm',
          parameter_wrapper = adaptest::rank_DE,
          absolute = FALSE,
          negative = FALSE)

@@ -19,7 +19,7 @@
 #'  (Y, A, W, absolute, negative) and outputs a (integer vector) containing
 #'  ranks of biomarkers (outcome variables). For detail, please refer to the
 #'  documentation for \code{rank_DE}.
-#' @param SL_lib (character vector) - library of learning algorithms to be used
+#' @param learning_library (character vector) - library of learning algorithms to be used
 #'  in fitting the "Q" and "g" step of the standard TMLE procedure.
 #'
 #' @return \code{S3} object of class "data_adapt" for data-adaptive multiple
@@ -33,7 +33,7 @@ data_adapt <- function(Y,
                        absolute,
                        negative,
                        parameter_wrapper,
-                       SL_lib) {
+                       learning_library) {
   if (!is.data.frame(Y)) {
     if (!is.matrix(Y)) {
       stop("argument Y must be a data.frame or a matrix")
@@ -49,7 +49,7 @@ data_adapt <- function(Y,
   if (!is.function(parameter_wrapper)) {
     stop("argument parameter_wrapper must be function")
   }
-  if (!is.character(SL_lib)) stop("argument SL_lib must be character")
+  if (!is.character(learning_library)) stop("argument learning_library must be character")
 
   # placeholders for outputs to be included when returning the data_adapt object
   top_colname <- NULL
@@ -64,7 +64,7 @@ data_adapt <- function(Y,
   out <- structure(
     list(
       Y, A, W, n_top, n_fold, absolute, negative,
-      parameter_wrapper, SL_lib, top_colname, DE,
+      parameter_wrapper, learning_library, top_colname, DE,
       p_value, q_value, significant_q,
       mean_rank_top, prob_in_top, folds
     ),
@@ -73,7 +73,7 @@ data_adapt <- function(Y,
 
   names(out) <- c(
     "Y", "A", "W", "n_top", "n_fold", "absolute", "negative",
-    "parameter_wrapper", "SL_lib", "top_colname", "DE", "p_value",
+    "parameter_wrapper", "learning_library", "top_colname", "DE", "p_value",
     "q_value", "significant_q", "mean_rank_top", "prob_in_top",
     "folds"
   )
@@ -139,7 +139,7 @@ get_pval <- function(Psi_output, EIC_est_final, alpha = 0.05) {
 #'  (Y, A, W, absolute, negative) and outputs a (integer vector) containing
 #'  ranks of biomarkers (outcome variables). For details, please refer to the
 #'  documentation for \code{rank_DE}
-#' @param SL_lib (character vector) - library of learning algorithms to be used
+#' @param learning_library (character vector) - library of learning algorithms to be used
 #'  in fitting the "Q" and "g" step of the standard TMLE procedure.
 #' @param absolute (logical) - whether or not to test for absolute effect size.
 #'  If \code{FALSE}, test for directional effect. This overrides argument
@@ -186,15 +186,15 @@ get_pval <- function(Psi_output, EIC_est_final, alpha = 0.05) {
 #' @examples
 #' set.seed(1234)
 #' data(simpleArray)
-#' Y <- Y
-#' A <- A
+#' simulated_array <- simulated_array
+#' simulated_treatment <- simulated_treatment
 #'
-#' adaptest(Y = Y,
-#'          A = A,
+#' adaptest(Y = simulated_array,
+#'          A = simulated_treatment,
 #'          W = NULL,
 #'          n_top = 5,
 #'          n_fold = 3,
-#'          SL_lib = 'SL.glm',
+#'          learning_library = 'SL.glm',
 #'          parameter_wrapper = adaptest::rank_DE,
 #'          absolute = FALSE,
 #'          negative = FALSE)
@@ -205,14 +205,18 @@ adaptest <- function(Y,
                      n_top,
                      n_fold,
                      parameter_wrapper = rank_DE,
-                     SL_lib = c(
+                     learning_library = c(
                        "SL.glm", "SL.step", "SL.glm.interaction",
                        "SL.gam", "SL.earth"
                      ),
                      absolute = FALSE,
                      negative = FALSE,
                      p_cutoff = 0.05,
-                     q_cutoff = 0.05) {
+                     q_cutoff = 0.05
+                     # Y_name = grep('Y', colnames(data)),
+                     # A_name = grep('A', colnames(data)),
+                     # W_name = grep('W', colnames(data))
+                     ) {
 
   # use constructor function to instantiate "data_adapt" object
   data_adapt <- data_adapt(
@@ -222,7 +226,7 @@ adaptest <- function(Y,
     absolute = absolute,
     negative = negative,
     parameter_wrapper = parameter_wrapper,
-    SL_lib = SL_lib
+    learning_library = learning_library
   )
   # ============================================================================
   # preparation
@@ -256,6 +260,10 @@ adaptest <- function(Y,
   # origami folds
   folds <- origami::make_folds(n = n_sim, V = n_fold)
   df_all <- data.frame(Y = Y, A = A, W = W)
+
+  Y_name = grep('Y', colnames(df_all))
+  A_name = grep('A', colnames(df_all))
+  W_name = grep('W', colnames(df_all))
   cv_results <- origami::cross_validate(
     cv_fun = cv_param_est, folds = folds,
     data = df_all,
@@ -263,10 +271,10 @@ adaptest <- function(Y,
     absolute = absolute,
     negative = negative,
     n_top = n_top,
-    SL_lib = SL_lib,
-    Y_name = "Y",
-    A_name = "A",
-    W_name = "W"
+    learning_library = learning_library,
+    Y_name = Y_name,
+    A_name = A_name,
+    W_name = W_name
   )
   # ============================================================================
   # CV
@@ -304,7 +312,7 @@ adaptest <- function(Y,
     adaptY_composition <- list(table(adaptY_composition) / sum(table(adaptY_composition)))
   }else{
     ls <- list()
-    for (i in 1:ncol(adaptY_composition)) {
+    for (i in seq_len(ncol(adaptY_composition))) {
         x = adaptY_composition[,i]
         ls[[i]] <- table(x) / sum(table(x))
     }
@@ -365,9 +373,9 @@ adaptest <- function(Y,
 #'
 #' @param fold fold output from \code{origami}
 #' @param data entire training data
-#' @param Y_name string of \code{colnames} that all biomarkers share
-#' @param A_name string of \code{colnames} of treatment
-#' @param W_name string of \code{colnames} that all baeline covariates share
+#' @param Y_name (character) \code{colnames} of all biomarkers
+#' @param A_name (character) \code{colnames} of treatment
+#' @param W_name (character) \code{colnames} of all baseline covariates
 #' @param parameter_wrapper user-defined function
 #' @param absolute boolean: \code{TRUE} = test for absolute effect size. This
 #'  \code{FALSE} = test for directional effect. This overrides argument
@@ -376,7 +384,7 @@ adaptest <- function(Y,
 #'  \code{FALSE} = test for positive effect size
 #' @param n_top integer value for the number of candidate covariates to generate
 #'  using the data-adaptive estimation algorithm
-#' @param SL_lib character of \code{SuperLearner} library
+#' @param learning_library character of \code{SuperLearner} library
 #'
 #' @return \code{data_adaptive_index} (integer vector) rank for each gene
 #' @return \code{index_grid} (integer matrix) gene index from rank 1 to rank K
@@ -392,7 +400,7 @@ cv_param_est <- function(fold,
                          absolute,
                          negative,
                          n_top,
-                         SL_lib,
+                         learning_library,
                          Y_name,
                          A_name,
                          W_name) {
@@ -402,13 +410,19 @@ cv_param_est <- function(fold,
   estim_data <- origami::validation(data)
 
   # get param generating data
-  A_param <- param_data[, grep(A_name, colnames(data))]
-  Y_param <- as.matrix(param_data[, grep(Y_name, colnames(data))])
-  W_param <- as.matrix(param_data[, grep(W_name, colnames(data))])
+  A_param <- param_data[, A_name]
+  Y_param <- as.matrix(param_data[, Y_name])
+  W_param <- as.matrix(param_data[, W_name])
+  # A_param <- param_data[, grep(A_name, colnames(data))]
+  # Y_param <- as.matrix(param_data[, grep(Y_name, colnames(data))])
+  # W_param <- as.matrix(param_data[, grep(W_name, colnames(data))])
   # get estimation data
-  A_estim <- estim_data[, grep(A_name, colnames(data))]
-  Y_estim <- as.matrix(estim_data[, grep(Y_name, colnames(data))])
-  W_estim <- as.matrix(estim_data[, grep(W_name, colnames(data))])
+  A_estim <- estim_data[, A_name]
+  Y_estim <- as.matrix(estim_data[, Y_name])
+  W_estim <- as.matrix(estim_data[, W_name])
+  # A_estim <- estim_data[, grep(A_name, colnames(data))]
+  # Y_estim <- as.matrix(estim_data[, grep(Y_name, colnames(data))])
+  # W_estim <- as.matrix(estim_data[, grep(W_name, colnames(data))])
 
   # generate data-adaptive target parameter
   data_adaptive_index <- parameter_wrapper(
@@ -430,8 +444,8 @@ cv_param_est <- function(fold,
     tmle_estimation <- tmle::tmle(
       Y = Y_estim[, index_grid[it_index]],
       A = A_estim, W = W_estim,
-      Q.SL.library = SL_lib,
-      g.SL.library = SL_lib
+      Q.SL.library = learning_library,
+      g.SL.library = learning_library
     )
     psi_list[[it_index]] <- tmle_estimation$estimates$ATE$psi
     EIC_list[[it_index]] <- tmle_estimation$estimates$IC$IC.ATE

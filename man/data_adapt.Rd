@@ -5,7 +5,7 @@
 \title{S3-Style Constructor for Data Adaptive Parameter Class}
 \usage{
 data_adapt(Y, A, W = NULL, n_top, n_fold, absolute, negative,
-  parameter_wrapper, SL_lib)
+  parameter_wrapper, learning_library)
 }
 \arguments{
 \item{Y}{(numeric vector) - continuous or binary biomarkers outcome variables}
@@ -35,7 +35,7 @@ If \code{FALSE} = test for positive effect size. This is effective only when
 ranks of biomarkers (outcome variables). For detail, please refer to the
 documentation for \code{rank_DE}.}
 
-\item{SL_lib}{(character vector) - library of learning algorithms to be used
+\item{learning_library}{(character vector) - library of learning algorithms to be used
 in fitting the "Q" and "g" step of the standard TMLE procedure.}
 }
 \value{

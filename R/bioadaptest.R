@@ -22,7 +22,7 @@
 #'  (Y, A, W, absolute, negative) and outputs a (integer vector) containing
 #'  ranks of biomarkers (outcome variables). For detail, please refer to the
 #'  documentation for \code{rank_DE}.
-#' @param SL_lib (character vector) - library of learning algorithms to be used
+#' @param learning_library (character vector) - library of learning algorithms to be used
 #'  in fitting the "Q" and "g" step of the standard TMLE procedure.
 #' @param absolute (logical) - whether or not to test for absolute effect size.
 #'  If \code{FALSE}, test for directional effect. This overrides argument
@@ -67,7 +67,7 @@ bioadaptest <- function(data_in,
                         n_top = 25,
                         n_fold = 10,
                         parameter_wrapper = rank_DE,
-                        SL_lib = c("SL.mean", "SL.glm"),
+                        learning_library = c("SL.mean", "SL.glm"),
                         absolute = FALSE,
                         negative = FALSE,
                         p_cutoff = 0.05,
@@ -116,7 +116,7 @@ bioadaptest <- function(data_in,
                            n_top = n_top,
                            n_fold = n_fold,
                            parameter_wrapper = parameter_wrapper,
-                           SL_lib = SL_lib,
+                           learning_library = learning_library,
                            absolute = absolute,
                            negative = negative,
                            p_cutoff = p_cutoff,

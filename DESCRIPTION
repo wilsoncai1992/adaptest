@@ -17,14 +17,14 @@ Description: Data-adaptive test statistics represent a general methodology for
     using the approach of data-adaptive statistical target parameters and
     inference.
 Depends:
-    R (>= 3.5.0)
+    R (>= 3.4.0)
 License: GPL-2
 URL: https://github.com/wilsoncai1992/adaptest
 BugReports: https://github.com/wilsoncai1992/adaptest/issues
 Encoding: UTF-8
 LazyData: true
 Imports:
-    origami (>= 0.8.2),
+    origami (>= 1.0),
     tmle,
     calibrate,
     magrittr,
@@ -32,18 +32,18 @@ Imports:
     graphics,
     stats,
     utils,
-    R2HTML,
     SummarizedExperiment
 Suggests:
     testthat,
-    rmarkdown,
-    knitr,
     Matrix,
     SuperLearner,
     earth,
     gam,
     nnls,
-    airway
+    airway,
+    rmarkdown,
+    knitr,
+    BiocStyle
 VignetteBuilder: knitr
 RoxygenNote: 6.0.1.9000
 biocViews:
