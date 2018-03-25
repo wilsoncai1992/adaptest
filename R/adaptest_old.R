@@ -35,12 +35,13 @@ utils::globalVariables(c(
 #' @importFrom tmle tmle
 #' @importFrom stats lm p.adjust
 #' @importFrom utils head
-#' @importFrom magrittr "%>%"
+#' @importFrom dplyr "%>%"
+#'
+#' @keywords internal
 #'
 #' @author Wilson Cai \email{wcai@@berkeley.edu}, in collaboration with Alan E.
 #'         Hubbard, with contributions from Nima S. Hejazi.
-#'
-#'
+#
 adaptest_old <- function(Y,
                          A,
                          W = NULL,

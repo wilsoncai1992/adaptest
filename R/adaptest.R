@@ -179,6 +179,7 @@ get_pval <- function(Psi_output, EIC_est_final, alpha = 0.05) {
 #' @importFrom utils head
 #' @importFrom dplyr "%>%"
 #' @importFrom origami make_folds cross_validate
+#' @importFrom SummarizedExperiment assay
 #'
 #' @export adaptest
 #'
@@ -217,9 +218,15 @@ adaptest <- function(Y,
                      # W_name = grep('W', colnames(data))
                      ) {
 
+  # necessary bookkeeping for SummarizedExperiment if bioadaptest being used
+  if (class(Y) == "SummarizedExperiment") {
+    Y_in <- t(SummarizedExperiment::assay(Y))
+    Y_in <- rownames(Y_in) <- colnames(Y_in) <- NULL
+  }
+
   # use constructor function to instantiate "data_adapt" object
   data_adapt <- data_adapt(
-    Y = Y, A = A, W = W,
+    Y = Y_in, A = A, W = W,
     n_top = n_top,
     n_fold = n_fold,
     absolute = absolute,
@@ -258,9 +265,9 @@ adaptest <- function(Y,
   folds <- origami::make_folds(n = n_sim, V = n_fold)
   df_all <- data.frame(Y = Y, A = A, W = W)
 
-  Y_name = grep("Y", colnames(df_all))
-  A_name = grep("A", colnames(df_all))
-  W_name = grep("W", colnames(df_all))
+  Y_name <- grep("Y", colnames(df_all))
+  A_name <- grep("A", colnames(df_all))
+  W_name <- grep("W", colnames(df_all))
   cv_results <- origami::cross_validate(
     cv_fun = cv_param_est, folds = folds,
     data = df_all,

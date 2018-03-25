@@ -99,16 +99,11 @@ bioadaptest <- function(data_in,
        prob_top = as.numeric(rep(NaN, n_top * n_fold)),  # prob_in_top
        top_index = as.numeric(rep(NaN, n_top * n_fold))  # top_index
   )
-  # ============================================================================
-  # wrangle input data structures such that we can feed them to main function
-  # ============================================================================
-  Y_in <- t(SummarizedExperiment::assay(data_in))
-  rownames(Y_in) <- colnames(Y_in) <- NULL
 
   # ============================================================================
   # TMLE procedure for data-adaptive testing
   # ============================================================================
-  adaptest_out <- adaptest(Y = Y_in,
+  adaptest_out <- adaptest(Y = data_in,
                            A = var_int,
                            W = cntrl_set,
                            n_top = n_top,
