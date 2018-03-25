@@ -29,7 +29,7 @@ Imports:
     origami (>= 1.0.0),
     tmle,
     calibrate,
-    magrittr,
+    dplyr,
     methods,
     graphics,
     stats,

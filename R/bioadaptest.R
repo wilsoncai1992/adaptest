@@ -22,8 +22,8 @@
 #'  (Y, A, W, absolute, negative) and outputs a (integer vector) containing
 #'  ranks of biomarkers (outcome variables). For detail, please refer to the
 #'  documentation for \code{rank_DE}.
-#' @param learning_library (character vector) - library of learning algorithms to be used
-#'  in fitting the "Q" and "g" step of the standard TMLE procedure.
+#' @param learning_library (character vector) - library of learning algorithms
+#'  to be used in fitting the "Q" and "g" step of the standard TMLE procedure.
 #' @param absolute (logical) - whether or not to test for absolute effect size.
 #'  If \code{FALSE}, test for directional effect. This overrides argument
 #'  \code{negative}.
@@ -102,17 +102,15 @@ bioadaptest <- function(data_in,
   # ============================================================================
   # wrangle input data structures such that we can feed them to main function
   # ============================================================================
-  W <- cntrl_set
-  A <- var_int
-  Y <- t(SummarizedExperiment::assay(data_in))
-  rownames(Y) <- colnames(Y) <- NULL
+  Y_in <- t(SummarizedExperiment::assay(data_in))
+  rownames(Y_in) <- colnames(Y_in) <- NULL
 
   # ============================================================================
   # TMLE procedure for data-adaptive testing
   # ============================================================================
-  adaptest_out <- adaptest(Y = Y,
-                           A = A,
-                           W = W,
+  adaptest_out <- adaptest(Y = Y_in,
+                           A = var_int,
+                           W = cntrl_set,
                            n_top = n_top,
                            n_fold = n_fold,
                            parameter_wrapper = parameter_wrapper,
