@@ -222,6 +222,8 @@ adaptest <- function(Y,
   if (class(Y) == "SummarizedExperiment") {
     Y_in <- t(SummarizedExperiment::assay(Y))
     Y_in <- rownames(Y_in) <- colnames(Y_in) <- NULL
+  } else {
+    Y_in <- Y
   }
 
   # use constructor function to instantiate "data_adapt" object
