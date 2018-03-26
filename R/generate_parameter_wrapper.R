@@ -17,6 +17,8 @@
 #' @param negative (logical) - whether or not to test for negative effect size.
 #'  If \code{FALSE} = test for positive effect size. This is effective only when
 #'  \code{absolute = FALSE}.
+#' @param learning_library (character vector) - library of learning algorithms
+#'  to be used in fitting the "Q" and "g" step of the standard TMLE procedure.
 #'
 #' @return an \code{integer vector} containing ranks of biomarkers.
 #'
@@ -38,14 +40,14 @@ rank_DE <- function(Y,
                     A,
                     W,
                     absolute = FALSE,
-                    negative = FALSE) {
-  # browser()
+                    negative = FALSE,
+                    learning_library = c("SL.glm", "SL.step",
+                                         "SL.glm.interaction", "SL.gam")
+                   ) {
   n_here <- nrow(Y)
   p_all <- ncol(Y)
 
   B1_fitted <- rep(0, p_all)
-
-  learning_library <- c("SL.glm", "SL.step", "SL.glm.interaction", "SL.gam")
 
   for (it in seq_len(p_all)) {
     A_fit <- A
@@ -90,43 +92,34 @@ rank_DE <- function(Y,
 #' @param A (numeric vector) - binary treatment indicator: \code{1} = treatment,
 #'  \code{0} = control
 #' @param W (numeric vector, numeric matrix, or numeric data.frame) - matrix of
-#'  baseline covariates where each column corrspond to one baseline covariate.
-#'  Each row correspond to one observation
-#' @param absolute (logical) - whether or not to test for absolute effect size.
-#'  If \code{FALSE}, test for directional effect. This overrides argument
-#'  \code{negative}.
-#' @param negative (logical) - whether or not to test for negative effect size.
-#'  If \code{FALSE} = test for positive effect size. This is effective only when
-#'  \code{absolute = FALSE}.
+#'  baseline covariates where each column corrspond to one baseline covariate
+#'  and each row correspond to one observation.
 #'
 #' @return an \code{integer vector} containing ranks of biomarkers.
 #'
-#' @importFrom stats lm
+#' @importFrom stats lm coef
 #'
 #' @export
+#'
 #' @examples
 #' set.seed(1234)
 #' data(simpleArray)
-#' simulated_array <- simulated_array
-#' simulated_treatment <- simulated_treatment
 #' rank_ttest(Y = simulated_array,
 #'            A = simulated_treatment,
-#'            W = rep(1, length(simulated_treatment)),
-#'            absolute = FALSE,
-#'            negative = FALSE)
+#'            W = rep(1, length(A)))
+#
 rank_ttest <- function(Y,
-                    A,
-                    W,
-                    absolute = FALSE, #useless
-                    negative = FALSE) {
+                       A,
+                       W) {
   n_here <- nrow(Y)
   p_all <- ncol(Y)
 
   lm_out <- stats::lm(Y ~ A)
   lm_summary <- summary(lm_out)
-  pval_lm <- sapply(lm_summary, function(x) x$coefficients[2,4])
+  pval_lm <- lapply(lm_summary, function(x) x$coefficients[2, 4])
+  pval_lm_out <- do.call(rbind, pval_lm)
 
-  rank_out <- rank(pval_lm)
+  rank_out <- rank(pval_lm_out)
   # final object to be exported by this function
   return(rank_out)
 }

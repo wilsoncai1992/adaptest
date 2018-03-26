@@ -33,8 +33,8 @@ to generate using the data-adaptive estimation algorithm.}
 ranks of biomarkers (outcome variables). For detail, please refer to the
 documentation for \code{rank_DE}.}
 
-\item{learning_library}{(character vector) - library of learning algorithms to be used
-in fitting the "Q" and "g" step of the standard TMLE procedure.}
+\item{learning_library}{(character vector) - library of learning algorithms
+to be used in fitting the "Q" and "g" step of the standard TMLE procedure.}
 
 \item{absolute}{(logical) - whether or not to test for absolute effect size.
 If \code{FALSE}, test for directional effect. This overrides argument

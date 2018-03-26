@@ -1,12 +1,12 @@
 ---
-title: "Data-mining biomarkers and perform testing"
-author: "[Wilson Cai](www.stat.berkeley.edu/~wcai/) and
-[Nima Hejazi](https://nimahejazi.org)"
+title: "Data-Mining Biomarkers and High-Dimensional Testing"
+author: "[Wilson Cai](http://www.stat.berkeley.edu/~wcai/) and
+  [Nima Hejazi](http://www.stat.berkeley.edu/~nhejazi/)"
 date: "`r Sys.Date()`"
 output:
   BiocStyle::html_document
 vignette: >
-  %\VignetteIndexEntry{Data-mining Biomarkers and High-Dimensional Testing}
+  %\VignetteIndexEntry{Data-Mining Biomarkers and High-Dimensional Testing}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -33,7 +33,6 @@ using a data set containing microarray expression measures.
 First, we load the `adaptest` package and the (included) `simpleArray` data set:
 
 ```{r setup_data, message=FALSE}
-# devtools::install_github('wilsoncai1992/adaptest')
 library(adaptest)
 data(simpleArray)
 set.seed(1234)
@@ -153,13 +152,18 @@ air_reduced <- airway[genes_sub, ]
 ```
 
 Generally, finding data-adaptive target parameters is a computationally and
-data-intensive procedure, requiring a fairly large sample size. To work with the
-relatively small `airway` data set, we'll simply augment the data by doubling it
-in size in a naive manner:
+data-intensive procedure, requiring a fairly __large sample size__. To work with
+the relatively small `airway` data set, we'll simply augment the data by
+_artificially_ doubling it in size in a naive manner:
 
 ```{r augment_airway}
 simple_air <- cbind(air_reduced, air_reduced)
+```
 
+We'll now extract the variable of interest -- a `factor` label for whether the
+unit received treatment or not -- and coerce it to a binary `numeric` vector:
+
+```{r make_tx_var}
 # use a binary treatment variable (must be 0/1 only)
 dex_var = as.numeric(as.matrix(colData(simple_air))[, 3] - 1)
 ```

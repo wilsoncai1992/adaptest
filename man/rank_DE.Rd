@@ -4,7 +4,8 @@
 \alias{rank_DE}
 \title{Compute ranking of biomarkers by sorting effect sizes}
 \usage{
-rank_DE(Y, A, W, absolute = FALSE, negative = FALSE)
+rank_DE(Y, A, W, absolute = FALSE, negative = FALSE,
+  learning_library = c("SL.glm", "SL.step", "SL.glm.interaction", "SL.gam"))
 }
 \arguments{
 \item{Y}{(numeric vector) - continuous or binary biomarkers outcome variables}
@@ -23,6 +24,9 @@ If \code{FALSE}, test for directional effect. This overrides argument
 \item{negative}{(logical) - whether or not to test for negative effect size.
 If \code{FALSE} = test for positive effect size. This is effective only when
 \code{absolute = FALSE}.}
+
+\item{learning_library}{(character vector) - library of learning algorithms
+to be used in fitting the "Q" and "g" step of the standard TMLE procedure.}
 }
 \value{
 an \code{integer vector} containing ranks of biomarkers.

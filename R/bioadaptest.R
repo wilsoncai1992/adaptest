@@ -22,8 +22,8 @@
 #'  (Y, A, W, absolute, negative) and outputs a (integer vector) containing
 #'  ranks of biomarkers (outcome variables). For detail, please refer to the
 #'  documentation for \code{rank_DE}.
-#' @param learning_library (character vector) - library of learning algorithms to be used
-#'  in fitting the "Q" and "g" step of the standard TMLE procedure.
+#' @param learning_library (character vector) - library of learning algorithms
+#'  to be used in fitting the "Q" and "g" step of the standard TMLE procedure.
 #' @param absolute (logical) - whether or not to test for absolute effect size.
 #'  If \code{FALSE}, test for directional effect. This overrides argument
 #'  \code{negative}.
@@ -79,7 +79,7 @@ bioadaptest <- function(data_in,
   call <- match.call(expand.dots = TRUE)
 
   # ============================================================================
-  # invoke S4 class constructor for "adapTMLE" object
+  # invoke S4 class constructor to instantiate "adapTMLE" object
   # ============================================================================
   adaptmle <- .adaptmle(
        SummarizedExperiment(
@@ -99,20 +99,13 @@ bioadaptest <- function(data_in,
        prob_top = as.numeric(rep(NaN, n_top * n_fold)),  # prob_in_top
        top_index = as.numeric(rep(NaN, n_top * n_fold))  # top_index
   )
-  # ============================================================================
-  # wrangle input data structures such that we can feed them to main function
-  # ============================================================================
-  W <- cntrl_set
-  A <- var_int
-  Y <- t(SummarizedExperiment::assay(data_in))
-  rownames(Y) <- colnames(Y) <- NULL
 
   # ============================================================================
   # TMLE procedure for data-adaptive testing
   # ============================================================================
-  adaptest_out <- adaptest(Y = Y,
-                           A = A,
-                           W = W,
+  adaptest_out <- adaptest(Y = adaptmle,
+                           A = var_int,
+                           W = cntrl_set,
                            n_top = n_top,
                            n_fold = n_fold,
                            parameter_wrapper = parameter_wrapper,
@@ -124,18 +117,10 @@ bioadaptest <- function(data_in,
                           )
 
   # ============================================================================
-  # organize output in the adaptmle object created
+  # organize output in the adaptmle object created using accessor
   # ============================================================================
-  adaptmle@folds <- adaptest_out$folds  # from origami
-  adaptmle@plot_ingredients <- adaptest_out$top_colname
-  adaptmle@diff_exp <- adaptest_out$DE
-  adaptmle@p_value <- adaptest_out$p_value
-  adaptmle@q_value <- adaptest_out$q_value
-  adaptmle@q_sig <- adaptest_out$significant_q
-  adaptmle@q_sig_names <- adaptest_out$top_colname_significant_q
-  adaptmle@rank_mean <- adaptest_out$mean_rank_top
-  adaptmle@prob_top <- adaptest_out$prob_in_top
-  adaptmle@top_index <- adaptest_out$top_index
+  adaptmle <- get_results_adaptmle(adaptmle_in = adaptmle,
+                                   data_adapt_out = adaptest_out)
   return(adaptmle)
 }
 

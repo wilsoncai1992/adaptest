@@ -4,7 +4,7 @@
 #' @param A (numeric vector) - binary treatment indicator: \code{1} = treatment,
 #'  \code{0} = control
 #' @param W (numeric vector, numeric matrix, or numeric data.frame) - matrix of
-#'  baseline covariates where each column corrspond to one baseline covariate.
+#'  baseline covariates where each column correspond to one baseline covariate.
 #'  Each row correspond to one observation
 #' @param n_top (integer vector) - value for the number of candidate covariates
 #'  to generate using the data-adaptive estimation algorithm.
@@ -19,8 +19,8 @@
 #'  (Y, A, W, absolute, negative) and outputs a (integer vector) containing
 #'  ranks of biomarkers (outcome variables). For detail, please refer to the
 #'  documentation for \code{rank_DE}.
-#' @param learning_library (character vector) - library of learning algorithms to be used
-#'  in fitting the "Q" and "g" step of the standard TMLE procedure.
+#' @param learning_library (character vector) - library of learning algorithms
+#'  to be used in fitting the "Q" and "g" step of the standard TMLE procedure.
 #'
 #' @return \code{S3} object of class "data_adapt" for data-adaptive multiple
 #'  testing.
@@ -49,7 +49,9 @@ data_adapt <- function(Y,
   if (!is.function(parameter_wrapper)) {
     stop("argument parameter_wrapper must be function")
   }
-  if (!is.character(learning_library)) stop("argument learning_library must be character")
+  if (!is.character(learning_library)) {
+    stop("argument learning_library must be character")
+  }
 
   # placeholders for outputs to be included when returning the data_adapt object
   top_colname <- NULL
@@ -70,14 +72,12 @@ data_adapt <- function(Y,
     ),
     class = "data_adapt"
   )
-
   names(out) <- c(
     "Y", "A", "W", "n_top", "n_fold", "absolute", "negative",
     "parameter_wrapper", "learning_library", "top_colname", "DE", "p_value",
     "q_value", "significant_q", "mean_rank_top", "prob_in_top",
     "folds"
   )
-
   # export instance of "data_adapt" for downstream use
   return(out)
 }
@@ -112,7 +112,6 @@ get_pval <- function(Psi_output, EIC_est_final, alpha = 0.05) {
     abs(Psi_output / sd_by_col), mean = 0, sd = 1,
     lower.tail = FALSE
   ) * 2
-
   return(list(pval = pval, upper = upper, lower = lower, sd_by_col = sd_by_col))
 }
 
@@ -125,13 +124,16 @@ get_pval <- function(Psi_output, EIC_est_final, alpha = 0.05) {
 #' Minimum Loss-Based Estimation. A data-mining algorithm is used to perform
 #' biomarker selection before multiple testing to increase power.
 #'
-#' @param Y (numeric vector) - continuous or binary biomarkers
-#'  (outcome variables)
+#' @param Y (numeric vector) - A \code{data.frame} or \code{matrix} of binary or
+#'  continuous biomarker measures (outcome variables). Alternatively, this will
+#'  be an object of class \code{adapTMLE} if the wrapper \code{bioadaptest} is
+#'  invoked (n.b., the wrapper is the preferred interface for standard data
+#'  analytic use-cases arising in computational and genomic biology).
 #' @param A (numeric vector) - binary treatment indicator:
 #'  \code{1} = treatment, \code{0} = control
 #' @param W (numeric vector, numeric matrix, or numeric data.frame) -
-#'  matrix of baseline covariates where each column corrspond to one baseline
-#'  covariate. each row correspond to one observation
+#'  matrix of baseline covariates where each column correspond to one baseline
+#'  covariate and each row corresponds to one observation.
 #' @param n_top (integer vector) - value for the number of candidate covariates
 #'  to generate using the data-adaptive estimation algorithm
 #' @param n_fold (integer vector) - number of cross-validation folds.
@@ -139,8 +141,8 @@ get_pval <- function(Psi_output, EIC_est_final, alpha = 0.05) {
 #'  (Y, A, W, absolute, negative) and outputs a (integer vector) containing
 #'  ranks of biomarkers (outcome variables). For details, please refer to the
 #'  documentation for \code{rank_DE}
-#' @param learning_library (character vector) - library of learning algorithms to be used
-#'  in fitting the "Q" and "g" step of the standard TMLE procedure.
+#' @param learning_library (character vector) - library of learning algorithms
+#'  to be used in fitting the "Q" and "g" step of the standard TMLE procedure.
 #' @param absolute (logical) - whether or not to test for absolute effect size.
 #'  If \code{FALSE}, test for directional effect. This overrides argument
 #'  \code{negative}.
@@ -178,8 +180,9 @@ get_pval <- function(Psi_output, EIC_est_final, alpha = 0.05) {
 #'
 #' @importFrom stats p.adjust
 #' @importFrom utils head
-#' @importFrom magrittr "%>%"
+#' @importFrom dplyr "%>%"
 #' @importFrom origami make_folds cross_validate
+#' @importFrom SummarizedExperiment assay
 #'
 #' @export adaptest
 #'
@@ -218,9 +221,17 @@ adaptest <- function(Y,
                      # W_name = grep('W', colnames(data))
                      ) {
 
+  # necessary bookkeeping for SummarizedExperiment if bioadaptest being used
+  if (class(Y) == "adapTMLE") {
+    Y_in <- as.matrix(t(SummarizedExperiment::assay(Y)))
+    rownames(Y_in) <- colnames(Y_in) <- NULL
+  } else {
+    Y_in <- as.matrix(Y)
+  }
+
   # use constructor function to instantiate "data_adapt" object
   data_adapt <- data_adapt(
-    Y = Y, A = A, W = W,
+    Y = Y_in, A = A, W = W,
     n_top = n_top,
     n_fold = n_fold,
     absolute = absolute,
@@ -254,16 +265,14 @@ adaptest <- function(Y,
 
   rank_in_folds <- matrix(0, nrow = n_fold, ncol = p_all)
   adapt_param_composition <- matrix(0, nrow = n_fold, ncol = n_top)
-  psi_est_composition <- list()
-  EIC_est_composition <- list()
 
   # origami folds
   folds <- origami::make_folds(n = n_sim, V = n_fold)
-  df_all <- data.frame(Y = Y, A = A, W = W)
+  df_all <- data.frame(Y = Y_in, A = A, W = W)
 
-  Y_name = grep('Y', colnames(df_all))
-  A_name = grep('A', colnames(df_all))
-  W_name = grep('W', colnames(df_all))
+  Y_name <- grep("Y", colnames(df_all))
+  A_name <- grep("A", colnames(df_all))
+  W_name <- grep("W", colnames(df_all))
   cv_results <- origami::cross_validate(
     cv_fun = cv_param_est, folds = folds,
     data = df_all,
@@ -306,12 +315,13 @@ adaptest <- function(Y,
   sd_by_col <- inference_out[[4]]
 
   adaptY_composition <- adapt_param_composition[, seq_len(n_top)]
-  if(class(adaptY_composition) == 'integer') {
+  if (class(adaptY_composition) == "integer") {
     # catch when n_top == 1; user only want top 1 gene
     adaptY_composition <- matrix(adaptY_composition, ncol = 1)
-    adaptY_composition <- list(table(adaptY_composition) / sum(table(adaptY_composition)))
-  }else{
-    ls <- list()
+    adaptY_composition <- list(table(adaptY_composition) /
+                               sum(table(adaptY_composition)))
+  } else {
+    ls <- vector("list", ncol(adaptY_composition))
     for (i in seq_len(ncol(adaptY_composition))) {
         x = adaptY_composition[,i]
         ls[[i]] <- table(x) / sum(table(x))
@@ -325,7 +335,6 @@ adaptest <- function(Y,
   # strict control
   # q_value <- stats::p.adjust(c(p_value, rep(1, p_all - n_top)), method = "BH")
   # q_value <- head(q_value, n_top)
-
   is_sig_q_value <- q_value <= q_cutoff
   significant_q <- which(is_sig_q_value)
 
@@ -434,12 +443,12 @@ cv_param_est <- function(fold,
   )
   # index_grid <- which(data_adaptive_index <= n_top) # sorted after screening
   df_temp <- data.frame(col_ind = seq_len(ncol(Y_param)),
-                        rank = data_adaptive_index) # ranked by rank
+                        rank = data_adaptive_index)  # ranked by rank
   index_grid <- head(df_temp[order(df_temp$rank, decreasing = FALSE), ],
                      n_top)[, "col_ind"]
   # estimate the parameter on estimation sample
-  psi_list <- list()
-  EIC_list <- list()
+  psi_list <- vector("list", length(index_grid))
+  EIC_list <- vector("list", length(index_grid))
   for (it_index in seq_along(index_grid)) {
     tmle_estimation <- tmle::tmle(
       Y = Y_estim[, index_grid[it_index]],
