@@ -306,8 +306,8 @@ adaptest <- function(Y,
   # statistical inference
   # ============================================================================
   Psi_output <- colMeans(psi_est_final)
-  # list[p_value, upper, lower, sd_by_col] <- get_pval(Psi_output, EIC_est_final,
-  #                                                    alpha = 0.05)
+  #list[p_value, upper, lower, sd_by_col] <- get_pval(Psi_output, EIC_est_final,
+  #                                                   alpha = 0.05)
   inference_out <- get_pval(Psi_output, EIC_est_final, alpha = p_cutoff)
   p_value <- inference_out[[1]]
   upper <- inference_out[[2]]
@@ -344,7 +344,7 @@ adaptest <- function(Y,
 
   # compute average rank across all folds
   mean_rank <- colMeans(rank_in_folds)
-  top_index <- sort(as.numeric(unique(unlist(sapply(top_colname, names)))))
+  top_index <- sort(as.numeric(unique(unlist(lapply(top_colname, names)))))
 
   mean_rank_top <- mean_rank[top_index]
 

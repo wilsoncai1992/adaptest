@@ -53,7 +53,9 @@ get_composition <- function(object, type = "small") {
       "q-values" = object$q_value[object$significant_q]
     )
   }
-  if (type == "big") out.table <- cbind(decomposition, "q-values" = object$q_value)
+  if (type == "big") {
+    out.table <- cbind(decomposition, "q-values" = object$q_value)
+  }
   return(list(decomposition, out.table))
 }
 
