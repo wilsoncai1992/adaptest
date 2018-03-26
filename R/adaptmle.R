@@ -53,3 +53,33 @@
        contains = "SummarizedExperiment"
 )
 
+#' Accessor for results of class adaptest
+#'
+#' Simple accessor function to extract and assign important statistical results
+#'  from the main function \code{adaptest}. INTERNAL USE ONLY.
+#'
+#' @param data_adapt_out S3 object of class \code{data_adapt} with analytic
+#'  results from the statistical routine, as produced by \code{adaptest}.
+#' @param adaptmle_in S4 object of class{adapTMLE} into which analytic results
+#'  should be inserted for organizational and interfacing purposes.
+#'
+#' @return Called for side-effects (i.e., altering \code{adaptmle} objects).
+#'
+#' @keywords internal
+#
+get_results_adaptmle <- function(adaptmle_in, data_adapt_out) {
+       stopifnot(class(data_adapt_out) == "data_adapt" &&
+                 class(adaptmle_in) == "adapTMLE")
+       adaptmle_in@folds <- data_adapt_out$folds  # from origami
+       adaptmle_in@plot_ingredients <- data_adapt_out$top_colname
+       adaptmle_in@diff_exp <- data_adapt_out$DE
+       adaptmle_in@p_value <- data_adapt_out$p_value
+       adaptmle_in@q_value <- data_adapt_out$q_value
+       adaptmle_in@q_sig <- data_adapt_out$significant_q
+       adaptmle_in@q_sig_names <- data_adapt_out$top_colname_significant_q
+       adaptmle_in@rank_mean <- data_adapt_out$mean_rank_top
+       adaptmle_in@prob_top <- data_adapt_out$prob_in_top
+       adaptmle_in@top_index <- data_adapt_out$top_index
+       return(adaptmle_in)
+}
+

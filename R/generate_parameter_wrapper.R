@@ -92,43 +92,34 @@ rank_DE <- function(Y,
 #' @param A (numeric vector) - binary treatment indicator: \code{1} = treatment,
 #'  \code{0} = control
 #' @param W (numeric vector, numeric matrix, or numeric data.frame) - matrix of
-#'  baseline covariates where each column corrspond to one baseline covariate.
-#'  Each row correspond to one observation
-#' @param absolute (logical) - whether or not to test for absolute effect size.
-#'  If \code{FALSE}, test for directional effect. This overrides argument
-#'  \code{negative}.
-#' @param negative (logical) - whether or not to test for negative effect size.
-#'  If \code{FALSE} = test for positive effect size. This is effective only when
-#'  \code{absolute = FALSE}.
+#'  baseline covariates where each column corrspond to one baseline covariate
+#'  and each row correspond to one observation.
 #'
 #' @return an \code{integer vector} containing ranks of biomarkers.
 #'
 #' @importFrom stats lm coef
 #'
 #' @export
+#'
 #' @examples
 #' set.seed(1234)
 #' data(simpleArray)
-#' simulated_array <- simulated_array
-#' simulated_treatment <- simulated_treatment
 #' rank_ttest(Y = simulated_array,
 #'            A = simulated_treatment,
-#'            W = rep(1, length(simulated_treatment)),
-#'            absolute = FALSE,
-#'            negative = FALSE)
+#'            W = rep(1, length(A)))
+#
 rank_ttest <- function(Y,
                        A,
-                       W,
-                       absolute = FALSE,  # useless
-                       negative = FALSE) {
+                       W) {
   n_here <- nrow(Y)
   p_all <- ncol(Y)
 
   lm_out <- stats::lm(Y ~ A)
   lm_summary <- summary(lm_out)
-  pval_lm <- stats::coef(lm_summary)[2, 4]
+  pval_lm <- lapply(lm_summary, function(x) x$coefficients[2, 4])
+  pval_lm_out <- do.call(rbind, pval_lm)
 
-  rank_out <- rank(pval_lm)
+  rank_out <- rank(pval_lm_out)
   # final object to be exported by this function
   return(rank_out)
 }

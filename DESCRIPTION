@@ -1,5 +1,5 @@
 Package: adaptest
-Title: Data-adaptive test statistics for multiple testing in high dimensions
+Title: Data-Adaptive Statistics for High-Dimensional Multiple Testing
 Version: 0.99.2
 Authors@R: c(
     person("Weixin", "Cai", email = "wcai@berkeley.edu",
@@ -15,9 +15,11 @@ Authors@R: c(
 Author: Weixin Cai [aut, cre, cph], Nima Hejazi [aut], Alan Hubbard [ctb, ths]
 Maintainer: Weixin Cai <wcai@berkeley.edu>
 Description: Data-adaptive test statistics represent a general methodology for
-    performing multiple testing on effects sizes under high-dimensional settings,
-    using the approach of data-adaptive statistical target parameters and
-    inference.
+    performing multiple hypothesis testing on effects sizes while maintaining
+    honest statistical inference when operating in high-dimensional settings
+    (<doi here>). The utilities provided here extend the use of this general
+    methodology to many common data analytic challenges that arise in modern
+    computational and genomic biology.
 Depends:
     R (>= 3.4.0)
 License: GPL-2

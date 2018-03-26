@@ -124,8 +124,11 @@ get_pval <- function(Psi_output, EIC_est_final, alpha = 0.05) {
 #' Minimum Loss-Based Estimation. A data-mining algorithm is used to perform
 #' biomarker selection before multiple testing to increase power.
 #'
-#' @param Y (numeric vector) - continuous or binary biomarkers
-#'  (outcome variables)
+#' @param Y (numeric vector) - A \code{data.frame} or \code{matrix} of binary or
+#'  continuous biomarker measures (outcome variables). Alternatively, this will
+#'  be an object of class \code{adapTMLE} if the wrapper \code{bioadaptest} is
+#'  invoked (n.b., the wrapper is the preferred interface for standard data
+#'  analytic use-cases arising in computational and genomic biology).
 #' @param A (numeric vector) - binary treatment indicator:
 #'  \code{1} = treatment, \code{0} = control
 #' @param W (numeric vector, numeric matrix, or numeric data.frame) -
@@ -219,11 +222,11 @@ adaptest <- function(Y,
                      ) {
 
   # necessary bookkeeping for SummarizedExperiment if bioadaptest being used
-  if (class(Y) == "SummarizedExperiment") {
-    Y_in <- t(SummarizedExperiment::assay(Y))
-    Y_in <- rownames(Y_in) <- colnames(Y_in) <- NULL
+  if (class(Y) == "adapTMLE") {
+    Y_in <- as.matrix(t(SummarizedExperiment::assay(Y)))
+    rownames(Y_in) <- colnames(Y_in) <- NULL
   } else {
-    Y_in <- Y
+    Y_in <- as.matrix(Y)
   }
 
   # use constructor function to instantiate "data_adapt" object
@@ -265,7 +268,7 @@ adaptest <- function(Y,
 
   # origami folds
   folds <- origami::make_folds(n = n_sim, V = n_fold)
-  df_all <- data.frame(Y = Y, A = A, W = W)
+  df_all <- data.frame(Y = Y_in, A = A, W = W)
 
   Y_name <- grep("Y", colnames(df_all))
   A_name <- grep("A", colnames(df_all))
@@ -332,7 +335,6 @@ adaptest <- function(Y,
   # strict control
   # q_value <- stats::p.adjust(c(p_value, rep(1, p_all - n_top)), method = "BH")
   # q_value <- head(q_value, n_top)
-
   is_sig_q_value <- q_value <= q_cutoff
   significant_q <- which(is_sig_q_value)
 

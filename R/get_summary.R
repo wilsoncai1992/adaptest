@@ -27,8 +27,8 @@
 #'                          absolute = FALSE,
 #'                          negative = FALSE)
 #' get_composition(adaptest_out, type = 'small')
+#
 get_composition <- function(object, type = "small") {
-  # browser()
   if (type == "small") col.name <- object$top_colname_significant_q
   if (type == "big") col.name <- object$top_colname
 
@@ -81,8 +81,11 @@ get_composition <- function(object, type = "small") {
 #'                          absolute = FALSE,
 #'                          negative = FALSE)
 #' get_significant_biomarker(adaptest_out)
+#
 get_significant_biomarker <- function(object, cutoff = .5) {
-  if(is.null(get_composition(object, type = "small"))) return(integer()) # catch when nothing is significant
+  if (is.null(get_composition(object, type = "small"))) {
+    return(integer()) # catch when nothing is significant
+  }
   component_table <- colSums(get_composition(object, type = "small")[[1]])
   component_table <- component_table[component_table >= cutoff]
   return(as.integer(names(component_table)))

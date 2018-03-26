@@ -10,8 +10,11 @@ adaptest(Y, A, W = NULL, n_top, n_fold, parameter_wrapper = rank_DE,
   q_cutoff = 0.05)
 }
 \arguments{
-\item{Y}{(numeric vector) - continuous or binary biomarkers
-(outcome variables)}
+\item{Y}{(numeric vector) - A \code{data.frame} or \code{matrix} of binary or
+continuous biomarker measures (outcome variables). Alternatively, this will
+be an object of class \code{adapTMLE} if the wrapper \code{bioadaptest} is
+invoked (n.b., the wrapper is the preferred interface for standard data
+analytic use-cases arising in computational and genomic biology).}
 
 \item{A}{(numeric vector) - binary treatment indicator:
 \code{1} = treatment, \code{0} = control}

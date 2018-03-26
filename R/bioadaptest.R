@@ -79,7 +79,7 @@ bioadaptest <- function(data_in,
   call <- match.call(expand.dots = TRUE)
 
   # ============================================================================
-  # invoke S4 class constructor for "adapTMLE" object
+  # invoke S4 class constructor to instantiate "adapTMLE" object
   # ============================================================================
   adaptmle <- .adaptmle(
        SummarizedExperiment(
@@ -103,7 +103,7 @@ bioadaptest <- function(data_in,
   # ============================================================================
   # TMLE procedure for data-adaptive testing
   # ============================================================================
-  adaptest_out <- adaptest(Y = data_in,
+  adaptest_out <- adaptest(Y = adaptmle,
                            A = var_int,
                            W = cntrl_set,
                            n_top = n_top,
@@ -117,18 +117,10 @@ bioadaptest <- function(data_in,
                           )
 
   # ============================================================================
-  # organize output in the adaptmle object created
+  # organize output in the adaptmle object created using accessor
   # ============================================================================
-  adaptmle@folds <- adaptest_out$folds  # from origami
-  adaptmle@plot_ingredients <- adaptest_out$top_colname
-  adaptmle@diff_exp <- adaptest_out$DE
-  adaptmle@p_value <- adaptest_out$p_value
-  adaptmle@q_value <- adaptest_out$q_value
-  adaptmle@q_sig <- adaptest_out$significant_q
-  adaptmle@q_sig_names <- adaptest_out$top_colname_significant_q
-  adaptmle@rank_mean <- adaptest_out$mean_rank_top
-  adaptmle@prob_top <- adaptest_out$prob_in_top
-  adaptmle@top_index <- adaptest_out$top_index
+  adaptmle <- get_results_adaptmle(adaptmle_in = adaptmle,
+                                   data_adapt_out = adaptest_out)
   return(adaptmle)
 }
 

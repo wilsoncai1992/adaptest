@@ -4,7 +4,7 @@
 \alias{rank_ttest}
 \title{Compute ranking of biomarkers by sorting t-test p-values}
 \usage{
-rank_ttest(Y, A, W, absolute = FALSE, negative = FALSE)
+rank_ttest(Y, A, W)
 }
 \arguments{
 \item{Y}{(numeric vector) - continuous or binary biomarkers outcome variables}
@@ -13,16 +13,8 @@ rank_ttest(Y, A, W, absolute = FALSE, negative = FALSE)
 \code{0} = control}
 
 \item{W}{(numeric vector, numeric matrix, or numeric data.frame) - matrix of
-baseline covariates where each column corrspond to one baseline covariate.
-Each row correspond to one observation}
-
-\item{absolute}{(logical) - whether or not to test for absolute effect size.
-If \code{FALSE}, test for directional effect. This overrides argument
-\code{negative}.}
-
-\item{negative}{(logical) - whether or not to test for negative effect size.
-If \code{FALSE} = test for positive effect size. This is effective only when
-\code{absolute = FALSE}.}
+baseline covariates where each column corrspond to one baseline covariate
+and each row correspond to one observation.}
 }
 \value{
 an \code{integer vector} containing ranks of biomarkers.
@@ -33,11 +25,7 @@ Compute ranking of biomarkers by sorting t-test p-values
 \examples{
 set.seed(1234)
 data(simpleArray)
-simulated_array <- simulated_array
-simulated_treatment <- simulated_treatment
 rank_ttest(Y = simulated_array,
            A = simulated_treatment,
-           W = rep(1, length(simulated_treatment)),
-           absolute = FALSE,
-           negative = FALSE)
+           W = rep(1, length(A)))
 }
