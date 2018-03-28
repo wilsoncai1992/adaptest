@@ -41,9 +41,10 @@ rank_DE <- function(Y,
                     W,
                     absolute = FALSE,
                     negative = FALSE,
-                    learning_library = c("SL.glm", "SL.step",
-                                         "SL.glm.interaction", "SL.gam")
-                   ) {
+                    learning_library = c(
+                      "SL.glm", "SL.step",
+                      "SL.glm.interaction", "SL.gam"
+                    )) {
   n_here <- nrow(Y)
   p_all <- ncol(Y)
 

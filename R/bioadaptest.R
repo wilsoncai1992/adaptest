@@ -71,8 +71,7 @@ bioadaptest <- function(data_in,
                         absolute = FALSE,
                         negative = FALSE,
                         p_cutoff = 0.05,
-                        q_cutoff = 0.05
-                       ) {
+                        q_cutoff = 0.05) {
   # ============================================================================
   # catch input and return in output object for udata_inr convenience
   # ============================================================================
@@ -82,45 +81,47 @@ bioadaptest <- function(data_in,
   # invoke S4 class constructor to instantiate "adapTMLE" object
   # ============================================================================
   adaptmle <- .adaptmle(
-       SummarizedExperiment(
-          assays = list(exps = assay(data_in)),
-          rowData = rowData(data_in),
-          colData = colData(data_in)
-       ),
-       call = call,
-       folds = list(NA),  # folds (from origami)
-       plot_ingredients = list(NA),  # top_colname
-       diff_exp = as.numeric(rep(NaN, n_top)),  # DE
-       p_value = as.numeric(rep(NaN, n_top)),  # p_value
-       q_value = as.numeric(rep(NaN, n_top)),  # q_value
-       q_sig = as.numeric(rep(NaN, n_top)),  # significant_q
-       q_sig_names = list(NA),  # top_colname_significant_q
-       rank_mean = as.numeric(rep(NaN, n_top * n_fold)),  # mean_rank_top
-       prob_top = as.numeric(rep(NaN, n_top * n_fold)),  # prob_in_top
-       top_index = as.numeric(rep(NaN, n_top * n_fold))  # top_index
+    SummarizedExperiment(
+      assays = list(exps = assay(data_in)),
+      rowData = rowData(data_in),
+      colData = colData(data_in)
+    ),
+    call = call,
+    folds = list(NA), # folds (from origami)
+    plot_ingredients = list(NA), # top_colname
+    diff_exp = as.numeric(rep(NaN, n_top)), # DE
+    p_value = as.numeric(rep(NaN, n_top)), # p_value
+    q_value = as.numeric(rep(NaN, n_top)), # q_value
+    q_sig = as.numeric(rep(NaN, n_top)), # significant_q
+    q_sig_names = list(NA), # top_colname_significant_q
+    rank_mean = as.numeric(rep(NaN, n_top * n_fold)), # mean_rank_top
+    prob_top = as.numeric(rep(NaN, n_top * n_fold)), # prob_in_top
+    top_index = as.numeric(rep(NaN, n_top * n_fold)) # top_index
   )
 
   # ============================================================================
   # TMLE procedure for data-adaptive testing
   # ============================================================================
-  adaptest_out <- adaptest(Y = adaptmle,
-                           A = var_int,
-                           W = cntrl_set,
-                           n_top = n_top,
-                           n_fold = n_fold,
-                           parameter_wrapper = parameter_wrapper,
-                           learning_library = learning_library,
-                           absolute = absolute,
-                           negative = negative,
-                           p_cutoff = p_cutoff,
-                           q_cutoff = q_cutoff
-                          )
+  adaptest_out <- adaptest(
+    Y = adaptmle,
+    A = var_int,
+    W = cntrl_set,
+    n_top = n_top,
+    n_fold = n_fold,
+    parameter_wrapper = parameter_wrapper,
+    learning_library = learning_library,
+    absolute = absolute,
+    negative = negative,
+    p_cutoff = p_cutoff,
+    q_cutoff = q_cutoff
+  )
 
   # ============================================================================
   # organize output in the adaptmle object created using accessor
   # ============================================================================
-  adaptmle <- get_results_adaptmle(adaptmle_in = adaptmle,
-                                   data_adapt_out = adaptest_out)
+  adaptmle <- get_results_adaptmle(
+    adaptmle_in = adaptmle,
+    data_adapt_out = adaptest_out
+  )
   return(adaptmle)
 }
-

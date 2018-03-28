@@ -109,7 +109,8 @@ get_pval <- function(Psi_output, EIC_est_final, alpha = 0.05) {
   lower <- Psi_output - abs(stats::qnorm(alpha / 2)) * sd_by_col
 
   pval <- stats::pnorm(
-    abs(Psi_output / sd_by_col), mean = 0, sd = 1,
+    abs(Psi_output / sd_by_col),
+    mean = 0, sd = 1,
     lower.tail = FALSE
   ) * 2
   return(list(pval = pval, upper = upper, lower = lower, sd_by_col = sd_by_col))
@@ -180,7 +181,6 @@ get_pval <- function(Psi_output, EIC_est_final, alpha = 0.05) {
 #'
 #' @importFrom stats p.adjust
 #' @importFrom utils head
-#' @importFrom dplyr "%>%"
 #' @importFrom origami make_folds cross_validate
 #' @importFrom SummarizedExperiment assay
 #'
@@ -219,7 +219,7 @@ adaptest <- function(Y,
                      # Y_name = grep('Y', colnames(data)),
                      # A_name = grep('A', colnames(data)),
                      # W_name = grep('W', colnames(data))
-                     ) {
+) {
 
   # necessary bookkeeping for SummarizedExperiment if bioadaptest being used
   if (class(Y) == "adapTMLE") {
@@ -306,7 +306,7 @@ adaptest <- function(Y,
   # statistical inference
   # ============================================================================
   Psi_output <- colMeans(psi_est_final)
-  #list[p_value, upper, lower, sd_by_col] <- get_pval(Psi_output, EIC_est_final,
+  # list[p_value, upper, lower, sd_by_col] <- get_pval(Psi_output, EIC_est_final,
   #                                                   alpha = 0.05)
   inference_out <- get_pval(Psi_output, EIC_est_final, alpha = p_cutoff)
   p_value <- inference_out[[1]]
@@ -319,12 +319,12 @@ adaptest <- function(Y,
     # catch when n_top == 1; user only want top 1 gene
     adaptY_composition <- matrix(adaptY_composition, ncol = 1)
     adaptY_composition <- list(table(adaptY_composition) /
-                               sum(table(adaptY_composition)))
+      sum(table(adaptY_composition)))
   } else {
     ls <- vector("list", ncol(adaptY_composition))
     for (i in seq_len(ncol(adaptY_composition))) {
-        x = adaptY_composition[,i]
-        ls[[i]] <- table(x) / sum(table(x))
+      x <- adaptY_composition[, i]
+      ls[[i]] <- table(x) / sum(table(x))
     }
     adaptY_composition <- ls
   }
@@ -442,10 +442,14 @@ cv_param_est <- function(fold,
     negative
   )
   # index_grid <- which(data_adaptive_index <= n_top) # sorted after screening
-  df_temp <- data.frame(col_ind = seq_len(ncol(Y_param)),
-                        rank = data_adaptive_index)  # ranked by rank
-  index_grid <- head(df_temp[order(df_temp$rank, decreasing = FALSE), ],
-                     n_top)[, "col_ind"]
+  df_temp <- data.frame(
+    col_ind = seq_len(ncol(Y_param)),
+    rank = data_adaptive_index
+  ) # ranked by rank
+  index_grid <- head(
+    df_temp[order(df_temp$rank, decreasing = FALSE), ],
+    n_top
+  )[, "col_ind"]
   # estimate the parameter on estimation sample
   psi_list <- vector("list", length(index_grid))
   EIC_list <- vector("list", length(index_grid))

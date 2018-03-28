@@ -38,19 +38,21 @@
 #' example_class <- example_adaptmle_class(se = airway)
 #
 .adaptmle <- methods::setClass(
-       Class = "adapTMLE",
-       slots = list(call = "call",
-                    folds = "list",  # folds (from origami)
-                    plot_ingredients = "list",  # top_colname
-                    diff_exp = "numeric",  # DE
-                    p_value = "numeric",  # p_value
-                    q_value = "numeric",  # q_value
-                    q_sig = "numeric",  # significant_q
-                    q_sig_names = "list",  # top_colname_significant_q
-                    rank_mean = "numeric",  # mean_rank_top
-                    prob_top = "numeric",  # prob_in_top
-                    top_index = "numeric"),  # top_index
-       contains = "SummarizedExperiment"
+  Class = "adapTMLE",
+  slots = list(
+    call = "call",
+    folds = "list", # folds (from origami)
+    plot_ingredients = "list", # top_colname
+    diff_exp = "numeric", # DE
+    p_value = "numeric", # p_value
+    q_value = "numeric", # q_value
+    q_sig = "numeric", # significant_q
+    q_sig_names = "list", # top_colname_significant_q
+    rank_mean = "numeric", # mean_rank_top
+    prob_top = "numeric", # prob_in_top
+    top_index = "numeric"
+  ), # top_index
+  contains = "SummarizedExperiment"
 )
 
 #' Accessor for results of class adaptest
@@ -68,18 +70,17 @@
 #' @keywords internal
 #
 get_results_adaptmle <- function(adaptmle_in, data_adapt_out) {
-       stopifnot(class(data_adapt_out) == "data_adapt" &&
-                 class(adaptmle_in) == "adapTMLE")
-       adaptmle_in@folds <- data_adapt_out$folds  # from origami
-       adaptmle_in@plot_ingredients <- data_adapt_out$top_colname
-       adaptmle_in@diff_exp <- data_adapt_out$DE
-       adaptmle_in@p_value <- data_adapt_out$p_value
-       adaptmle_in@q_value <- data_adapt_out$q_value
-       adaptmle_in@q_sig <- data_adapt_out$significant_q
-       adaptmle_in@q_sig_names <- data_adapt_out$top_colname_significant_q
-       adaptmle_in@rank_mean <- data_adapt_out$mean_rank_top
-       adaptmle_in@prob_top <- data_adapt_out$prob_in_top
-       adaptmle_in@top_index <- data_adapt_out$top_index
-       return(adaptmle_in)
+  stopifnot(class(data_adapt_out) == "data_adapt" &&
+    class(adaptmle_in) == "adapTMLE")
+  adaptmle_in@folds <- data_adapt_out$folds # from origami
+  adaptmle_in@plot_ingredients <- data_adapt_out$top_colname
+  adaptmle_in@diff_exp <- data_adapt_out$DE
+  adaptmle_in@p_value <- data_adapt_out$p_value
+  adaptmle_in@q_value <- data_adapt_out$q_value
+  adaptmle_in@q_sig <- data_adapt_out$significant_q
+  adaptmle_in@q_sig_names <- data_adapt_out$top_colname_significant_q
+  adaptmle_in@rank_mean <- data_adapt_out$mean_rank_top
+  adaptmle_in@prob_top <- data_adapt_out$prob_in_top
+  adaptmle_in@top_index <- data_adapt_out$top_index
+  return(adaptmle_in)
 }
-

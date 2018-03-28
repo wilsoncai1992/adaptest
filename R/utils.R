@@ -67,7 +67,8 @@ plot.data_adapt <- function(x, ..., plot_type = c("biomarker", "adapt_param")) {
   if ("biomarker" %in% plot_type) {
     # Plot sorted average CV-rank
     plot(
-      mean_rank_top, ylab = "Mean CV-rank", pch = 20,
+      mean_rank_top,
+      ylab = "Mean CV-rank", pch = 20,
       main = "Mean CV-rank of selected covariates \n (smaller is better)"
     )
     calibrate::textxy(
@@ -137,8 +138,10 @@ summary.data_adapt <- function(object, type = "adapt_param", ...) {
   if (type == "biomarker") {
     len <- length(top_biomarker)
     table_out <- data.frame(top_biomarker, mean_rank_top, prob_in_top)
-    colnames(table_out) <- c('biomakers', 'mean rank',
-                             paste('% appear in top ', len))
+    colnames(table_out) <- c(
+      "biomakers", "mean rank",
+      paste("% appear in top ", len)
+    )
     print(table_out)
   }
 }
