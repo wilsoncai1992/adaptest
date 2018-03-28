@@ -37,7 +37,8 @@ get_composition <- function(object, type = "small") {
 
   col_id_sig_final <- as.numeric(unique(unlist(lapply(col.name, names))))
   decomposition <- matrix(
-    0, nrow = length(col.name),
+    0,
+    nrow = length(col.name),
     ncol = length(col_id_sig_final)
   )
   decomposition <- as.data.frame(decomposition)

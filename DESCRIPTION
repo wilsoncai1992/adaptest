@@ -1,6 +1,6 @@
 Package: adaptest
 Title: Data-Adaptive Statistics for High-Dimensional Multiple Testing
-Version: 0.99.3
+Version: 0.99.4
 Authors@R: c(
     person("Weixin", "Cai", email = "wcai@berkeley.edu",
            role = c("aut", "cre", "cph"),
@@ -31,7 +31,6 @@ Imports:
     origami (>= 1.0.0),
     tmle,
     calibrate,
-    dplyr,
     methods,
     graphics,
     stats,
