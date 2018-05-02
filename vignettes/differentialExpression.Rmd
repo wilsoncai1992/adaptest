@@ -1,7 +1,6 @@
 ---
 title: "Data-Mining Biomarkers and High-Dimensional Testing"
-author: "[Wilson Cai](http://www.stat.berkeley.edu/~wcai/) and
-  [Nima Hejazi](http://www.stat.berkeley.edu/~nhejazi/)"
+author: "Wilson Cai and Nima Hejazi"
 date: "`r Sys.Date()`"
 output:
   BiocStyle::html_document

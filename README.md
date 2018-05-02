@@ -39,14 +39,13 @@ is directed to Hubbard, Kherad-Pajouh, and van der Laan (2016).
 
 ## Installation
 
-<!--
-For standard use, install from [Bioconductor](https://bioconductor.org):
+For standard use, install from
+[Bioconductor](https://bioconductor.org/packages/adaptest):
 
-```r
+``` r
 source("https://bioconductor.org/biocLite.R")
 biocLite("adaptest")
 ```
--->
 
 To contribute, install the bleeding-edge *development version* from
 GitHub via
@@ -56,29 +55,26 @@ GitHub via
 devtools::install_github("wilsoncai1992/adaptest")
 ```
 
-<!--
 Current and prior [Bioconductor](https://bioconductor.org) releases are
-available under branches with numbers prefixed by "RELEASE_". For example, to
-install the version of this package available via Bioconductor 3.7, use
+available under branches with numbers prefixed by “RELEASE\_”. For
+example, to install the version of this package available via
+Bioconductor 3.7, use
 
-
-```r
+``` r
 devtools::install_github("wilsoncai1992/adaptest", ref = "RELEASE_3_7")
 ```
--->
 
 -----
 
-<!--
 ## Example
 
-This is a basic example which shows you how to solve a common problem:
+For details on how to best use the `methyvim` R package, please consult
+the most recent [package
+vignette](https://bioconductor.org/packages/release/bioc/vignettes/adaptest/inst/doc/differentialExpression.html)
+available through the [Bioconductor
+project](https://bioconductor.org/packages/adaptest).
 
-
-```r
-## basic example code
-```
--->
+-----
 
 ## Issues
 
@@ -89,11 +85,8 @@ If you encounter any bugs or have any specific feature requests, please
 
 ## Contributions
 
-It is our hope that `adaptest` will grow to be widely adopted as a tool
-for employing data-adaptive multiple hypothesis testing procedures in
-high-dimensional and complex problem settings. To that end,
-contributions are very welcome, though we ask that interested
-contributors consult our [contribution
+Contributions are very welcome. Interested contributors should consult
+our [contribution
 guidelines](https://github.com/wilsoncai1992/adaptest/blob/master/CONTRIBUTING.md)
 prior to submitting a pull request.
 
@@ -107,7 +100,7 @@ After using the `adaptest` R package, please cite it:
   @article{cai2018adaptest,
     doi = {},
     url = {},
-    year  = {2018},
+    year  = {2018+},
     month = {},
     publisher = {The Open Journal},
     volume = {submitted},
@@ -133,7 +126,7 @@ LM012417-02](https://projectreporter.nih.gov/project_info_description.cfm?aid=92
 
 ## License
 
-© 2017-2018 [Wilson Cai](https://www.stat.berkeley.edu/~wcai)
+© 2017-2018 [Wilson Cai](https://statistics.berkeley.edu/~wcai)
 
 The software contents of this repository are distributed under the GPL-2
 license. See file `LICENSE` for details.
@@ -156,7 +149,7 @@ Settings.” <https://arxiv.org/abs/1704.07008>.
 
 Hubbard, Alan E, Sara Kherad-Pajouh, and Mark J van der Laan. 2016.
 “Statistical Inference for Data Adaptive Target Parameters.” *The
-International Journal of Biostatistics* 12 (1):3–19.
+International Journal of Biostatistics* 12 (1): 3–19.
 
 </div>
 
