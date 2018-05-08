@@ -6,11 +6,12 @@ init:
         $ErrorActionPreference = "Stop"
         Invoke-WebRequest http://raw.github.com/krlmlr/r-appveyor/master/scripts/appveyor-tool.ps1 -OutFile "..\appveyor-tool.ps1"
         Import-Module '..\appveyor-tool.ps1'
+
 install:
   ps: Bootstrap
 
 cache:
-  - C:\RLibrary
+  - C:\RLibrary -> appveyor.yml
 
 # Adapt as necessary starting from here
 branches:
@@ -20,20 +21,32 @@ branches:
 environment:
   global:
     WARNINGS_ARE_ERRORS: 0
+    R_ARCH: x64
     USE_RTOOLS: true
+
+  matrix:
+    - R_VERSION: release
 
 build_script:
   - travis-tool.sh install_deps
-  - travis-tool.sh install_github jeremyrcoyle/origami
-  - travis-tool.sh install_bioc SummarizedExperiment
-  - travis-tool.sh install_bioc BiocParallel
-  - travis-tool.sh install_bioc BiocStyle
+  - travis-tool.sh install_github r-lib/devtools
+  - travis-tool.sh install_github jimhester/covr
+  - travis-tool.sh install_github tlverse/origami
   - travis-tool.sh install_bioc BiocCheck
+  - travis-tool.sh install_bioc BiocStyle
+  - travis-tool.sh install_bioc BiocGenerics
+  - travis-tool.sh install_bioc BiocParallel
+  - travis-tool.sh install_bioc SummarizedExperiment
+  - travis-tool.sh install_bioc GenomeInfoDbData
+  - travis-tool.sh install_bioc GenomeInfoDb
   - travis-tool.sh install_bioc airway
   - travis-tool.sh install_bioc_deps
 
 test_script:
   - travis-tool.sh run_tests
+
+on_success:
+  - Rscript -e "covr::codecov(line_exclusions = list('R/plots.R'))"
 
 on_failure:
   - 7z a failure.zip *.Rcheck\*
@@ -68,3 +81,4 @@ notifications:
    on_build_success: true
    on_build_failure: true
    on_build_status_changed: true
+
