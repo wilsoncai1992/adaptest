@@ -4,7 +4,7 @@
 #'
 #' @importFrom methods setClass new
 #' @importClassesFrom SummarizedExperiment SummarizedExperiment
-#' @import S4Vectors
+#' @importClassesFrom S4Vectors Vector Annotated
 #'
 #' @export .adaptmle
 #' @exportClass adapTMLE
