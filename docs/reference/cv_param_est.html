@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Plot method for data_adapt objects — plot.data_adapt • adaptest</title>
+<title>Compute data-adaptive parameter estimate for a single cross-validation fold — cv_param_est • adaptest</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -30,9 +30,9 @@
 
 
 
-<meta property="og:title" content="Plot method for data_adapt objects — plot.data_adapt" />
+<meta property="og:title" content="Compute data-adaptive parameter estimate for a single cross-validation fold — cv_param_est" />
 
-<meta property="og:description" content="Customized plotting method for easily examining data-adaptive statistics" />
+<meta property="og:description" content="Compute data-adaptive parameter estimate for a single cross-validation fold" />
 <meta name="twitter:card" content="summary" />
 
 
@@ -109,43 +109,75 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Plot method for data_adapt objects</h1>
-    <small class="dont-index">Source: <a href='https://github.com/wilsoncai1992/adaptest/blob/master/R/utils.R'><code>R/utils.R</code></a></small>
-    <div class="hidden name"><code>plot.data_adapt.Rd</code></div>
+    <h1>Compute data-adaptive parameter estimate for a single cross-validation fold</h1>
+    <small class="dont-index">Source: <a href='https://github.com/wilsoncai1992/adaptest/blob/master/R/adaptest.R'><code>R/adaptest.R</code></a></small>
+    <div class="hidden name"><code>cv_param_est.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>Customized plotting method for easily examining data-adaptive statistics</p>
+    <p>Compute data-adaptive parameter estimate for a single cross-validation fold</p>
     
     </div>
 
-    <pre class="usage"><span class='co'># S3 method for data_adapt</span>
-<span class='fu'>plot</span>(<span class='no'>x</span>, <span class='no'>...</span>, <span class='kw'>plot_type</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"biomarker"</span>, <span class='st'>"adapt_param"</span>))</pre>
+    <pre class="usage"><span class='fu'>cv_param_est</span>(<span class='no'>fold</span>, <span class='no'>data</span>, <span class='no'>parameter_wrapper</span>, <span class='no'>absolute</span>, <span class='no'>negative</span>, <span class='no'>n_top</span>,
+  <span class='no'>learning_library</span>, <span class='no'>Y_name</span>, <span class='no'>A_name</span>, <span class='no'>W_name</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>x</th>
-      <td><p>(data_adapt) - object of class <code>data_adapt</code> as returned by
-<code>adaptest</code></p></td>
+      <th>fold</th>
+      <td><p>fold output from <code>origami</code></p></td>
     </tr>
     <tr>
-      <th>...</th>
-      <td><p>additional arguments passed to <code>plot</code> as necessary</p></td>
+      <th>data</th>
+      <td><p>entire training data</p></td>
     </tr>
     <tr>
-      <th>plot_type</th>
-      <td><p>character vector specifying which of the two types of plots
-to generate: "biomarker" for a plot sorted average CV-rank, or "adapt_param"
-for a plot sorted by q-values with labels corresponding to indices</p></td>
+      <th>parameter_wrapper</th>
+      <td><p>user-defined function</p></td>
+    </tr>
+    <tr>
+      <th>absolute</th>
+      <td><p>boolean: <code>TRUE</code> = test for absolute effect size. This
+<code>FALSE</code> = test for directional effect. This overrides argument
+<code>negative</code>.</p></td>
+    </tr>
+    <tr>
+      <th>negative</th>
+      <td><p>boolean: <code>TRUE</code> = test for negative effect size,
+<code>FALSE</code> = test for positive effect size</p></td>
+    </tr>
+    <tr>
+      <th>n_top</th>
+      <td><p>integer value for the number of candidate covariates to generate
+using the data-adaptive estimation algorithm</p></td>
+    </tr>
+    <tr>
+      <th>learning_library</th>
+      <td><p>character of <code>SuperLearner</code> library</p></td>
+    </tr>
+    <tr>
+      <th>Y_name</th>
+      <td><p>(character) <code>colnames</code> of all biomarkers</p></td>
+    </tr>
+    <tr>
+      <th>A_name</th>
+      <td><p>(character) <code>colnames</code> of treatment</p></td>
+    </tr>
+    <tr>
+      <th>W_name</th>
+      <td><p>(character) <code>colnames</code> of all baseline covariates</p></td>
     </tr>
     </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>plot of model statistics</p>
+    <p><code>data_adaptive_index</code> (integer vector) rank for each gene</p>
+<p><code>index_grid</code> (integer matrix) gene index from rank 1 to rank K</p>
+<p><code>psi_est</code> estimand of DE for rank 1 to rank K genes</p>
+<p><code>EIC_est</code> estimand of EIC for rank 1 to rank K genes</p>
     
 
   </div>
