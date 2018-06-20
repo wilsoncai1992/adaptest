@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Plot method for data_adapt objects — plot.data_adapt • adaptest</title>
+<title>Decomposition tables of the data-adaptive parameter after data-mining — get_composition • adaptest</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -30,9 +30,9 @@
 
 
 
-<meta property="og:title" content="Plot method for data_adapt objects — plot.data_adapt" />
+<meta property="og:title" content="Decomposition tables of the data-adaptive parameter after data-mining — get_composition" />
 
-<meta property="og:description" content="Customized plotting method for easily examining data-adaptive statistics" />
+<meta property="og:description" content="Customized informative tables for examining data-adaptive statistics." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -109,45 +109,68 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Plot method for data_adapt objects</h1>
-    <small class="dont-index">Source: <a href='https://github.com/wilsoncai1992/adaptest/blob/master/R/utils.R'><code>R/utils.R</code></a></small>
-    <div class="hidden name"><code>plot.data_adapt.Rd</code></div>
+    <h1>Decomposition tables of the data-adaptive parameter after data-mining</h1>
+    <small class="dont-index">Source: <a href='https://github.com/wilsoncai1992/adaptest/blob/master/R/get_summary.R'><code>R/get_summary.R</code></a></small>
+    <div class="hidden name"><code>get_composition.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>Customized plotting method for easily examining data-adaptive statistics</p>
+    <p>Customized informative tables for examining data-adaptive statistics.</p>
     
     </div>
 
-    <pre class="usage"><span class='co'># S3 method for data_adapt</span>
-<span class='fu'>plot</span>(<span class='no'>x</span>, <span class='no'>...</span>, <span class='kw'>plot_type</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"biomarker"</span>, <span class='st'>"adapt_param"</span>))</pre>
+    <pre class="usage"><span class='fu'>get_composition</span>(<span class='no'>object</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"small"</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>x</th>
+      <th>object</th>
       <td><p>(data_adapt) - object of class <code>data_adapt</code> as returned by
 <code>adaptest</code></p></td>
     </tr>
     <tr>
-      <th>...</th>
-      <td><p>additional arguments passed to <code>plot</code> as necessary</p></td>
-    </tr>
-    <tr>
-      <th>plot_type</th>
-      <td><p>character vector specifying which of the two types of plots
-to generate: "biomarker" for a plot sorted average CV-rank, or "adapt_param"
-for a plot sorted by q-values with labels corresponding to indices</p></td>
+      <th>type</th>
+      <td><p>(character) - 'small' or 'big'. 'small' mode returns composition
+of data-adaptive parameters after multiple testing stage. 'big' mode returns
+composition of data-adaptive parameters before multiple testing stage.</p></td>
     </tr>
     </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>plot of model statistics</p>
+    <p>(numeric matrix) containing what fraction of the data-adaptive
+parameter comes from which biomarker in the original dataset.</p>
     
 
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'><span class='fu'>set.seed</span>(<span class='fl'>1234</span>)
+<span class='fu'>data</span>(<span class='no'>simpleArray</span>)
+<span class='no'>simulated_array</span> <span class='kw'>&lt;-</span> <span class='no'>simulated_array</span>
+<span class='no'>simulated_treatment</span> <span class='kw'>&lt;-</span> <span class='no'>simulated_treatment</span>
+
+<span class='no'>adaptest_out</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='adaptest.html'>adaptest</a></span>(<span class='kw'>Y</span> <span class='kw'>=</span> <span class='no'>simulated_array</span>,
+                         <span class='kw'>A</span> <span class='kw'>=</span> <span class='no'>simulated_treatment</span>,
+                         <span class='kw'>W</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+                         <span class='kw'>n_top</span> <span class='kw'>=</span> <span class='fl'>5</span>,
+                         <span class='kw'>n_fold</span> <span class='kw'>=</span> <span class='fl'>3</span>,
+                         <span class='kw'>learning_library</span> <span class='kw'>=</span> <span class='st'>'SL.glm'</span>,
+                         <span class='kw'>parameter_wrapper</span> <span class='kw'>=</span> <span class='kw pkg'>adaptest</span><span class='kw ns'>::</span><span class='no'><a href='http://www.rdocumentation.org/packages/adaptest/topics/rank_DE'>rank_DE</a></span>,
+                         <span class='kw'>absolute</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+                         <span class='kw'>negative</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
+<span class='fu'>get_composition</span>(<span class='no'>adaptest_out</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>'small'</span>)</div><div class='output co'>#&gt; [[1]]
+#&gt;           3         5        10       505         1       519
+#&gt; 1 0.3333333 0.3333333 0.3333333 0.0000000 0.0000000 0.0000000
+#&gt; 4 0.3333333 0.3333333 0.0000000 0.3333333 0.0000000 0.0000000
+#&gt; 5 0.3333333 0.0000000 0.0000000 0.0000000 0.3333333 0.3333333
+#&gt; 
+#&gt; [[2]]
+#&gt;           3         5        10       505         1       519    q-values
+#&gt; 1 0.3333333 0.3333333 0.3333333 0.0000000 0.0000000 0.0000000 0.033311197
+#&gt; 4 0.3333333 0.3333333 0.0000000 0.3333333 0.0000000 0.0000000 0.005005752
+#&gt; 5 0.3333333 0.0000000 0.0000000 0.0000000 0.3333333 0.3333333 0.005005752
+#&gt; </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -155,7 +178,9 @@ for a plot sorted by q-values with labels corresponding to indices</p></td>
       <li><a href="#arguments">Arguments</a></li>
       
       <li><a href="#value">Value</a></li>
-          </ul>
+      
+      <li><a href="#examples">Examples</a></li>
+    </ul>
 
   </div>
 </div>

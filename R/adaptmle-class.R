@@ -4,6 +4,7 @@
 #'
 #' @importFrom methods setClass new
 #' @importClassesFrom SummarizedExperiment SummarizedExperiment
+#' @import S4Vectors
 #'
 #' @export .adaptmle
 #' @exportClass adapTMLE
@@ -84,3 +85,4 @@ get_results_adaptmle <- function(adaptmle_in, data_adapt_out) {
   adaptmle_in@top_index <- data_adapt_out$top_index
   return(adaptmle_in)
 }
+

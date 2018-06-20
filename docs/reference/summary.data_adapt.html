@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Plot method for data_adapt objects — plot.data_adapt • adaptest</title>
+<title>Summary tables for data_adapt objects — summary.data_adapt • adaptest</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -30,9 +30,9 @@
 
 
 
-<meta property="og:title" content="Plot method for data_adapt objects — plot.data_adapt" />
+<meta property="og:title" content="Summary tables for data_adapt objects — summary.data_adapt" />
 
-<meta property="og:description" content="Customized plotting method for easily examining data-adaptive statistics" />
+<meta property="og:description" content="Summary tables for data_adapt objects" />
 <meta name="twitter:card" content="summary" />
 
 
@@ -109,43 +109,47 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Plot method for data_adapt objects</h1>
+    <h1>Summary tables for data_adapt objects</h1>
     <small class="dont-index">Source: <a href='https://github.com/wilsoncai1992/adaptest/blob/master/R/utils.R'><code>R/utils.R</code></a></small>
-    <div class="hidden name"><code>plot.data_adapt.Rd</code></div>
+    <div class="hidden name"><code>summary.data_adapt.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>Customized plotting method for easily examining data-adaptive statistics</p>
+    <p>Summary tables for data_adapt objects</p>
     
     </div>
 
     <pre class="usage"><span class='co'># S3 method for data_adapt</span>
-<span class='fu'>plot</span>(<span class='no'>x</span>, <span class='no'>...</span>, <span class='kw'>plot_type</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"biomarker"</span>, <span class='st'>"adapt_param"</span>))</pre>
+<span class='fu'>summary</span>(<span class='no'>object</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"adapt_param"</span>, <span class='no'>...</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>x</th>
-      <td><p>(data_adapt) - object of class <code>data_adapt</code> as returned by
-<code>adaptest</code></p></td>
+      <th>object</th>
+      <td><p>(data_adapt) object as returned by <code>adaptest</code></p></td>
+    </tr>
+    <tr>
+      <th>type</th>
+      <td><p>(character) - `adapt_param` or `biomarker`.
+`adapt_param` mode summarizes the data-adaptive target
+parameter. `biomarker` mode summarizes chracteristics of the biomarkers from
+the original data</p></td>
     </tr>
     <tr>
       <th>...</th>
-      <td><p>additional arguments passed to <code>plot</code> as necessary</p></td>
-    </tr>
-    <tr>
-      <th>plot_type</th>
-      <td><p>character vector specifying which of the two types of plots
-to generate: "biomarker" for a plot sorted average CV-rank, or "adapt_param"
-for a plot sorted by q-values with labels corresponding to indices</p></td>
+      <td><p>not implemented</p></td>
     </tr>
     </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>plot of model statistics</p>
+    <p>(data.frame) of the summary statistics</p>
+<p><code>type = 'adapt_param'</code> wtih columns: 'data-adaptive parameters',
+'Differential expression', 'p-values', 'q-values'</p>
+<p><code>type = 'biomarker'</code> wtih columns: 'biomakers', 'mean rank', '<!-- % -->
+appear in top'</p>
     
 
   </div>

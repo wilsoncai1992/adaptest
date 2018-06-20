@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Plot method for data_adapt objects — plot.data_adapt • adaptest</title>
+<title>OLD Data-Adaptive Algorithm Implementation (for reference only) — adaptest_old • adaptest</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -30,9 +30,12 @@
 
 
 
-<meta property="og:title" content="Plot method for data_adapt objects — plot.data_adapt" />
+<meta property="og:title" content="OLD Data-Adaptive Algorithm Implementation (for reference only) — adaptest_old" />
 
-<meta property="og:description" content="Customized plotting method for easily examining data-adaptive statistics" />
+<meta property="og:description" content="Performs targeted minimum loss-based estimation (TMLE )of a marginal additive
+treatment effect of a binary point treatment on an outcome. The data-adaptive
+algorithm is used to perform variable reduction to avoid the disadvantages
+associated with multiple testing. INTERNAL USE ONLY." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -109,43 +112,81 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Plot method for data_adapt objects</h1>
-    <small class="dont-index">Source: <a href='https://github.com/wilsoncai1992/adaptest/blob/master/R/utils.R'><code>R/utils.R</code></a></small>
-    <div class="hidden name"><code>plot.data_adapt.Rd</code></div>
+    <h1>OLD Data-Adaptive Algorithm Implementation (for reference only)</h1>
+    <small class="dont-index">Source: <a href='https://github.com/wilsoncai1992/adaptest/blob/master/R/adaptest_old.R'><code>R/adaptest_old.R</code></a></small>
+    <div class="hidden name"><code>adaptest_old.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>Customized plotting method for easily examining data-adaptive statistics</p>
+    <p>Performs targeted minimum loss-based estimation (TMLE )of a marginal additive
+treatment effect of a binary point treatment on an outcome. The data-adaptive
+algorithm is used to perform variable reduction to avoid the disadvantages
+associated with multiple testing. INTERNAL USE ONLY.</p>
     
     </div>
 
-    <pre class="usage"><span class='co'># S3 method for data_adapt</span>
-<span class='fu'>plot</span>(<span class='no'>x</span>, <span class='no'>...</span>, <span class='kw'>plot_type</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"biomarker"</span>, <span class='st'>"adapt_param"</span>))</pre>
+    <pre class="usage"><span class='fu'>adaptest_old</span>(<span class='no'>Y</span>, <span class='no'>A</span>, <span class='kw'>W</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>n_top</span>, <span class='no'>n_fold</span>, <span class='kw'>folds_vec</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>parameter_wrapper</span> <span class='kw'>=</span> <span class='kw pkg'>adaptest</span><span class='kw ns'>::</span><span class='no'><a href='http://www.rdocumentation.org/packages/adaptest/topics/rank_DE'>rank_DE</a></span>, <span class='kw'>learning_library</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"SL.glm"</span>,
+  <span class='st'>"SL.step"</span>, <span class='st'>"SL.glm.interaction"</span>, <span class='st'>"SL.gam"</span>, <span class='st'>"SL.earth"</span>), <span class='kw'>absolute</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>negative</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>x</th>
-      <td><p>(data_adapt) - object of class <code>data_adapt</code> as returned by
-<code>adaptest</code></p></td>
+      <th>Y</th>
+      <td><p>continuous or binary outcome variable</p></td>
     </tr>
     <tr>
-      <th>...</th>
-      <td><p>additional arguments passed to <code>plot</code> as necessary</p></td>
+      <th>A</th>
+      <td><p>binary treatment indicator: <code>1</code> = treatment, <code>0</code> = control</p></td>
     </tr>
     <tr>
-      <th>plot_type</th>
-      <td><p>character vector specifying which of the two types of plots
-to generate: "biomarker" for a plot sorted average CV-rank, or "adapt_param"
-for a plot sorted by q-values with labels corresponding to indices</p></td>
+      <th>W</th>
+      <td><p>matrix containing baseline covariates</p></td>
+    </tr>
+    <tr>
+      <th>n_top</th>
+      <td><p>integer value for the number of candidate covariates to generate
+using the data-adaptive estimation algorithm</p></td>
+    </tr>
+    <tr>
+      <th>n_fold</th>
+      <td><p>integer number of folds to be used for cross-validation</p></td>
+    </tr>
+    <tr>
+      <th>folds_vec</th>
+      <td><p>Vector of <code>numeric</code> indicating the validation fold in
+which a given observation falls for a standard V-fold cross-validation
+procedure. Default is <code>NULL</code>, in which case a custom cross-validation
+procedure is used.</p></td>
+    </tr>
+    <tr>
+      <th>parameter_wrapper</th>
+      <td><p>function</p></td>
+    </tr>
+    <tr>
+      <th>learning_library</th>
+      <td><p>character</p></td>
+    </tr>
+    <tr>
+      <th>absolute</th>
+      <td><p>boolean: <code>TRUE</code> = test for absolute effect size. This
+<code>FALSE</code> = test for directional effect. This overrides argument
+<code>negative</code>.</p></td>
+    </tr>
+    <tr>
+      <th>negative</th>
+      <td><p>boolean: <code>TRUE</code> = test for negative effect size,
+<code>FALSE</code> = test for positive effect size</p></td>
     </tr>
     </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>plot of model statistics</p>
+    <p><code>S3</code> object of class "data_adapt" for data-adaptive multiple
+ testing.</p>
     
 
   </div>
@@ -156,6 +197,11 @@ for a plot sorted by q-values with labels corresponding to indices</p></td>
       
       <li><a href="#value">Value</a></li>
           </ul>
+
+    <h2>Author</h2>
+    
+Wilson Cai <a href='mailto:wcai@berkeley.edu'>wcai@berkeley.edu</a>, in collaboration with Alan E.
+        Hubbard, with contributions from Nima S. Hejazi.
 
   </div>
 </div>

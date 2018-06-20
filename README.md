@@ -40,11 +40,14 @@ is directed to Hubbard, Kherad-Pajouh, and van der Laan (2016).
 ## Installation
 
 For standard use, install from
-[Bioconductor](https://bioconductor.org/packages/adaptest):
+[Bioconductor](https://bioconductor.org/packages/adaptest) using
+[`BiocManager`](https://CRAN.R-project.org/package=BiocManager):
 
 ``` r
-source("https://bioconductor.org/biocLite.R")
-biocLite("adaptest")
+if (!("BiocManager" %in% installed.packages())) {
+  install.packages("BiocManager")
+}
+BiocManager::install("adaptest")
 ```
 
 To contribute, install the bleeding-edge *development version* from
@@ -106,8 +109,8 @@ After using the `adaptest` R package, please cite it:
     volume = {submitted},
     number = {},
     author = {Cai, Weixin and Hubbard, Alan E and Hejazi, Nima S},
-    title = {adaptest: Data-Adaptive Statistics for High-Dimensional Testing
-      in R},
+    title = {adaptest: Data-Adaptive Statistics for High-Dimensional
+      Testing in R},
     journal = {The Journal of Open Source Software}
   }
 ```

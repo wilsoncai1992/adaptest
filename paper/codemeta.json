@@ -18,13 +18,13 @@
     }
   ],
   "identifier": "",
-  "codeRepository": "https://github.com/wilsoncai1992/data.adapt.multi.test",
+  "codeRepository": "https://github.com/wilsoncai1992/adaptest",
   "datePublished": "2016-11-21",
   "dateModified": "2016-11-21",
   "dateCreated": "2016-11-21",
-  "description": "The `data.adapt.multi.test` R package is a tool for performing multiple testing on effects sizes under high-dimensional settings, using the approach of data-adaptive statistical target parameters and inference.",
+  "description": "The `adaptest` R package is a tool for performing multiple testing on effects sizes under high-dimensional settings, using the approach of data-adaptive statistical target parameters and inference.",
   "keywords": "multiple testing, Data-adaptive target parameter, targeted maximum likelihood estimator, cross-validation",
   "license": "GPL-2",
-  "title": "data.adapt.multi.test",
-  "version": "v0.2.0"
+  "title": "adaptest",
+  "version": "v1.1.0"
 }

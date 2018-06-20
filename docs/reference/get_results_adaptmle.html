@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Plot method for data_adapt objects — plot.data_adapt • adaptest</title>
+<title>Accessor for results of class adaptest — get_results_adaptmle • adaptest</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -30,9 +30,10 @@
 
 
 
-<meta property="og:title" content="Plot method for data_adapt objects — plot.data_adapt" />
+<meta property="og:title" content="Accessor for results of class adaptest — get_results_adaptmle" />
 
-<meta property="og:description" content="Customized plotting method for easily examining data-adaptive statistics" />
+<meta property="og:description" content="Simple accessor function to extract and assign important statistical results
+ from the main function adaptest. INTERNAL USE ONLY." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -109,43 +110,38 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Plot method for data_adapt objects</h1>
-    <small class="dont-index">Source: <a href='https://github.com/wilsoncai1992/adaptest/blob/master/R/utils.R'><code>R/utils.R</code></a></small>
-    <div class="hidden name"><code>plot.data_adapt.Rd</code></div>
+    <h1>Accessor for results of class adaptest</h1>
+    <small class="dont-index">Source: <a href='https://github.com/wilsoncai1992/adaptest/blob/master/R/adaptmle-class.R'><code>R/adaptmle-class.R</code></a></small>
+    <div class="hidden name"><code>get_results_adaptmle.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>Customized plotting method for easily examining data-adaptive statistics</p>
+    <p>Simple accessor function to extract and assign important statistical results
+ from the main function <code>adaptest</code>. INTERNAL USE ONLY.</p>
     
     </div>
 
-    <pre class="usage"><span class='co'># S3 method for data_adapt</span>
-<span class='fu'>plot</span>(<span class='no'>x</span>, <span class='no'>...</span>, <span class='kw'>plot_type</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"biomarker"</span>, <span class='st'>"adapt_param"</span>))</pre>
+    <pre class="usage"><span class='fu'>get_results_adaptmle</span>(<span class='no'>adaptmle_in</span>, <span class='no'>data_adapt_out</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>x</th>
-      <td><p>(data_adapt) - object of class <code>data_adapt</code> as returned by
-<code>adaptest</code></p></td>
+      <th>adaptmle_in</th>
+      <td><p>S4 object of classadapTMLE into which analytic results
+should be inserted for organizational and interfacing purposes.</p></td>
     </tr>
     <tr>
-      <th>...</th>
-      <td><p>additional arguments passed to <code>plot</code> as necessary</p></td>
-    </tr>
-    <tr>
-      <th>plot_type</th>
-      <td><p>character vector specifying which of the two types of plots
-to generate: "biomarker" for a plot sorted average CV-rank, or "adapt_param"
-for a plot sorted by q-values with labels corresponding to indices</p></td>
+      <th>data_adapt_out</th>
+      <td><p>S3 object of class <code>data_adapt</code> with analytic
+results from the statistical routine, as produced by <code>adaptest</code>.</p></td>
     </tr>
     </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>plot of model statistics</p>
+    <p>Called for side-effects (i.e., altering <code>adaptmle</code> objects).</p>
     
 
   </div>
