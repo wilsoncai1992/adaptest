@@ -4,57 +4,105 @@
 \alias{adaptest}
 \title{Data-adaptive Statistics for High-Dimensional Multiple Testing}
 \usage{
-adaptest(Y, A, W = NULL, n_top, n_fold,
-  parameter_wrapper = adaptest::rank_DE, SL_lib = c("SL.glm", "SL.step",
-  "SL.glm.interaction", "SL.gam", "SL.earth"), absolute = FALSE,
-  negative = FALSE, p_cutoff = 0.05, q_cutoff = 0.05)
+adaptest(Y, A, W = NULL, n_top, n_fold, parameter_wrapper = rank_DE,
+  learning_library = c("SL.glm", "SL.step", "SL.glm.interaction", "SL.gam",
+  "SL.earth"), absolute = FALSE, negative = FALSE, p_cutoff = 0.05,
+  q_cutoff = 0.05)
 }
 \arguments{
-\item{Y}{(numeric vector) - continuous or binary biomarkers (outcome variables)}
+\item{Y}{(numeric vector) - A \code{data.frame} or \code{matrix} of binary or
+continuous biomarker measures (outcome variables). Alternatively, this will
+be an object of class \code{adapTMLE} if the wrapper \code{bioadaptest} is
+invoked (n.b., the wrapper is the preferred interface for standard data
+analytic use-cases arising in computational and genomic biology).}
 
-\item{A}{(numeric vector) - binary treatment indicator: \code{1} = treatment, \code{0} = control}
+\item{A}{(numeric vector) - binary treatment indicator:
+\code{1} = treatment, \code{0} = control}
 
-\item{W}{(numeric vector, numeric matrix, or numeric data.frame) - matrix of baseline covariates where each column corrspond to one baseline covariate. each row correspond to one observation}
+\item{W}{(numeric vector, numeric matrix, or numeric data.frame) -
+matrix of baseline covariates where each column correspond to one baseline
+covariate and each row corresponds to one observation.}
 
-\item{n_top}{(integer vector) - value for the number of candidate covariates to generate
-using the data-adaptive estimation algorithm}
+\item{n_top}{(integer vector) - value for the number of candidate covariates
+to generate using the data-adaptive estimation algorithm}
 
 \item{n_fold}{(integer vector) - number of cross-validation folds.}
 
-\item{parameter_wrapper}{(function) - user-defined function that takes input (Y, A, W, absolute, negative) and outputs a (integer vector) containing ranks of biomarkers (outcome variables). For detail, refer to `rank_DE`}
+\item{parameter_wrapper}{(function) - user-defined function that takes input
+(Y, A, W, absolute, negative) and outputs a (integer vector) containing
+ranks of biomarkers (outcome variables). For details, please refer to the
+documentation for \code{rank_DE}}
 
-\item{SL_lib}{(character vector) - library of learning algorithms to be used in fitting the "Q" and "g" step of the standard TMLE procedure.}
+\item{learning_library}{(character vector) - library of learning algorithms
+to be used in fitting the "Q" and "g" step of the standard TMLE procedure.}
 
-\item{absolute}{(logical) - whether or not to test for absolute effect size. If \code{FALSE}, test for directional effect. This overrides argument \code{negative}.}
+\item{absolute}{(logical) - whether or not to test for absolute effect size.
+If \code{FALSE}, test for directional effect. This overrides argument
+\code{negative}.}
 
-\item{negative}{(logical) - whether or not to test for negative effect size. If \code{FALSE} = test for positive effect size. This is effective only when \code{absolute = FALSE}.}
+\item{negative}{(logical) - whether or not to test for negative effect size.
+If \code{FALSE} = test for positive effect size. This is effective only when
+\code{absolute = FALSE}.}
 
-\item{p_cutoff}{(numeric) - p-value cutoff (default as 0.05) at and below which to be considered significant. Used in inference stage.}
+\item{p_cutoff}{(numeric) - p-value cutoff (default as 0.05) at and below
+which to be considered significant. Used in inference stage.}
 
-\item{q_cutoff}{(numeric) - q-value cutoff (default as 0.05) at and below which to be considered significant. Used in multiple testing stage.}
+\item{q_cutoff}{(numeric) - q-value cutoff (default as 0.05) at and below
+which to be considered significant. Used in multiple testing stage.}
 }
 \value{
-S4 object of class data_adapt, with the following additional slots containing data-mining selected biomarkers and their TMLE-based differential expression and inference, as well as the original call to this function (for user reference), respectively.
+S4 object of class \code{data_adapt}, sub-classed from the container
+ class \code{SummarizedExperiment}, with the following additional slots
+ containing data-mining selected biomarkers and their TMLE-based differential
+ expression and inference, as well as the original call to this function (for
+ user reference), respectively.
 
-\code{top_index} (integer vector) - indices for the data-mining selected biomarkers
+\code{top_index} (integer vector) - indices for the data-mining
+ selected biomarkers
 
-\code{top_colname} (character vector) - names for the data-mining selected biomarkers
+\code{top_colname} (character vector) - names for the data-mining
+ selected biomarkers
 
-\code{top_colname_significant_q} (character vector) - names for the data-mining selected biomarkers, which are significant after multiple testing stage
+\code{top_colname_significant_q} (character vector) - names for the
+ data-mining selected biomarkers, which are significant after multiple
+ testing stage
 
-\code{DE} (numeric vector) - differential expression effect sizes for the biomarkers in \code{top_colname}
+\code{DE} (numeric vector) - differential expression effect sizes for
+ the biomarkers in \code{top_colname}
 
-\code{p_value} (numeric vector) - p-values for the biomarkers in \code{top_colname}
+\code{p_value} (numeric vector) - p-values for the biomarkers in
+ \code{top_colname}
 
-\code{q_value} (numeric vector) - q-values for the biomarkers in \code{top_colname}
+\code{q_value} (numeric vector) - q-values for the biomarkers in
+ \code{top_colname}
 
-\code{significant_q} (integer vector) - indices of \code{top_colname} which is significant after multiple testing stage.
+\code{significant_q} (integer vector) - indices of \code{top_colname}
+ which is significant after multiple testing stage.
 
-\code{mean_rank_top} (numeric vector) - average ranking across cross-validation folds for the biomarkers in \code{top_colname}
+\code{mean_rank_top} (numeric vector) - average ranking across folds
+ of cross-validation folds for the biomarkers in \code{top_colname}
 
 \code{folds} (origami::folds class) - cross validation object
 }
 \description{
-Computes marginal average treatment effects of a binary point treatment on multi-dimensional outcomes, adjusting for baseline covariates, using Targeted Minimum Loss-Based Estimation. A data-mining
-algorithm is used to perform biomarker selection before multiple testing to increase power.
+Computes marginal average treatment effects of a binary point treatment on
+multi-dimensional outcomes, adjusting for baseline covariates, using Targeted
+Minimum Loss-Based Estimation. A data-mining algorithm is used to perform
+biomarker selection before multiple testing to increase power.
+}
+\examples{
+set.seed(1234)
+data(simpleArray)
+simulated_array <- simulated_array
+simulated_treatment <- simulated_treatment
+
+adaptest(Y = simulated_array,
+         A = simulated_treatment,
+         W = NULL,
+         n_top = 5,
+         n_fold = 3,
+         learning_library = 'SL.glm',
+         parameter_wrapper = adaptest::rank_DE,
+         absolute = FALSE,
+         negative = FALSE)
 }

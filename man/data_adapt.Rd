@@ -5,27 +5,38 @@
 \title{S3-Style Constructor for Data Adaptive Parameter Class}
 \usage{
 data_adapt(Y, A, W = NULL, n_top, n_fold, absolute, negative,
-  parameter_wrapper, SL_lib)
+  parameter_wrapper, learning_library)
 }
 \arguments{
-\item{Y}{(numeric vector) - continuous or binary biomarkers (outcome variables)}
+\item{Y}{(numeric vector) - continuous or binary biomarkers outcome variables}
 
-\item{A}{(numeric vector) - binary treatment indicator: \code{1} = treatment, \code{0} = control}
+\item{A}{(numeric vector) - binary treatment indicator: \code{1} = treatment,
+\code{0} = control}
 
-\item{W}{(numeric vector, numeric matrix, or numeric data.frame) - matrix of baseline covariates where each column corrspond to one baseline covariate. each row correspond to one observation}
+\item{W}{(numeric vector, numeric matrix, or numeric data.frame) - matrix of
+baseline covariates where each column correspond to one baseline covariate.
+Each row correspond to one observation}
 
-\item{n_top}{(integer vector) - value for the number of candidate covariates to generate
-using the data-adaptive estimation algorithm}
+\item{n_top}{(integer vector) - value for the number of candidate covariates
+to generate using the data-adaptive estimation algorithm.}
 
 \item{n_fold}{(integer vector) - number of cross-validation folds.}
 
-\item{absolute}{(logical) - whether or not to test for absolute effect size. If \code{FALSE}, test for directional effect. This overrides argument \code{negative}.}
+\item{absolute}{(logical) - whether or not to test for absolute effect size.
+If \code{FALSE}, test for directional effect. This overrides argument
+\code{negative}.}
 
-\item{negative}{(logical) - whether or not to test for negative effect size. If \code{FALSE} = test for positive effect size. This is effective only when \code{absolute = FALSE}.}
+\item{negative}{(logical) - whether or not to test for negative effect size.
+If \code{FALSE} = test for positive effect size. This is effective only when
+\code{absolute = FALSE}.}
 
-\item{parameter_wrapper}{(function) - user-defined function that takes input (Y, A, W, absolute, negative) and outputs a (integer vector) containing ranks of biomarkers (outcome variables). For detail, refer to `rank_DE`}
+\item{parameter_wrapper}{(function) - user-defined function that takes input
+(Y, A, W, absolute, negative) and outputs a (integer vector) containing
+ranks of biomarkers (outcome variables). For detail, please refer to the
+documentation for \code{rank_DE}.}
 
-\item{SL_lib}{(character vector) - library of learning algorithms to be used in fitting the "Q" and "g" step of the standard TMLE procedure.}
+\item{learning_library}{(character vector) - library of learning algorithms
+to be used in fitting the "Q" and "g" step of the standard TMLE procedure.}
 }
 \value{
 \code{S3} object of class "data_adapt" for data-adaptive multiple

@@ -4,24 +4,47 @@
 \alias{rank_DE}
 \title{Compute ranking of biomarkers by sorting effect sizes}
 \usage{
-rank_DE(Y, A, W, absolute = FALSE, negative = FALSE)
+rank_DE(Y, A, W, absolute = FALSE, negative = FALSE,
+  learning_library = c("SL.glm", "SL.step", "SL.glm.interaction", "SL.gam"))
 }
 \arguments{
-\item{Y}{(numeric vector) - continuous or binary biomarkers (outcome variables)}
+\item{Y}{(numeric vector) - continuous or binary biomarkers outcome variables}
 
-\item{A}{(numeric vector) - binary treatment indicator: \code{1} = treatment, \code{0} = control}
+\item{A}{(numeric vector) - binary treatment indicator: \code{1} = treatment,
+\code{0} = control}
 
-\item{W}{(numeric vector, numeric matrix, or numeric data.frame) - matrix of baseline covariates where each column corrspond to one baseline covariate. each row correspond to one observation}
+\item{W}{(numeric vector, numeric matrix, or numeric data.frame) - matrix of
+baseline covariates where each column corrspond to one baseline covariate.
+Each row correspond to one observation}
 
-\item{absolute}{(logical) - whether or not to test for absolute effect size. If \code{FALSE}, test for directional effect. This overrides argument \code{negative}.}
+\item{absolute}{(logical) - whether or not to test for absolute effect size.
+If \code{FALSE}, test for directional effect. This overrides argument
+\code{negative}.}
 
-\item{negative}{(logical) - whether or not to test for negative effect size. If \code{FALSE} = test for positive effect size. This is effective only when \code{absolute = FALSE}.}
+\item{negative}{(logical) - whether or not to test for negative effect size.
+If \code{FALSE} = test for positive effect size. This is effective only when
+\code{absolute = FALSE}.}
+
+\item{learning_library}{(character vector) - library of learning algorithms
+to be used in fitting the "Q" and "g" step of the standard TMLE procedure.}
 }
 \value{
 an \code{integer vector} containing ranks of biomarkers.
 }
 \description{
-Computes ranking of biomarkers based effect sizes, which are computed by Targeted Minimum Loss-Based Estimation. This function
-is designed to be called inside \code{adaptest}; it should not be run by
-itself outside of that context.
+Computes ranking of biomarkers based effect sizes, which are computed by
+Targeted Minimum Loss-Based Estimation. This function is designed to be
+called inside \code{adaptest}; it should not be run by itself outside of that
+context.
+}
+\examples{
+set.seed(1234)
+data(simpleArray)
+simulated_array <- simulated_array
+simulated_treatment <- simulated_treatment
+rank_DE(Y = simulated_array,
+        A = simulated_treatment,
+        W = rep(1, length(simulated_treatment)),
+        absolute = FALSE,
+        negative = FALSE)
 }

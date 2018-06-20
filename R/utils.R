@@ -1,9 +1,12 @@
-#' Generic print method for data_adapt class
+#' Print method for data_adapt objects
 #'
 #' Customized informative print method for examining data-adaptive statistics
 #'
-#' @param x (data_adapt) - object of class \code{data_adapt} as returned by \code{adaptest}
+#' @param x (data_adapt) - object of class \code{data_adapt} as returned by
+#' \code{adaptest}
 #' @param ... additional arguments passed to \code{print} as necessary
+#'
+#' @return strings into stdout; containing information of the fitted model
 #'
 #' @export
 #'
@@ -29,35 +32,20 @@ print.data_adapt <- function(x, ...) {
   print(get_composition(x, type = "small")[[1]])
 }
 
-#' Method of \code{shinyprint} for objects of class \code{data_adapt}
-#'
-#' Provides HTML-based printing utility for examining data-adaptive statistics
-#'
-#' @param x (data_adapt) - object of class \code{data_adapt} as returned by \code{adaptest}
-#'
-#' @importFrom R2HTML HTML
-#'
-#' @export shinyprint.data_adapt
-#'
-shinyprint.data_adapt <- function(x) {
-  print.data_adapt(x)
-  HTML(paste(
-    "<b> The covariates still significant are </b>",
-    paste(x[[5]], collapse = " "),
-    sep = "<br/>"
-  ))
-}
+################################################################################
 
-
-#' Generic plot method for data_adapt class
+#' Plot method for data_adapt objects
 #'
 #' Customized plotting method for easily examining data-adaptive statistics
 #'
-#' @param x (data_adapt) - object of class \code{data_adapt} as returned by \code{adaptest}
+#' @param x (data_adapt) - object of class \code{data_adapt} as returned by
+#' \code{adaptest}
 #' @param plot_type character vector specifying which of the two types of plots
 #'  to generate: "biomarker" for a plot sorted average CV-rank, or "adapt_param"
 #'  for a plot sorted by q-values with labels corresponding to indices
 #' @param ... additional arguments passed to \code{plot} as necessary
+#'
+#' @return plot of model statistics
 #'
 #' @importFrom graphics abline plot
 #' @importFrom calibrate textxy
@@ -73,40 +61,44 @@ plot.data_adapt <- function(x, ..., plot_type = c("biomarker", "adapt_param")) {
 
   mean_rank_top <- x$mean_rank_top
   prob_in_top <- x$prob_in_top
+
   n_top.want <- length(top_index)
 
   if ("biomarker" %in% plot_type) {
     # Plot sorted average CV-rank
     plot(
-      mean_rank_top, ylab = "Mean CV-rank", pch = 20,
-      main = "Mean CV-rank of selected covariates \n (Smaller the better)"
+      mean_rank_top,
+      ylab = "Mean CV-rank", pch = 20,
+      main = "Mean CV-rank of selected covariates \n (smaller is better)"
     )
-
     calibrate::textxy(
-      (1:n_top.want) - 0.3, mean_rank_top + 0.5, top_index,
-      offset = .6
+      (seq_len(n_top.want)) - 0.3, mean_rank_top + 0.5, top_index,
+      offset = 0.6
     )
     abline(a = 0, b = 1, lty = 3)
   }
 
   if ("adapt_param" %in% plot_type) {
     # plot sorted q-values, labeled with index
-    temp.top_index <- c(1:n_top.want)[order(q_value)]
+    temp.top_index <- c(seq_len(n_top.want))[order(q_value)]
     plot(
       sort(q_value),
       pch = 20,
       ylab = "q-value",
-      main = "q-value of selected covariates \n (Smaller the better)"
+      main = "q-value of selected covariates \n (smaller is better)"
     )
     calibrate::textxy(
-      (1:n_top.want) - 0.3, sort(q_value), temp.top_index,
+      (seq_len(n_top.want))[seq_len(x$n_top)] - 0.3, sort(q_value),
+      temp.top_index,
       offset = 1
     )
     abline(h = 0.05, lty = 2)
   }
 }
 
-#' Summary tables of the `adaptest` object
+################################################################################
+
+#' Summary tables for data_adapt objects
 #'
 #' @param object (data_adapt) object as returned by \code{adaptest}
 #' @param ... not implemented
@@ -116,14 +108,16 @@ plot.data_adapt <- function(x, ..., plot_type = c("biomarker", "adapt_param")) {
 #'  the original data
 #'
 #' @return (data.frame) of the summary statistics
-#' @return \code{type = 'adapt_param'} wtih columns: 'data-adaptive parameters', 'Differential expression', 'p-values', 'q-values'
-#' @return \code{type = 'biomarker'} wtih columns: 'biomakers', 'mean rank', '% appear in top'
+#' @return \code{type = 'adapt_param'} wtih columns: 'data-adaptive parameters',
+#' 'Differential expression', 'p-values', 'q-values'
+#' @return \code{type = 'biomarker'} wtih columns: 'biomakers', 'mean rank', '%
+#' appear in top'
 #'
 #' @export
 #' @method summary data_adapt
 #'
-summary.data_adapt <- function(object, ..., type = "adapt_param") {
-  data_adapt_param <- 1:length(object$DE)
+summary.data_adapt <- function(object, type = "adapt_param", ...) {
+  data_adapt_param <- seq_len(length(object$DE)) # 1:length(object$DE)
   DE <- object$DE
   p_value <- object$p_value
   q_value <- object$q_value
@@ -142,10 +136,12 @@ summary.data_adapt <- function(object, ..., type = "adapt_param") {
   }
 
   if (type == "biomarker") {
-    # len <- length(top_biomarker)
-    # table_out <- data.frame(top_biomarker, mean_rank_top, prob_in_top)
-    # colnames(table_out) <- c('biomakers', 'mean rank',
-    #                          paste('% appear in top ', len))
-    # print(table_out)
+    len <- length(top_biomarker)
+    table_out <- data.frame(top_biomarker, mean_rank_top, prob_in_top)
+    colnames(table_out) <- c(
+      "biomakers", "mean rank",
+      paste("% appear in top ", len)
+    )
+    print(table_out)
   }
 }

@@ -1,10 +1,6 @@
 .onAttach <- function(...) {
-  packageStartupMessage(paste(
-    "adaptest: Data-adaptive statistics for",
-    "\n high-dimensional multiple testing"
+  packageStartupMessage(paste0(
+    "adaptest v", utils::packageDescription("adaptest")$Version,
+    ": Data-Adaptive Statistics for High-Dimensional Multiple Testing"
   ))
-  packageStartupMessage(
-    "Version: ",
-    utils::packageDescription("adaptest")$Version
-  )
 }

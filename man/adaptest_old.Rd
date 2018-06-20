@@ -5,8 +5,8 @@
 \title{OLD Data-Adaptive Algorithm Implementation (for reference only)}
 \usage{
 adaptest_old(Y, A, W = NULL, n_top, n_fold, folds_vec = NULL,
-  parameter_wrapper = adaptest::rank_DE, SL_lib = c("SL.glm", "SL.step",
-  "SL.glm.interaction", "SL.gam", "SL.earth"), absolute = FALSE,
+  parameter_wrapper = adaptest::rank_DE, learning_library = c("SL.glm",
+  "SL.step", "SL.glm.interaction", "SL.gam", "SL.earth"), absolute = FALSE,
   negative = FALSE)
 }
 \arguments{
@@ -28,7 +28,7 @@ procedure is used.}
 
 \item{parameter_wrapper}{function}
 
-\item{SL_lib}{character}
+\item{learning_library}{character}
 
 \item{absolute}{boolean: \code{TRUE} = test for absolute effect size. This
 \code{FALSE} = test for directional effect. This overrides argument
@@ -36,6 +36,10 @@ procedure is used.}
 
 \item{negative}{boolean: \code{TRUE} = test for negative effect size,
 \code{FALSE} = test for positive effect size}
+}
+\value{
+\code{S3} object of class "data_adapt" for data-adaptive multiple
+ testing.
 }
 \description{
 Performs targeted minimum loss-based estimation (TMLE )of a marginal additive
@@ -47,3 +51,4 @@ associated with multiple testing. INTERNAL USE ONLY.
 Wilson Cai \email{wcai@berkeley.edu}, in collaboration with Alan E.
         Hubbard, with contributions from Nima S. Hejazi.
 }
+\keyword{internal}
