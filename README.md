@@ -43,8 +43,9 @@ For standard use, install from
 [Bioconductor](https://bioconductor.org/packages/adaptest):
 
 ``` r
-source("https://bioconductor.org/biocLite.R")
-biocLite("adaptest")
+if (!requireNamespace("BiocManager", quietly=TRUE))
+    install.packages("BiocManager")
+BiocManager::install("adaptest")
 ```
 
 To contribute, install the bleeding-edge *development version* from

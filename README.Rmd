@@ -45,8 +45,9 @@ parameters, the interested reader is directed to @hubbard2016statistical.
 For standard use, install from
 [Bioconductor](https://bioconductor.org/packages/adaptest):
 ```{r bioc-installation, eval = FALSE}
-source("https://bioconductor.org/biocLite.R")
-biocLite("adaptest")
+if (!requireNamespace("BiocManager", quietly=TRUE))
+    install.packages("BiocManager")
+BiocManager::install("adaptest")
 ```
 
 To contribute, install the bleeding-edge _development version_ from GitHub via
