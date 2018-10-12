@@ -4,9 +4,10 @@
 \alias{bioadaptest}
 \title{Data Adaptive Multiple Testing for Computational Biology}
 \usage{
-bioadaptest(data_in, var_int, cntrl_set = NULL, n_top = 25, n_fold = 10,
-  parameter_wrapper = rank_DE, learning_library = c("SL.mean", "SL.glm"),
-  absolute = FALSE, negative = FALSE, p_cutoff = 0.05, q_cutoff = 0.05)
+bioadaptest(data_in, var_int, cntrl_set = NULL, n_top = 25,
+  n_fold = 10, parameter_wrapper = rank_DE,
+  learning_library = c("SL.mean", "SL.glm"), absolute = FALSE,
+  negative = FALSE, p_cutoff = 0.05, q_cutoff = 0.05)
 }
 \arguments{
 \item{data_in}{An object of class \code{SummarizedExperiment}, a common

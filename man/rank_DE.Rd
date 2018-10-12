@@ -5,7 +5,8 @@
 \title{Compute ranking of biomarkers by sorting effect sizes}
 \usage{
 rank_DE(Y, A, W, absolute = FALSE, negative = FALSE,
-  learning_library = c("SL.glm", "SL.step", "SL.glm.interaction", "SL.gam"))
+  learning_library = c("SL.glm", "SL.step", "SL.glm.interaction",
+  "SL.gam"))
 }
 \arguments{
 \item{Y}{(numeric vector) - continuous or binary biomarkers outcome variables}

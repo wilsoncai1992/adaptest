@@ -6,8 +6,8 @@
 \usage{
 adaptest_old(Y, A, W = NULL, n_top, n_fold, folds_vec = NULL,
   parameter_wrapper = adaptest::rank_DE, learning_library = c("SL.glm",
-  "SL.step", "SL.glm.interaction", "SL.gam", "SL.earth"), absolute = FALSE,
-  negative = FALSE)
+  "SL.step", "SL.glm.interaction", "SL.gam", "SL.earth"),
+  absolute = FALSE, negative = FALSE)
 }
 \arguments{
 \item{Y}{continuous or binary outcome variable}

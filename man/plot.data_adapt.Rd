@@ -4,7 +4,8 @@
 \alias{plot.data_adapt}
 \title{Plot method for data_adapt objects}
 \usage{
-\method{plot}{data_adapt}(x, ..., plot_type = c("biomarker", "adapt_param"))
+\method{plot}{data_adapt}(x, ..., plot_type = c("biomarker",
+  "adapt_param"))
 }
 \arguments{
 \item{x}{(data_adapt) - object of class \code{data_adapt} as returned by

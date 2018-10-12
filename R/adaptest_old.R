@@ -209,7 +209,7 @@ adaptest_old <- function(Y,
   # ============================================================================
   # compute average rank across all folds
   mean_rank <- colMeans(rank_in_folds)
-  top_index <- sort(as.numeric(unique(unlist(sapply(top_colname, names)))))
+  top_index <- sort(as.numeric(unique(unlist(vapply(top_colname, names)))))
 
   mean_rank_top <- mean_rank[top_index]
 

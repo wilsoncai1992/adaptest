@@ -5,9 +5,9 @@
 \title{Data-adaptive Statistics for High-Dimensional Multiple Testing}
 \usage{
 adaptest(Y, A, W = NULL, n_top, n_fold, parameter_wrapper = rank_DE,
-  learning_library = c("SL.glm", "SL.step", "SL.glm.interaction", "SL.gam",
-  "SL.earth"), absolute = FALSE, negative = FALSE, p_cutoff = 0.05,
-  q_cutoff = 0.05)
+  learning_library = c("SL.glm", "SL.step", "SL.glm.interaction",
+  "SL.gam", "SL.earth"), absolute = FALSE, negative = FALSE,
+  p_cutoff = 0.05, q_cutoff = 0.05)
 }
 \arguments{
 \item{Y}{(numeric vector) - A \code{data.frame} or \code{matrix} of binary or
