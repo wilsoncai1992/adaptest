@@ -38,8 +38,6 @@ build_script:
   - travis-tool.sh install_bioc BiocParallel
   - travis-tool.sh install_bioc S4Vectors
   - travis-tool.sh install_bioc SummarizedExperiment
-  - travis-tool.sh install_bioc GenomeInfoDb
-  - travis-tool.sh install_bioc GenomeInfoDbData
   - travis-tool.sh install_bioc airway
   - travis-tool.sh install_bioc_deps
 

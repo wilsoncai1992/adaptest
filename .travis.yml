@@ -24,9 +24,10 @@ before_install:
 r_packages:
   - devtools
   - covr
+  - BiocManager
 
 r_github_packages:
-  - r-lib/devtools
+  - r-lib/devtools@2d012d1
   - jimhester/covr
   - tlverse/origami
 
