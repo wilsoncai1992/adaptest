@@ -35,7 +35,6 @@ Imports:
     calibrate,
     origami (>= 1.0.0),
     SummarizedExperiment,
-    BiocGenerics,
     S4Vectors,
     tmle
 Suggests:

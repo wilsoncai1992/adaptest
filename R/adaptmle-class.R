@@ -5,7 +5,6 @@
 #' @importFrom methods setClass new
 #' @importClassesFrom SummarizedExperiment SummarizedExperiment
 #' @importClassesFrom S4Vectors Vector Annotated
-#' @import BiocGenerics
 #'
 #' @export .adaptmle
 #' @exportClass adapTMLE
