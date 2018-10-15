@@ -1,7 +1,8 @@
 ---
 title: "Data-Mining Biomarkers and High-Dimensional Testing"
-author: "Wilson Cai and Nima Hejazi"
+author: "Wilson Cai and [Nima Hejazi](https://nimahejazi.org)"
 date: "`r Sys.Date()`"
+bibliography: vignette-refs.bib
 output:
   BiocStyle::html_document
 vignette: >
@@ -39,20 +40,25 @@ Y <- simulated_array
 A <- simulated_treatment
 ```
 
-In order to perform Targeted Minimum Loss-Based Estimation, we need three
-separate data structures: (1) _W_, baseline covariates that could potentially
-confound the association of biomarkers with the exposure of interest; (2) _A_,
-the point exposure of interest; and (3) _Y_, the biomarkers of interest. All
-values in _A_ ought to be binarized, in order to avoid practical violations of
-the assumption of positivity. To invoke the data-adaptive testing function
+In order to construct targeted minimum loss-based estimates for the purpose of
+hypothesis testing with data-adaptive parameters, we need three separate data
+structures:
+
+1. _W_, baseline covariates that could potentially confound the association of
+   biomarkers with the exposure of interest;
+2. _A_, the point exposure of interest; and
+3. _Y_, the biomarkers of interest.
+
+All values in _A_ ought to be binarized, in order to avoid practical violations
+of the assumption of positivity. To invoke the data-adaptive testing function
 (`adaptest`), we also need to specify the number of top biomarkers `n_top` to
 the data-mining algorithm, and the number of folds `n_fold` for cross-
 validation. The smaller `n_top` is, the more selective data-mining algorithm we
-have. The larger `n_fold` is, more folds are carried our in cross validaiton.
+have. The larger `n_fold` is, more folds are carried our in cross-validation.
 
 The TMLE-based biomarker discovery process can be invoked using the `adaptest`
 function. The procedure is quite resource-intensive because it evaluates the
-association of each individual potential biomarker (of which there are 1e3 in
+association of each individual potential biomarker (of which there are $1000$ in
 the included data set) with an exposure of interest, while accounting for
 potential confounding based on all other covariates included in the design
 matrix. We demonstrate the necessary syntax for calling `adaptest` below:
@@ -69,8 +75,9 @@ adaptest_out <- adaptest(Y = Y,
                          negative = FALSE)
 ```
 
-The output of `adaptest` is an object of class `adaptest`, containing the
-following objects:
+The output of `adaptest` is an object of class `data_adapt`, containing the
+following major components:
+
 1. `top_index`: (integer vector) - indices for the biomarkers selected by way of
    data-mining.
 2. `top_colname`: (character vector) - names for the biomarkers selected by way
@@ -86,11 +93,36 @@ following objects:
    significant after multiple testing stage.
 8. `mean_rank_top`: (numeric vector) - average ranking across cross-validation
    folds for the biomarkers in `top_colname`.
-9. `folds`: (origami::folds class) - object of cross-validation folds.
+9. `folds`: (`origami::folds class`) - object of cross-validation folds.
 
-After invoking `adaptest`, the resultant `adaptest` object will have the slots
-described above completely filled in. The statistical results of this procedure
-can be extracted using `summary` method.
+After invoking `adaptest`, the resultant `data_adapt` object will have the slots
+described above completely populated. Note that simply calling `objects()` on an
+object of class `data_adapt` will return more slots than those described above
+-- many of these are auxiliary slots containing information that is likely not
+of interest to the user. The $9$ slots given above contain information that
+summarizes the findings of the data-adaptive hypothesis testing procedure.
+What's more, even individually accessing these slots is inconvenient; thus, we
+provide a `summary` method to allow the statistical results of this procedure to
+be extracted easily. We demonstrate this below
+
+```{r adaptest_summary, message=FALSE}
+summary(adaptest_out)
+```
+
+In the table above, each column provides information about the results of the
+data-adaptive hypothesis testing procedure. In particular, columns 2-4 provide
+effect sizes, p-values, and q-values (after multiple testing correction) that
+may be of interest in scientifically interpreting the findings of the procedure.
+
+As our goal in this vignette is to describe the properties of the `adaptest`
+software package and its operation, we omit a discussion of the statistical
+methodology implemented in this R package. A fully detailed technical account of
+the data-adaptive multiple testing procedure is available in @cai2018data,
+presently available on the arxiv. For an introduction to statistical inference
+procedures using data-adaptive target parameters, the interested reader is
+directed to @hubbard2016statistical. For background on the Targeted Learning
+methodology, as well as recent advances, the canonical references are
+@vdl2011targeted and @vdl2018targeted.
 
 ---
 
@@ -109,9 +141,10 @@ get_composition(object = adaptest_out, type = "small")
 
 Setting the argument `type = "big"` will instead produce a table of composition
 of each data-adaptive parameters before multiple testing stage, so that there
-are more columns
+are more columns. We omit running the code below since the output is large.
 
-```{r get_comp_big}
+```{r get_comp_big, eval=FALSE}
+# NOT RUN
 get_composition(object = adaptest_out, type = "big")
 ```
 
@@ -187,4 +220,8 @@ airway_out <- bioadaptest(data_in = simple_air,
 ```{r session_info, echo=FALSE}
 sessionInfo()
 ```
+
+---
+
+## References
 
