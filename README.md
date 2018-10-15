@@ -12,13 +12,19 @@ Status](https://img.shields.io/codecov/c/github/wilsoncai1992/adaptest/master.sv
 [![Project Status: WIP – Initial development is in progress, but there
 has not yet been a stable, usable release suitable for the
 public.](http://www.repostatus.org/badges/latest/wip.svg)](http://www.repostatus.org/#wip)
+[![BioC
+status](http://www.bioconductor.org/shields/build/release/bioc/adpatest.svg)](https://bioconductor.org/checkResults/release/bioc-LATEST/adpatest)
+[![Bioc
+Time](http://bioconductor.org/shields/years-in-bioc/adpatest.svg)](https://bioconductor.org/packages/release/bioc/html/adpatest.html)
+[![Bioc
+Downloads](http://bioconductor.org/shields/downloads/adpatest.svg)](https://bioconductor.org/packages/release/bioc/html/adpatest.html)
 [![GPL-2
 License](http://img.shields.io/:license-gpl2-blue.svg)](http://www.gnu.org/licenses/gpl-2.0.html)
 [![JOSS
 status](http://joss.theoj.org/papers/7618d7d14ac77f6f502df3f9eac5917d/status.svg)](http://joss.theoj.org/papers/7618d7d14ac77f6f502df3f9eac5917d)
 
 > Data-adaptive statistics for multiple testing in high-dimensional
-> problems
+> biology
 
 **Authors:** [Wilson Cai](https://stat.berkeley.edu/~wcai) and [Nima
 Hejazi](https://nimahejazi.org)
@@ -28,7 +34,7 @@ Hejazi](https://nimahejazi.org)
 ## What’s `adaptest`?
 
 The `adaptest` R package is a tool for performing multiple testing on
-effect sizes under high-dimensional settings, using the approach of
+effect sizes in high-dimensional settings, using the approach of
 data-adaptive statistical target parameters and inference. For technical
 details on the data-adaptive multiple testing procedure, consult Cai,
 Hejazi, and Hubbard (n.d.). For an introduction to statistical inference
@@ -50,8 +56,8 @@ if (!("BiocManager" %in% installed.packages())) {
 BiocManager::install("adaptest")
 ```
 
-To contribute, install the bleeding-edge *development version* from
-GitHub via
+To contribute, install the *development version* (i.e., branch
+`master`\_\_) from GitHub via
 [`devtools`](https://www.rstudio.com/products/rpackages/devtools/):
 
 ``` r
@@ -67,11 +73,16 @@ Bioconductor 3.7, use
 devtools::install_github("wilsoncai1992/adaptest", ref = "RELEASE_3_7")
 ```
 
+***Note*: As the first stable release of this package was through
+Bioconductor v3.7, the minimum version of
+[R](https://www.r-project.org/) required to install `adaptest` is 3.5.0
+(“Joy in Playing”).**
+
 -----
 
 ## Example
 
-For details on how to best use the `methyvim` R package, please consult
+For details on how to best use the `adaptest` R package, please consult
 the most recent [package
 vignette](https://bioconductor.org/packages/release/bioc/vignettes/adaptest/inst/doc/differentialExpression.html)
 available through the [Bioconductor
@@ -97,7 +108,7 @@ prior to submitting a pull request.
 
 ## Citation
 
-After using the `adaptest` R package, please cite it:
+After using the `adaptest` R package, please cite the following
 
 ``` 
   @article{cai2018adaptest,
@@ -109,9 +120,23 @@ After using the `adaptest` R package, please cite it:
     volume = {submitted},
     number = {},
     author = {Cai, Weixin and Hubbard, Alan E and Hejazi, Nima S},
-    title = {adaptest: Data-Adaptive Statistics for High-Dimensional
-      Testing in R},
+    title = {{adaptest}: Data-Adaptive Statistics for High-Dimensional
+      Testing in {R}},
     journal = {The Journal of Open Source Software}
+  }
+
+  @article{cai2018adaptive,
+    doi = {},
+    url = {https://arxiv.org/abs/1704.07008},
+    year  = {2018+},
+    month = {},
+    publisher = {},
+    volume = {},
+    number = {},
+    author = {Cai, Weixin and Hejazi, Nima S and Hubbard, Alan E},
+    title = {Data-adaptive statistics for multiple hypothesis testing in
+      high-dimensional settings},
+    journal = {}
   }
 ```
 

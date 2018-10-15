@@ -35,7 +35,6 @@ Imports:
     calibrate,
     origami (>= 1.0.0),
     SummarizedExperiment,
-    BiocGenerics,
     S4Vectors,
     tmle
 Suggests:
@@ -50,7 +49,7 @@ Suggests:
     nnls,
     airway
 VignetteBuilder: knitr
-RoxygenNote: 6.0.1.9000
+RoxygenNote: 6.1.0.9000
 biocViews:
     Genetics,
     GeneExpression,
