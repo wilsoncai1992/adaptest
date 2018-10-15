@@ -21,7 +21,7 @@ authors:
 affiliations:
  - name: Group in Biostatistics, University of California, Berkeley
    index: 1
-date: 20 June 2018
+date: 15 October 2018
 bibliography: manuscript.bib
 ---
 
@@ -41,58 +41,69 @@ Data-adaptive test statistics for multiple testing are motivated by efforts to
 address the limitations of existing multiple testing methods such as the
 popular Benjamini-Hochberg procedure to control the False Discovery Rate (FDR)
 [@benjamini1995controlling] or the Bonferroni method to control the Family-Wise
-Error Rate (FWER) [@dunn1961multiple]. Such methods have been well studied in
-the literature on multiple testing, and it was been well establish that, for a
-fixed targeted effect size and fixed sample size, power decreases as the number
-of tests and corresponding critical values increase [@lazzeroni2010cost].
-Further, @lazzeroni2010cost show that if the power for a single test is 80\%,
-the power is approximately 50\% for 10; 10\% for 1000; and 1\% for 100,000
+Error Rate (FWER) [@dunn1961multiple]. Such methods are well studied in the
+literature on multiple testing, and it is well established that, for a fixed
+targeted effect size and fixed sample size, power decreases as the number of
+tests and corresponding critical values increase [@lazzeroni2010cost]. Further,
+@lazzeroni2010cost show that if the power for a single test is 80\%, the power
+is approximately 50\% for 10; 10\% for 1000; and 1\% for 100,000
 Bonferroni-adjusted tests, a classic method to correct for Type-I error when
 facing multiple testing issues. This simple example demonstrates that data
 analysts and other practitioners must invest, at a prohibitively high rate,
 additional resources to collect samples in order to obtain meaningful results
 under high-dimensional multiple testing constraints.
 
-Utilizing this recently developed data-adaptive statistical framework,
-information loss induced by standard multiple testing procedures can be avoided
-by reducing the dimensionality of problems via data-adaptive variable reduction.
-This recent methodological advance, a data-adaptive multiple testing technique
-[@cai2018data-adaptive], is a natural extension of the data-adaptive target
-parameter framework introduced in @hubbard2016statistical and
-@hubbard2016mining, which present a new class of inference procedures that
-introduce more rigorous statistical inference into problems being increasingly
-addressed by clever yet _ad hoc_ algorithms for data mining.
+Utilizing this recently developed data-adaptive statistical framework, our
+method reduces information loss induced by standard multiple testing procedures
+through data-adaptive dimensionality reduction. This recent methodological
+advance, a data-adaptive multiple testing technique [@cai2018data-adaptive], is
+a natural extension of the data-adaptive target parameter framework introduced
+in @hubbard2016statistical and @hubbard2016mining, which present a new class of
+inference procedures that introduce more rigorous statistical inference into
+problems being increasingly addressed by smart yet _ad hoc_ algorithms for data
+mining.
 
 The approach of data-adaptive test statistics improves on current approaches to
-multiple testing by applying a set of estimation algorithms (specified by the
+multiple testing by applying a set of data-mining algorithms (specified by the
 user) across splits of a particular sample of data, allowing for parameters of
 interest to be discovered from the data. Such methods uncover associations that
 are stable across the full sample and restrict multiple testing to a smaller
 subset of covariates by allowing for variable importance to be measured via the
-data-adaptive procedure. Test statistics formulated in this framework are
-expected to both outperform pre-specified test statistics and provide improved
-power as well as Type I error control, all while simultaneously allowing for
+data-adaptive procedure. Test statistics are formulated on a separately
+held-out subset of data and are expected to both outperform pre-specified test
+statistics and provide improved power, all while simultaneously allowing for
 appropriate statistical inference to be performed.
 
-We illustrate the use of data-adaptive test statistics for parameter discovery
-by considering a simulated data set with 100 observations in 1000 dimensions,
-with a "true" signal constrained to just 10 covariates/dimensions. By applying
-the approach discussed above, using cross-validation to rank features, we obtain
-a ranking of the most important covariates -- that is, those dimensions most
-closely associated with the "true" signal. A ranking of features across folds of
-cross-validation is displayed below:
+We illustrate how to apply the ``data-adaptive test statistics`` for multiple
+testing by considering a simulated randomized trial with binary treatment and
+1000 outcomes (e.g., biomarkers in the microarray analysis). The dataset size
+is 100 observations. Of the 1000 outcomes (biomarkers), outcome 1 - 10 have
+effect sizes equal to 0.6, while the treatment has no effect on outcomes 11 -
+1000. After applying our ``data-adaptive test statistics`` method (using the
+`adaptest` function in the R package), we obtain a rank order (regarding effect
+size) for all outcomes across multiple cross-validation folds. We then average
+the rank order across folds, sort in ascending order, which gives us Figure
+\ref{avg_rank}. By looking at the top 15 outcomes in Figure \ref{avg_rank}, we
+observe that there are two large jumps in average rank order of the top 15
+outcomes: between outcome 9 and 4, and between outcome 3 and 2. These jumps
+naturally divide the outcomes into tiers regarding importance. Outcome 9
+consistently ranks highly in the importance measure employed across the many
+rounds of cross-validation performed. In this example, we recommend
+practitioner first to analyze outcome 9, and if data size allows, extend the
+analysis to the group of outcome from 4 to 3, and so on. Figure \ref{q_value}
+displays adjusted p-values of the same set of outcomes as in Figure
+\ref{avg_rank}, with a group of outcomes (outcome 9 to outcome 3) with very
+significant effect.
 
-![Average Rank of Top Covariates: here, the top ten covariates have CV-rank
-aligning linearly, indicating a stable ranking pattern.](figs/mean_rank.pdf)
+![Average rank order of outcomes regarding absolute estimated effect size
+across cross-validation folds (simulated data). The top outcomes are displayed
+after being sorted in ascending order. \label{avg_rank}](figs/mean_rank.pdf)
 
-From the plot displayed above, it is clear to see that there is a rather sharp
-divide in the ranking of covariates associated with the "true" signal -- that
-is, these are those covariates that consistently rank highly in the importance
-measure employed across the many rounds of cross-validation performed. The plot
-of p-values displayed below shows these same features with low p-values, with a
-clearly strong divide consistent with that displayed in the previous plot:
-
-![Adjusted P-values for the Reduced Set of Hypotheses](figs/adj_p_val.pdf)
+![Adjusted p-values (using the Benjamini-Hochberg procedure) of the same set of
+candidate outcomes, computed on a validation set that is mutually exclusive
+from the data used to compute the rank order in Figure \ref{avg_rank}. The top
+outcomes are displayed after being sorted in ascending order.
+\label{q_value}](figs/adj_p_val.pdf)
 
 The `adaptest` R package provides utilities for performing the estimation and
 hypothesis testing procedures discussed above, and detailed in
@@ -103,7 +114,7 @@ Bioconductor ecosystem [@huber2015orchestrating], making it well-suited for
 applications in computational biology, where high-dimensional data structures
 very often arise. The R package includes documentation and detailed vignettes
 that will allow for both (bio)statisticians and computational biologists to
-easily make use of this new tool in such data analytic problem settings.
+efficiently make use of this new tool in such data analytic problem settings.
 
 \newpage
 
