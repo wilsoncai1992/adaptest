@@ -19,9 +19,9 @@ knitr::opts_chunk$set(
 [![AppVeyor Build  Status](https://ci.appveyor.com/api/projects/status/github/wilsoncai1992/adaptest?branch=master&svg=true)](https://ci.appveyor.com/project/wilsoncai1992/adaptest/)
 [![Coverage Status](https://img.shields.io/codecov/c/github/wilsoncai1992/adaptest/master.svg)](https://codecov.io/github/wilsoncai1992/adaptest?branch=master)
 [![Project Status: WIP – Initial development is in progress, but there has not yet been a stable, usable release suitable for the public.](http://www.repostatus.org/badges/latest/wip.svg)](http://www.repostatus.org/#wip)
-[![BioC status](http://www.bioconductor.org/shields/build/release/bioc/adpatest.svg)](https://bioconductor.org/checkResults/release/bioc-LATEST/adpatest)
-[![Bioc Time](http://bioconductor.org/shields/years-in-bioc/adpatest.svg)](https://bioconductor.org/packages/release/bioc/html/adpatest.html)
-[![Bioc Downloads](http://bioconductor.org/shields/downloads/adpatest.svg)](https://bioconductor.org/packages/release/bioc/html/adpatest.html)
+[![BioC status](http://www.bioconductor.org/shields/build/release/bioc/adaptest.svg)](https://bioconductor.org/checkResults/release/bioc-LATEST/adaptest)
+[![Bioc Time](http://bioconductor.org/shields/years-in-bioc/adaptest.svg)](https://bioconductor.org/packages/release/bioc/html/adaptest.html)
+[![Bioc Downloads](http://bioconductor.org/shields/downloads/adaptest.svg)](https://bioconductor.org/packages/release/bioc/html/adaptest.html)
 [![GPL-2 License](http://img.shields.io/:license-gpl2-blue.svg)](http://www.gnu.org/licenses/gpl-2.0.html)
 [![JOSS status](http://joss.theoj.org/papers/7618d7d14ac77f6f502df3f9eac5917d/status.svg)](http://joss.theoj.org/papers/7618d7d14ac77f6f502df3f9eac5917d)
 
