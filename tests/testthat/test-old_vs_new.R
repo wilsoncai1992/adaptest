@@ -13,19 +13,11 @@ context("adaptest works the same under old and origami implementations")
 # simulation
 ################################################################################
 n.sim <- 1e2 # sample size
-# n.sim <- 1e3 # sample size
-# n.sim <- 1 # sample size
-# p.all <- 1e3 # No. of dimensions of Y (signal + non-signal)
 p.all <- 1e4 # No. of dimensions of Y (signal + non-signal)
-# p.all <- 1e5 # No. of dimensions of Y (signal + non-signal)
-# p.all <- 1e6 # No. of dimensions of Y (signal + non-signal)
 p.true <- 10 # No. of dimensions for signal
-# signal.true <- 1 # size of true signal
 signal.true <- 0.6 # size of true signal
-# signal.true <- .8 # size of true signal
 signal.true.W <- 0.1
 
-# n.top.want <- p.true
 n.top.want <- 15
 n.fold <- 10
 
