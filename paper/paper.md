@@ -95,9 +95,15 @@ displays adjusted p-values of the same set of outcomes as in Figure
 \ref{avg_rank}, with a group of outcomes (outcome 9 to outcome 3) with very
 significant effect.
 
-![Average rank order of outcomes regarding absolute estimated effect size across cross-validation folds (simulated data). The top outcomes are displayed after being sorted in ascending order. \label{avg_rank}](figs/mean_rank.pdf)
+![Average rank order of outcomes regarding absolute estimated effect size
+across cross-validation folds (simulated data). The top outcomes are displayed
+after being sorted in ascending order. \label{avg_rank}](figs/mean_rank.pdf)
 
-![Adjusted p-values (using the Benjamini-Hochberg procedure) of the same set of candidate outcomes, computed on a validation set that is mutually exclusive from the data used to compute the rank order in Figure \ref{avg_rank}. The top outcomes are displayed after being sorted in ascending order. \label{q_value}](figs/adj_p_val.pdf)
+![Adjusted p-values (using the Benjamini-Hochberg procedure) of the same set of
+candidate outcomes, computed on a validation set that is mutually exclusive
+from the data used to compute the rank order in Figure \ref{avg_rank}. The top
+outcomes are displayed after being sorted in ascending order.
+\label{q_value}](figs/adj_p_val.pdf)
 
 The `adaptest` R package provides utilities for performing the estimation and
 hypothesis testing procedures discussed above, and detailed in
