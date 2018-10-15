@@ -13,11 +13,11 @@ Status](https://img.shields.io/codecov/c/github/wilsoncai1992/adaptest/master.sv
 has not yet been a stable, usable release suitable for the
 public.](http://www.repostatus.org/badges/latest/wip.svg)](http://www.repostatus.org/#wip)
 [![BioC
-status](http://www.bioconductor.org/shields/build/release/bioc/adpatest.svg)](https://bioconductor.org/checkResults/release/bioc-LATEST/adpatest)
+status](http://www.bioconductor.org/shields/build/release/bioc/adaptest.svg)](https://bioconductor.org/checkResults/release/bioc-LATEST/adaptest)
 [![Bioc
-Time](http://bioconductor.org/shields/years-in-bioc/adpatest.svg)](https://bioconductor.org/packages/release/bioc/html/adpatest.html)
+Time](http://bioconductor.org/shields/years-in-bioc/adaptest.svg)](https://bioconductor.org/packages/release/bioc/html/adaptest.html)
 [![Bioc
-Downloads](http://bioconductor.org/shields/downloads/adpatest.svg)](https://bioconductor.org/packages/release/bioc/html/adpatest.html)
+Downloads](http://bioconductor.org/shields/downloads/adaptest.svg)](https://bioconductor.org/packages/release/bioc/html/adaptest.html)
 [![GPL-2
 License](http://img.shields.io/:license-gpl2-blue.svg)](http://www.gnu.org/licenses/gpl-2.0.html)
 [![JOSS
