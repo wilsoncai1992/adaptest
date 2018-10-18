@@ -22,7 +22,7 @@ affiliations:
  - name: Group in Biostatistics, University of California, Berkeley
    index: 1
 date: 15 October 2018
-bibliography: manuscript.bib
+bibliography: paper.bib
 ---
 
 # Summary
