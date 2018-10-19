@@ -24,7 +24,7 @@ knitr::opts_chunk$set(
 [![Bioc Downloads](http://bioconductor.org/shields/downloads/adaptest.svg)](https://bioconductor.org/packages/release/bioc/html/adaptest.html)
 [![GPL-2 License](http://img.shields.io/:license-gpl2-blue.svg)](http://www.gnu.org/licenses/gpl-2.0.html)
 [![Zenodo DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.1466019.svg)](https://doi.org/10.5281/zenodo.1466019)
-[![JOSS status](http://joss.theoj.org/papers/7618d7d14ac77f6f502df3f9eac5917d/status.svg)](http://joss.theoj.org/papers/7618d7d14ac77f6f502df3f9eac5917d)
+[![JOSS Status and DOI](http://joss.theoj.org/papers/10.21105/joss.00161/status.svg)](https://doi.org/10.21105/joss.00161)
 
 > Data-adaptive statistics for multiple testing in high-dimensional biology
 
@@ -109,31 +109,25 @@ prior to submitting a pull request.
 After using the `adaptest` R package, please cite the following
 
       @article{cai2018adaptest,
-        doi = {},
-        url = {},
+        doi = {10.21105/joss.00161},
+        url = {https://doi.org/10.21105/joss.00161},
         year  = {2018},
-        month = {},
+        month = {October},
         publisher = {The Open Journal},
-        volume = {submitted},
-        number = {},
+        volume = {3},
+        number = {30},
         author = {Cai, Weixin and Hubbard, Alan E and Hejazi, Nima S},
         title = {{adaptest}: Data-Adaptive Statistics for High-Dimensional
           Testing in {R}},
         journal = {The Journal of Open Source Software}
       }
 
-      @article{cai2018adaptive,
-        doi = {},
+      @article{cai2018+adaptive,
         url = {https://arxiv.org/abs/1704.07008},
         year  = {2018+},
-        month = {},
-        publisher = {},
-        volume = {},
-        number = {},
         author = {Cai, Weixin and Hejazi, Nima S and Hubbard, Alan E},
         title = {Data-adaptive statistics for multiple hypothesis testing in
-          high-dimensional settings},
-        journal = {}
+          high-dimensional settings}
       }
 
 ---
