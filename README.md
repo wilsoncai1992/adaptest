@@ -9,9 +9,9 @@ Status](https://travis-ci.org/wilsoncai1992/adaptest.svg?branch=master)](https:/
 Status](https://ci.appveyor.com/api/projects/status/github/wilsoncai1992/adaptest?branch=master&svg=true)](https://ci.appveyor.com/project/wilsoncai1992/adaptest/)
 [![Coverage
 Status](https://img.shields.io/codecov/c/github/wilsoncai1992/adaptest/master.svg)](https://codecov.io/github/wilsoncai1992/adaptest?branch=master)
-[![Project Status: WIP – Initial development is in progress, but there
-has not yet been a stable, usable release suitable for the
-public.](http://www.repostatus.org/badges/latest/wip.svg)](http://www.repostatus.org/#wip)
+[![Project Status: Active – The project has reached a stable, usable
+state and is being actively
+developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
 [![BioC
 status](http://www.bioconductor.org/shields/build/release/bioc/adaptest.svg)](https://bioconductor.org/checkResults/release/bioc-LATEST/adaptest)
 [![Bioc
@@ -20,8 +20,10 @@ Time](http://bioconductor.org/shields/years-in-bioc/adaptest.svg)](https://bioco
 Downloads](http://bioconductor.org/shields/downloads/adaptest.svg)](https://bioconductor.org/packages/release/bioc/html/adaptest.html)
 [![GPL-2
 License](http://img.shields.io/:license-gpl2-blue.svg)](http://www.gnu.org/licenses/gpl-2.0.html)
-[![JOSS
-status](http://joss.theoj.org/papers/7618d7d14ac77f6f502df3f9eac5917d/status.svg)](http://joss.theoj.org/papers/7618d7d14ac77f6f502df3f9eac5917d)
+[![Zenodo
+DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.1466019.svg)](https://doi.org/10.5281/zenodo.1466019)
+[![JOSS Status and
+DOI](http://joss.theoj.org/papers/10.21105/joss.00161/status.svg)](https://doi.org/10.21105/joss.00161)
 
 > Data-adaptive statistics for multiple testing in high-dimensional
 > biology
@@ -57,7 +59,7 @@ BiocManager::install("adaptest")
 ```
 
 To contribute, install the *development version* (i.e., branch
-`master`\_\_) from GitHub via
+**`master`**) from GitHub via
 [`devtools`](https://www.rstudio.com/products/rpackages/devtools/):
 
 ``` r
@@ -76,7 +78,7 @@ devtools::install_github("wilsoncai1992/adaptest", ref = "RELEASE_3_7")
 ***Note*: As the first stable release of this package was through
 Bioconductor v3.7, the minimum version of
 [R](https://www.r-project.org/) required to install `adaptest` is 3.5.0
-(“Joy in Playing”).**
+(codename “Joy in Playing”).**
 
 -----
 
@@ -112,31 +114,25 @@ After using the `adaptest` R package, please cite the following
 
 ``` 
   @article{cai2018adaptest,
-    doi = {},
-    url = {},
-    year  = {2018+},
-    month = {},
+    doi = {10.21105/joss.00161},
+    url = {https://doi.org/10.21105/joss.00161},
+    year  = {2018},
+    month = {October},
     publisher = {The Open Journal},
-    volume = {submitted},
-    number = {},
+    volume = {3},
+    number = {30},
     author = {Cai, Weixin and Hubbard, Alan E and Hejazi, Nima S},
     title = {{adaptest}: Data-Adaptive Statistics for High-Dimensional
       Testing in {R}},
     journal = {The Journal of Open Source Software}
   }
 
-  @article{cai2018adaptive,
-    doi = {},
+  @article{cai2018+adaptive,
     url = {https://arxiv.org/abs/1704.07008},
     year  = {2018+},
-    month = {},
-    publisher = {},
-    volume = {},
-    number = {},
     author = {Cai, Weixin and Hejazi, Nima S and Hubbard, Alan E},
     title = {Data-adaptive statistics for multiple hypothesis testing in
-      high-dimensional settings},
-    journal = {}
+      high-dimensional settings}
   }
 ```
 
