@@ -50,8 +50,8 @@ For standard use, install from
 [Bioconductor](https://bioconductor.org/packages/adaptest) using
 [`BiocManager`](https://CRAN.R-project.org/package=BiocManager):
 ```{r bioc-installation, eval = FALSE}
-if (!("BiocManager" %in% installed.packages())) {
-  install.packages("BiocManager")
+if (!requireNamespace("BiocManager", quietly=TRUE)) {
+    install.packages("BiocManager")
 }
 BiocManager::install("adaptest")
 ```

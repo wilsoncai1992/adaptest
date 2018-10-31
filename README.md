@@ -52,8 +52,8 @@ For standard use, install from
 [`BiocManager`](https://CRAN.R-project.org/package=BiocManager):
 
 ``` r
-if (!("BiocManager" %in% installed.packages())) {
-  install.packages("BiocManager")
+if (!requireNamespace("BiocManager", quietly=TRUE)) {
+    install.packages("BiocManager")
 }
 BiocManager::install("adaptest")
 ```
