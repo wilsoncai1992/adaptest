@@ -53,14 +53,16 @@
 #' genes_sub <- order(sample(seq_len(100)))
 #' air_reduced <- airway[genes_sub, ]
 #' simple_air <- cbind(air_reduced, air_reduced)
-#' dex_var = as.numeric(as.matrix(colData(simple_air))[, 3] - 1)
-#' airway_out <- bioadaptest(data_in = simple_air,
-#'                           var_int = dex_var,
-#'                           cntrl_set = NULL,
-#'                           n_top = 5,
-#'                           n_fold = 2,
-#'                           parameter_wrapper = rank_DE)
-#
+#' dex_var <- as.numeric(as.matrix(colData(simple_air))[, 3] - 1)
+#' airway_out <- bioadaptest(
+#'   data_in = simple_air,
+#'   var_int = dex_var,
+#'   cntrl_set = NULL,
+#'   n_top = 5,
+#'   n_fold = 2,
+#'   parameter_wrapper = rank_DE
+#' )
+#' #
 bioadaptest <- function(data_in,
                         var_int,
                         cntrl_set = NULL,

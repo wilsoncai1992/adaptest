@@ -16,18 +16,20 @@
 #' data(simpleArray)
 #' simulated_array <- simulated_array
 #' simulated_treatment <- simulated_treatment
-#'
-#' adaptest_out <- adaptest(Y = simulated_array,
-#'                          A = simulated_treatment,
-#'                          W = NULL,
-#'                          n_top = 5,
-#'                          n_fold = 3,
-#'                          learning_library = 'SL.glm',
-#'                          parameter_wrapper = adaptest::rank_DE,
-#'                          absolute = FALSE,
-#'                          negative = FALSE)
-#' get_composition(adaptest_out, type = 'small')
-#
+#' 
+#' adaptest_out <- adaptest(
+#'   Y = simulated_array,
+#'   A = simulated_treatment,
+#'   W = NULL,
+#'   n_top = 5,
+#'   n_fold = 3,
+#'   learning_library = "SL.glm",
+#'   parameter_wrapper = adaptest::rank_DE,
+#'   absolute = FALSE,
+#'   negative = FALSE
+#' )
+#' get_composition(adaptest_out, type = "small")
+#' #
 get_composition <- function(object, type = "small") {
   if (type == "small") col.name <- object$top_colname_significant_q
   if (type == "big") col.name <- object$top_colname
@@ -73,18 +75,20 @@ get_composition <- function(object, type = "small") {
 #' data(simpleArray)
 #' simulated_array <- simulated_array
 #' simulated_treatment <- simulated_treatment
-#'
-#' adaptest_out <- adaptest(Y = simulated_array,
-#'                          A = simulated_treatment,
-#'                          W = NULL,
-#'                          n_top = 5,
-#'                          n_fold = 3,
-#'                          learning_library = 'SL.glm',
-#'                          parameter_wrapper = adaptest::rank_DE,
-#'                          absolute = FALSE,
-#'                          negative = FALSE)
+#' 
+#' adaptest_out <- adaptest(
+#'   Y = simulated_array,
+#'   A = simulated_treatment,
+#'   W = NULL,
+#'   n_top = 5,
+#'   n_fold = 3,
+#'   learning_library = "SL.glm",
+#'   parameter_wrapper = adaptest::rank_DE,
+#'   absolute = FALSE,
+#'   negative = FALSE
+#' )
 #' get_significant_biomarker(adaptest_out)
-#
+#' #
 get_significant_biomarker <- function(object, cutoff = .5) {
   if (is.null(get_composition(object, type = "small"))) {
     return(integer()) # catch when nothing is significant

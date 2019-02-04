@@ -191,17 +191,19 @@ get_pval <- function(Psi_output, EIC_est_final, alpha = 0.05) {
 #' data(simpleArray)
 #' simulated_array <- simulated_array
 #' simulated_treatment <- simulated_treatment
-#'
-#' adaptest(Y = simulated_array,
-#'          A = simulated_treatment,
-#'          W = NULL,
-#'          n_top = 5,
-#'          n_fold = 3,
-#'          learning_library = 'SL.glm',
-#'          parameter_wrapper = adaptest::rank_DE,
-#'          absolute = FALSE,
-#'          negative = FALSE)
-#
+#' 
+#' adaptest(
+#'   Y = simulated_array,
+#'   A = simulated_treatment,
+#'   W = NULL,
+#'   n_top = 5,
+#'   n_fold = 3,
+#'   learning_library = "SL.glm",
+#'   parameter_wrapper = adaptest::rank_DE,
+#'   absolute = FALSE,
+#'   negative = FALSE
+#' )
+#' #
 adaptest <- function(Y,
                      A,
                      W = NULL,

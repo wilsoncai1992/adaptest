@@ -9,6 +9,7 @@ env:
 language: r
 sudo: required
 cache: packages
+cran: https://cran.rstudio.com
 
 warnings_are_errors: true
 r_build_args: '--no-manual'
@@ -19,7 +20,8 @@ r:
   - bioc-devel
 
 before_install:
-  - Rscript -e 'update.packages(ask = FALSE)'
+  - Rscript -e 'source("https://bioconductor.org/biocLite.R"); biocLite()'
+  #- Rscript -e 'update.packages(ask = FALSE)'
 
 r_packages:
   - devtools
@@ -27,23 +29,27 @@ r_packages:
   - BiocManager
 
 r_github_packages:
-  - r-lib/devtools@2d012d1
   - r-lib/sessioninfo
   - jimhester/covr
   - tlverse/origami
 
 bioc_packages:
-  - S4Vectors
   - BiocStyle
   - BiocCheck
+  - BiocGenerics
   - BiocParallel
+  - S4Vectors
   - SummarizedExperiment
+  - GenomeInfoDb
   - airway
 
 ## coverage
 after_success:
-  - Rscript -e "covr::codecov(line_exclusions = list('R/utils.R', 'R/get_summary.R', 'R/data.R', 'R/bioadaptest.R'))"
+  - travis_wait 60 Rscript -e "covr::codecov(line_exclusions = list('R/utils.R', 'R/get_summary.R', 'R/data.R', 'R/bioadaptest.R'))"
   - R CMD BiocCheck .
+
+on_failure:
+  - "./travis-tool.sh dump_logs"
 
 notifications:
   email:
