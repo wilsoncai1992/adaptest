@@ -40,6 +40,7 @@ bioc_packages:
   - BiocParallel
   - S4Vectors
   - SummarizedExperiment
+  - GenomeInfoDbData
   - GenomeInfoDb
   - airway
 
